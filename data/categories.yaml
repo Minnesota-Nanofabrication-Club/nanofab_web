@@ -1,0 +1,63 @@
+# ==================================================================
+# Process modules — the categories the machines are grouped into.
+#
+# These follow the standard way a semiconductor fab is organized: by
+# *process module*, in the order a wafer actually moves through them.
+# A wafer gets cleaned, patterned, etched, doped/annealed, has film
+# deposited on it, and gets measured — then the cycle repeats for the
+# next layer.
+#
+# "order" controls the sequence the groups appear in on the site, and
+# is also the number shown next to the group heading. Each machine in
+# content/machines/ points at one of these by its exact "name".
+#
+# To add a new process module: copy a block, give it an unused
+# "order", and set "category:" on the machine pages that belong to it.
+# ==================================================================
+
+- name: Wafer Preparation & Cleaning
+  order: 1
+  slug: prep
+  description: >-
+    Getting a substrate ready to build on. Every process step downstream
+    assumes a surface with no particles, no organics, and no leftover
+    residue from the previous layer.
+
+- name: Lithography
+  order: 2
+  slug: lithography
+  description: >-
+    Printing the pattern. A light-sensitive polymer is coated onto the
+    wafer, exposed with the shape we want, and developed — leaving a
+    stencil that the next step transfers into the material underneath.
+
+- name: Etch & Pattern Transfer
+  order: 3
+  slug: etch
+  description: >-
+    Turning the resist stencil into real structure by removing material
+    everywhere the resist isn't, then stripping the resist back off.
+
+- name: Thermal Processing & Doping
+  order: 4
+  slug: thermal
+  description: >-
+    High-temperature steps. Heat grows oxide, drives dopant atoms into
+    the silicon to set its electrical behavior, and repairs damage from
+    earlier processing.
+
+- name: Thin-Film Deposition
+  order: 5
+  slug: deposition
+  description: >-
+    Adding material rather than removing it — the metal contacts,
+    interconnects, and dielectric layers that turn patterned silicon
+    into a working device.
+
+- name: Metrology & Test
+  order: 6
+  slug: metrology
+  description: >-
+    Measuring what we actually made. Imaging features down to the
+    nanometer scale and probing finished devices electrically to find
+    out whether the process worked.

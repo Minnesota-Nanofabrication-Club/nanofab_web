@@ -1,0 +1,41 @@
+{{/* The club's officers. Content comes from data/officers.yaml —
+     add, remove, or reorder people there, not here. The section
+     hides itself entirely if that file is empty. */}}
+{{ with hugo.Data.officers }}
+<section id="officers" class="mx-auto max-w-6xl px-6 py-20 border-b border-line scroll-mt-24">
+  {{ partial "section-head.html" (dict
+      "eyebrow" "04 — Team"
+      "title" "Who runs the club"
+      "lead" "Officers are elected by the membership each year. Any of us is a reasonable person to contact if you want to get involved.") }}
+
+  <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    {{ range . }}
+    <div class="border border-line bg-surface rounded-lg p-6 flex flex-col items-start">
+
+      {{ if .photo }}
+      <img src="{{ .photo | relURL }}" alt="{{ .name }}"
+           loading="lazy"
+           class="w-16 h-16 rounded-full object-cover border border-line" />
+      {{ else }}
+      {{/* No photo yet — show their initials instead. */}}
+      {{ $words := split .name " " }}
+      {{ $initials := substr (index $words 0) 0 1 }}
+      {{ if gt (len $words) 1 }}{{ $initials = printf "%s%s" $initials (substr (index $words 1) 0 1) }}{{ end }}
+      <div class="w-16 h-16 rounded-full bg-maroon/8 border border-maroon/20 flex items-center justify-center font-display font-600 text-maroon">
+        {{ $initials }}
+      </div>
+      {{ end }}
+
+      <p class="font-mono text-[11px] uppercase tracking-wider text-maroon mt-5">{{ .role }}</p>
+      <p class="font-display font-600 text-lg mt-1.5 leading-snug">{{ .name }}</p>
+      {{ with .major }}<p class="text-sm text-muted mt-1">{{ . }}</p>{{ end }}
+
+      {{ with .email }}
+      <a href="mailto:{{ . }}"
+         class="text-xs text-maroon hover:underline underline-offset-4 mt-3 break-all">{{ . }}</a>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

@@ -1,0 +1,5 @@
+Put sponsor logo files here (e.g. ideal-vac.png, basler.png — PNG or SVG
+with a transparent background works best). Then point "logo:" at the
+matching path in data/sponsors.yaml, e.g.
+logo: "/images/sponsors/ideal-vac.png"
+Delete this text file once you've added your logos.

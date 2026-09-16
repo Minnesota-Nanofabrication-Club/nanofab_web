@@ -1,0 +1,26 @@
+# ====================================================================
+# Config for publishing on Netlify (the alternative to GitHub Pages —
+# see section 5 of README.md).
+#
+# If you use Netlify, it reads this file automatically. You don't need
+# to configure anything in the Netlify web interface.
+#
+# If you use GitHub Pages instead, this file is simply ignored and you
+# can delete it.
+# ====================================================================
+
+[build]
+  publish = "public"
+  command = "hugo --minify --gc"
+
+[build.environment]
+  # Keep this matching the Hugo version you use locally (hugo version).
+  HUGO_VERSION = "0.166.0"
+
+# Preview builds for pull requests get their own temporary URL, so the
+# --baseURL has to be the preview URL rather than the real site URL.
+[context.deploy-preview]
+  command = "hugo --minify --gc --baseURL $DEPLOY_PRIME_URL"
+
+[context.branch-deploy]
+  command = "hugo --minify --gc --baseURL $DEPLOY_PRIME_URL"

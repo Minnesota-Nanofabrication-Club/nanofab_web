@@ -1,0 +1,31 @@
+# ===================================================================
+# SPONSORS — the "Partners & sponsors" section on the homepage.
+#
+# TO ADD a sponsor:     copy a whole "- name:" block and edit it.
+# TO REMOVE a sponsor:  delete their block, OR put a # in front of
+#                       each of its lines to hide them temporarily
+#                       (see the commented-out Basler block below —
+#                       deleting the #s puts them straight back).
+#
+# "logo" is optional:
+#   logo: ""                              -> shows the sponsor's name as text
+#   logo: "/images/sponsors/name.png"     -> shows their logo instead
+#
+# Logo files go in static/images/sponsors/. Keep them small — the site
+# displays them about 40 pixels tall. See README section 4.10.
+#
+# The dashed "interested in supporting us?" card at the end is built
+# into the template, not listed here — its wording lives in
+# layouts/partials/sponsors.html.
+# ===================================================================
+
+- name: Ideal Vac
+  description: Vacuum systems and components supporting our fabrication work.
+  logo: ""
+
+# ---- Not a sponsor yet. Delete the leading "#" on the three lines
+# ---- below to put them back on the site.
+#
+# - name: Basler
+#   description: Machine vision cameras used for imaging and inspection in the lab.
+#   logo: ""

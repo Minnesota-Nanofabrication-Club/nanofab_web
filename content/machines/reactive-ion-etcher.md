@@ -1,0 +1,58 @@
+---
+title: "Reactive-Ion Etcher"
+category: "Etch & Pattern Transfer"
+step: "Dry Etch"
+weight: 10
+status: "building"
+summary: "Etches material with a chemically reactive plasma under vacuum, cutting straight down into the wafer instead of undercutting sideways the way a wet etch does."
+
+specs:
+  - label: "Process pressure"
+    value: "10 – 200 mTorr"
+  - label: "RF power"
+    value: "13.56 MHz, up to 300 W"
+  - label: "Process gases"
+    value: "CF₄, O₂, Ar"
+
+# PHOTOS of this machine. Delete the leading "#" on the lines below
+# once you've put real image files in static/images/machines/.
+# One photo renders large; two or more render as a grid.
+# "caption" is optional.
+#
+# photos:
+#   - src: "/images/machines/reactive-ion-etcher-1.jpg"
+#     caption: ""
+#   - src: "/images/machines/reactive-ion-etcher-2.jpg"
+#     caption: ""
+
+subsystems:
+  - name: "Vacuum chamber & electrodes"
+    description: "The wafer sits on the powered electrode. The asymmetry between the small powered electrode and the large grounded chamber is what creates the DC self-bias that accelerates ions into the surface."
+  - name: "Pump stack"
+    description: "A rotary pump rough-pumps from atmosphere, then a turbomolecular pump takes the chamber into the milliTorr range and holds it there while gas flows through."
+  - name: "RF supply & matching network"
+    description: "Generates the plasma. The matching network tunes out the load's reactance so power actually goes into the discharge instead of reflecting back into the amplifier."
+  - name: "Gas delivery"
+    description: "Mass flow controllers meter each process gas. The gas mix sets the chemistry: fluorine species attack silicon and oxide, oxygen strips polymer, argon adds physical sputtering."
+  - name: "Pressure control"
+    description: "A capacitance manometer reads chamber pressure and a throttle valve holds it at setpoint. Pressure sets the ion mean free path — and therefore how directional the etch is."
+  - name: "Electrode cooling"
+    description: "Ion bombardment dumps real power into the wafer. Without cooling, the resist mask softens and flows, and the pattern degrades mid-etch."
+  - name: "Endpoint detection"
+    description: "Optical emission spectroscopy watches the plasma's color. When the film being etched is gone, the emission lines from its etch products drop — that's the signal to stop."
+  - name: "Safety interlocks"
+    description: "RF cannot energize unless the chamber is under vacuum and closed. Striking a plasma at atmosphere, or with the lid open, is both a UV and an RF exposure hazard."
+---
+
+Reactive-ion etching is what makes vertical sidewalls possible.
+
+A purely chemical wet etch attacks material in every direction at once, so it
+eats sideways under the resist mask by roughly as much as it cuts down. At
+micron scale that's tolerable. Below that it destroys the pattern.
+
+RIE combines two mechanisms: reactive neutrals do chemistry on the surface, and
+ions accelerated by the plasma sheath slam into it nearly straight down. The
+chemistry alone would be isotropic; the directional ion bombardment is what
+biases the etch downward and keeps the sidewalls steep. Tuning the balance
+between the two — through pressure, power, and gas mix — is most of what
+running this tool is about.

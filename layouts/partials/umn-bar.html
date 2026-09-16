@@ -1,0 +1,23 @@
+{{/* ==============================================================
+     The maroon University of Minnesota bar that sits above the site
+     header on every page — the same "parent institution" strip UMN
+     department sites use. Links out to umn.edu and the college.
+     Edit the URLs in hugo.toml under [params.umn].
+     ============================================================== */}}
+<div class="bg-maroon text-white/90 text-xs">
+  <div class="mx-auto max-w-6xl px-6 h-9 flex items-center justify-between gap-4">
+    <a href="{{ .Site.Params.umn.universityURL }}"
+       class="flex items-center gap-2.5 font-display font-600 tracking-wide text-white hover:text-gold transition-colors">
+      {{/* Simplified block-M mark. */}}
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M2 3h6l4 9 4-9h6v3h-2v12h2v3h-7v-3h2V8.5l-4.2 9.3h-1.6L7 8.5V18h2v3H2v-3h2V6H2V3z"/>
+      </svg>
+      <span class="hidden sm:inline">{{ .Site.Params.umn.universityName }}</span>
+      <span class="sm:hidden">UMN</span>
+    </a>
+    <nav class="flex items-center gap-5">
+      <a href="{{ .Site.Params.umn.collegeURL }}" class="hidden sm:inline hover:text-gold transition-colors">{{ .Site.Params.umn.collegeName }}</a>
+      <a href="{{ .Site.Params.umn.universityURL }}" class="hover:text-gold transition-colors">umn.edu</a>
+    </nav>
+  </div>
+</div>

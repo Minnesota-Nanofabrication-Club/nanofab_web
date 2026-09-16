@@ -1,0 +1,32 @@
+Machine photos go in this folder — one or more per machine, showing
+what the tool actually looks like.
+
+NAMING
+Name each file after the machine, lowercase with hyphens, no spaces.
+If you have several shots of one machine, number them:
+
+  tube-furnace-1.jpg
+  tube-furnace-2.jpg
+  reactive-ion-etcher-1.jpg
+
+HOOKING THEM UP
+Open that machine's file in content/machines/ and add a "photos:"
+block to the top section:
+
+  photos:
+    - src: "/images/machines/tube-furnace-1.jpg"
+      caption: "The furnace mid-assembly, before insulation."
+    - src: "/images/machines/tube-furnace-2.jpg"
+      caption: "Quartz tube and wafer boat."
+
+One photo renders large. Two or more render as a grid.
+"caption" is optional — leave it out and the photo shows on its own.
+
+SIZE
+Aim for about 1600 pixels on the long edge and under 500 KB per file.
+Phone photos are much larger than that; https://squoosh.app will
+shrink one for free with no visible quality loss.
+
+Landscape (wider than tall) photos look best.
+
+Delete this text file once you've added real photos.

@@ -1,0 +1,3 @@
+Put your lab photo here, named exactly: lab-photo.jpg
+(Or use a different filename and update "labPhoto:" in content/_index.md to match.)
+Delete this text file once you've added your photo.

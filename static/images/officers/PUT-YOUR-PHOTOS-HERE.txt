@@ -1,0 +1,16 @@
+Officer photos go in this folder.
+
+Name each file after the person, lowercase with hyphens and no spaces:
+  jane-smith.jpg
+
+Then point at it from data/officers.yaml:
+  photo: "/images/officers/jane-smith.jpg"
+
+Square photos work best — the site crops them to a circle. Around
+400 x 400 pixels is plenty. Keep each file under about 500 KB;
+https://squoosh.app will shrink one for free.
+
+If you don't have someone's photo, leave photo: "" and their card
+shows their initials instead.
+
+Delete this text file once you've added real photos.

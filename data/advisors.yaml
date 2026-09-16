@@ -1,0 +1,27 @@
+# ===================================================================
+# ADVISORS — shown under "Backed by the University" on the homepage.
+#
+# TO ADD an advisor:    copy a whole "- name:" block and edit it.
+# TO REMOVE an advisor: delete their block (or put a # in front of
+#                       every one of its lines to hide them for now).
+# TO REORDER:           move blocks up or down. They appear in the
+#                       order they're listed here.
+#
+# "photo" is optional. Leave it as "" and their card shows their
+# initials instead, so the page still looks intentional.
+# Photos go in static/images/advisors/ — see README section 4.11.
+# ===================================================================
+
+- name: Advisor Name
+  role: Faculty Advisor, Electrical Engineering
+  photo: ""
+
+# ---- TODO: replace the two placeholders below with real people ----
+
+- name: Second Advisor
+  role: Faculty Advisor, Materials Science
+  photo: ""
+
+- name: Third Advisor
+  role: Faculty Advisor, Physics
+  photo: ""

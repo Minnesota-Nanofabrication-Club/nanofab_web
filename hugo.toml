@@ -1,0 +1,88 @@
+baseURL = "https://example.com/"
+locale = "en-us"
+title = "UMN Nanofabrication Club"
+
+# This site doesn't use tags or categories as blog-style taxonomies
+# (machines are grouped via data/categories.yaml instead), so turn the
+# empty /tags/ and /categories/ pages off.
+disableKinds = ["taxonomy", "term"]
+
+# ------------------------------------------------------------------
+# Site-wide identity: things that stay the same on every page.
+# EDIT HERE to change contact links across the entire site at once.
+# ------------------------------------------------------------------
+[params]
+  tagline = "University of Minnesota, Twin Cities"
+  shortTitle = "Nanofabrication Club"
+  discordURL = "https://discord.gg/your-invite-code"
+  linkedinURL = "https://www.linkedin.com/company/your-org-here"
+  instagramURL = "https://www.instagram.com/your-handle-here"
+  contactEmail = "umn-nanofab-club@umn.edu"
+  docsURL = "https://your-docs-site.example.com"
+
+  # ----------------------------------------------------------------
+  # University of Minnesota links. These are what tie the site to the
+  # university — they show up in the top bar and the footer.
+  # ----------------------------------------------------------------
+  [params.umn]
+    universityURL = "https://umn.edu"
+    universityName = "University of Minnesota"
+    collegeURL = "https://cse.umn.edu"
+    collegeName = "College of Science and Engineering"
+    # Your listing in Gopher Link, UMN's student org directory. Swap in
+    # your real org URL once the club is registered.
+    gopherLinkURL = "https://gopherlink.umn.edu"
+
+  # ----------------------------------------------------------------
+  # Color tokens used by Tailwind's inline config in
+  # layouts/partials/head.html. Change a hex value here and it updates
+  # everywhere that color is used.
+  #
+  # maroon + gold are the official University of Minnesota brand
+  # colors (PMS 202 and PMS 116). Keep them as-is unless the
+  # university updates its brand guide.
+  # ----------------------------------------------------------------
+  [params.colors]
+    paper = "#F4F3F0"
+    surface = "#FFFFFF"
+    ink = "#14181C"
+    line = "#DEDCD5"
+    muted = "#5F6660"
+    maroon = "#7A0019"
+    maroonDark = "#5B0013"
+    gold = "#FFCC33"
+    signalGreen = "#2E7D4F"
+    signalAmber = "#C77D1D"
+    blueprint = "#1F4E8C"
+
+# ------------------------------------------------------------------
+# The top navigation. To add, remove, or reorder a nav link, edit a
+# block here — you don't need to touch any HTML.
+# ------------------------------------------------------------------
+[[menu.main]]
+  name = "What we do"
+  url = "/#mission"
+  weight = 10
+
+[[menu.main]]
+  name = "The fab"
+  url = "/machines/"
+  weight = 20
+
+[[menu.main]]
+  name = "Support"
+  url = "/#backing"
+  weight = 30
+
+[[menu.main]]
+  name = "Team"
+  url = "/#officers"
+  weight = 35
+
+[[menu.main]]
+  name = "Sponsors"
+  url = "/#sponsors"
+  weight = 40
+
+[markup.goldmark.renderer]
+  unsafe = true

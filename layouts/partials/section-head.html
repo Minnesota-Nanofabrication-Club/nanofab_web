@@ -1,0 +1,23 @@
+{{/* ==============================================================
+     Shared section heading, so every section on the site has the
+     same rhythm: a small gold-ruled eyebrow label, a big title, and
+     an optional lead paragraph.
+
+     Call it like:
+       {{ partial "section-head.html" (dict
+            "eyebrow" "02"
+            "title" "Building the fab"
+            "lead" "Some sentence.") }}
+     ============================================================== */}}
+<div class="max-w-2xl">
+  {{ with .eyebrow }}
+  <div class="flex items-center gap-3 mb-5">
+    <span class="h-px w-8 bg-gold"></span>
+    <span class="font-mono text-xs tracking-widest uppercase text-muted">{{ . }}</span>
+  </div>
+  {{ end }}
+  <h2 class="font-display font-600 text-3xl sm:text-[2.1rem] leading-tight tracking-tight">{{ .title }}</h2>
+  {{ with .lead }}
+  <p class="text-muted mt-4 leading-relaxed">{{ . }}</p>
+  {{ end }}
+</div>

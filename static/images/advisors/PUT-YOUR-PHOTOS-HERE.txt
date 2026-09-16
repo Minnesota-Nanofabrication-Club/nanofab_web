@@ -1,0 +1,4 @@
+Put advisor photos here, one file per person (e.g. jane-smith.jpg).
+Then point "photo:" at the matching path in data/advisors.yaml, e.g.
+photo: "/images/advisors/jane-smith.jpg"
+Delete this text file once you've added your photos.

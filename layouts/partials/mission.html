@@ -1,0 +1,25 @@
+<section id="mission" class="mx-auto max-w-6xl px-6 py-20 border-b border-line scroll-mt-24">
+  <div class="grid md:grid-cols-[1fr_1.25fr] gap-12 lg:gap-20">
+    {{ partial "section-head.html" (dict
+        "eyebrow" "01 — Mission"
+        "title" "What we do") }}
+
+    <div>
+      <p class="text-lg text-muted leading-relaxed">
+        {{ .Params.missionIntro }}
+      </p>
+
+      <dl class="mt-10 space-y-8">
+        {{ range $i, $p := hugo.Data.pillars }}
+        <div class="flex gap-5">
+          <span class="font-mono text-xs text-gold pt-1.5 shrink-0">{{ printf "%02d" (add $i 1) }}</span>
+          <div class="border-l-2 border-maroon/25 pl-5">
+            <dt class="font-display font-600 text-lg leading-snug">{{ $p.title }}</dt>
+            <dd class="text-sm text-muted mt-1.5 leading-relaxed">{{ $p.description }}</dd>
+          </div>
+        </div>
+        {{ end }}
+      </dl>
+    </div>
+  </div>
+</section>

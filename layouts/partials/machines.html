@@ -1,0 +1,47 @@
+{{/* Homepage preview of the fab: the six process modules with their
+     machines, each linking to its own page. The full detail lives at
+     /machines/ (layouts/machines/list.html). */}}
+{{ $machines := where .Site.RegularPages "Section" "machines" }}
+{{ $cats := sort hugo.Data.categories "order" }}
+
+<section id="machines" class="mx-auto max-w-6xl px-6 py-20 border-b border-line scroll-mt-24">
+  <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+    {{ partial "section-head.html" (dict
+        "eyebrow" "02 — The fab"
+        "title" "Building the fab, machine by machine"
+        "lead" "Our tools are grouped by process module, in the order a wafer moves through them. Every machine has its own page covering the subsystems it's built from.") }}
+
+    <a href="{{ "/machines/" | relURL }}"
+       class="inline-flex items-center gap-2 text-sm font-medium text-maroon hover:underline underline-offset-4 shrink-0 md:mb-1">
+      All {{ len $machines }} machines →
+    </a>
+  </div>
+
+  <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    {{ range $cats }}
+    {{ $items := where $machines ".Params.category" .name }}
+    {{ if $items }}
+    <div class="border border-line bg-surface rounded-lg p-6 flex flex-col">
+      <div class="flex items-baseline gap-2.5">
+        <span class="font-mono text-xs text-gold">{{ printf "%02d" .order }}</span>
+        <h3 class="font-display font-600 text-lg leading-snug">{{ .name }}</h3>
+      </div>
+
+      <ul class="mt-5 space-y-px flex-1">
+        {{ range sort $items "Weight" }}
+        <li>
+          <a href="{{ .RelPermalink }}"
+             class="group flex items-center justify-between gap-3 -mx-2 px-2 py-2 rounded hover:bg-paper transition-colors">
+            <span class="text-sm group-hover:text-maroon transition-colors">{{ .Title }}</span>
+            <span class="hidden lg:block flex-1 border-b border-dotted border-line/80 mx-1" aria-hidden="true"></span>
+            {{ with .Params.step }}<span class="font-mono text-[10px] uppercase tracking-wider text-muted/70 shrink-0 hidden lg:inline">{{ . }}</span>{{ end }}
+            <span class="text-maroon text-xs shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">→</span>
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+    {{ end }}
+  </div>
+</section>

@@ -1,0 +1,25 @@
+{{/* ==============================================================
+     The little colored dot + label showing where a machine stands.
+     Pass the status string: {{ partial "status.html" .Params.status }}
+
+     Set "status:" in each file in content/machines/ to one of:
+       operational — built, calibrated, and running
+       building    — in progress right now
+       planned     — scoped but not started
+     ============================================================== */}}
+{{ $s := . | default "planned" }}
+{{ $label := "Planned" }}
+{{ $dot := "border border-muted/60" }}
+{{ $text := "text-muted" }}
+{{ if eq $s "operational" }}
+  {{ $label = "Operational" }}
+  {{ $dot = "bg-signal-green" }}
+  {{ $text = "text-signal-green" }}
+{{ else if eq $s "building" }}
+  {{ $label = "In build" }}
+  {{ $dot = "bg-signal-amber" }}
+  {{ $text = "text-signal-amber" }}
+{{ end }}
+<span class="inline-flex items-center gap-1.5 text-xs {{ $text }} shrink-0">
+  <span class="w-1.5 h-1.5 rounded-full {{ $dot }}"></span>{{ $label }}
+</span>

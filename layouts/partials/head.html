@@ -1,0 +1,64 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+{{/* Page title: "Tube Furnace — UMN Nanofabrication Club" on inner pages,
+     just the site name + tagline on the homepage. */}}
+{{ if .IsHome }}
+  <title>{{ .Site.Title }} — {{ .Site.Params.tagline }}</title>
+{{ else }}
+  <title>{{ .Title }} — {{ .Site.Title }}</title>
+{{ end }}
+
+{{ $desc := .Params.summary | default .Params.subhead | default (printf "%s is a student-led group at the University of Minnesota building a functional nanofabrication lab, machine by machine." .Site.Title) }}
+<meta name="description" content="{{ $desc }}" />
+<meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}" />
+<meta property="og:description" content="{{ $desc }}" />
+<meta property="og:type" content="website" />
+<link rel="canonical" href="{{ .Permalink }}" />
+
+<!-- ============================================================
+     FONTS
+     Space Grotesk = headings, Inter = body text, JetBrains Mono = data/codes only
+============================================================ -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<!-- ============================================================
+     TAILWIND (CDN build — no separate build step required)
+     Colors below are pulled from hugo.toml [params.colors] — edit
+     the hex values there, not here, to re-theme the whole site.
+============================================================ -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          paper: '{{ .Site.Params.colors.paper }}',
+          surface: '{{ .Site.Params.colors.surface }}',
+          ink: '{{ .Site.Params.colors.ink }}',
+          line: '{{ .Site.Params.colors.line }}',
+          muted: '{{ .Site.Params.colors.muted }}',
+          maroon: {
+            DEFAULT: '{{ .Site.Params.colors.maroon }}',
+            dark: '{{ .Site.Params.colors.maroonDark }}',
+          },
+          gold: '{{ .Site.Params.colors.gold }}',
+          signal: {
+            green: '{{ .Site.Params.colors.signalGreen }}',
+            amber: '{{ .Site.Params.colors.signalAmber }}',
+          },
+          blueprint: '{{ .Site.Params.colors.blueprint }}',
+        },
+        fontFamily: {
+          display: ['"Space Grotesk"', 'sans-serif'],
+          body: ['Inter', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'monospace'],
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="stylesheet" href="{{ "css/styles.css" | relURL }}" />

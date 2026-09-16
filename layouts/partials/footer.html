@@ -1,0 +1,53 @@
+<footer class="border-t border-line bg-surface/60">
+  <div class="mx-auto max-w-6xl px-6 py-14">
+
+    <div class="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div>
+        <div class="flex items-center gap-3">
+          <span class="w-8 h-8 rounded bg-maroon text-white flex items-center justify-center font-display font-700 text-xs">nF</span>
+          <p class="font-display font-600">{{ .Site.Title }}</p>
+        </div>
+        <p class="text-sm text-muted mt-4 max-w-sm leading-relaxed">
+          A registered student organization at the
+          <a href="{{ .Site.Params.umn.universityURL }}" class="text-ink underline decoration-gold decoration-2 underline-offset-4 hover:text-maroon transition-colors">University of Minnesota, Twin Cities</a>,
+          building a functional nanofabrication lab from the bench up.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-medium uppercase tracking-widest text-muted">Club</h3>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          <li><a href="{{ "/machines/" | relURL }}" class="text-muted hover:text-ink transition-colors">The fab</a></li>
+          <li><a href="{{ "/#mission" | relURL }}" class="text-muted hover:text-ink transition-colors">What we do</a></li>
+          <li><a href="{{ "/#sponsors" | relURL }}" class="text-muted hover:text-ink transition-colors">Sponsors</a></li>
+          <li><a href="{{ .Site.Params.docsURL }}" class="text-muted hover:text-ink transition-colors">Documentation</a></li>
+          <li><a href="mailto:{{ .Site.Params.contactEmail }}" class="text-muted hover:text-ink transition-colors">{{ .Site.Params.contactEmail }}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-medium uppercase tracking-widest text-muted">University of Minnesota</h3>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          <li><a href="{{ .Site.Params.umn.universityURL }}" class="text-muted hover:text-ink transition-colors">umn.edu</a></li>
+          <li><a href="{{ .Site.Params.umn.collegeURL }}" class="text-muted hover:text-ink transition-colors">{{ .Site.Params.umn.collegeName }}</a></li>
+          <li><a href="{{ .Site.Params.umn.gopherLinkURL }}" class="text-muted hover:text-ink transition-colors">Find us on Gopher Link</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-line flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 text-xs text-muted">
+      <p>© {{ now.Year }} {{ .Site.Title }}. {{ .Site.Params.tagline }}.</p>
+      <div class="flex items-center gap-5">
+        <a href="{{ .Site.Params.discordURL }}" class="hover:text-ink transition-colors">Discord</a>
+        <a href="{{ .Site.Params.linkedinURL }}" class="hover:text-ink transition-colors">LinkedIn</a>
+        <a href="{{ .Site.Params.instagramURL }}" class="hover:text-ink transition-colors">Instagram</a>
+      </div>
+    </div>
+
+    <p class="mt-6 text-xs text-muted/80 leading-relaxed max-w-3xl">
+      The University of Minnesota is an equal opportunity educator and employer.
+      This site is maintained by a student organization and its content is not
+      an official statement of the University of Minnesota.
+    </p>
+  </div>
+</footer>

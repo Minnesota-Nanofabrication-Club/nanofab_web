@@ -1,0 +1,149 @@
+{{ define "main" }}
+{{ $cat := index (where hugo.Data.categories "name" .Params.category) 0 }}
+{{ $siblings := sort (where (where .Site.RegularPages "Section" "machines") ".Params.category" .Params.category) "Weight" }}
+
+<article>
+
+  {{/* ---------- Header ---------- */}}
+  <section class="relative overflow-hidden border-b border-line">
+    <div class="absolute inset-0 bg-grid-fine pointer-events-none"></div>
+    <div class="relative mx-auto max-w-6xl px-6 pt-12 pb-14">
+
+      <nav class="text-sm text-muted mb-8 flex flex-wrap items-center gap-x-2" aria-label="Breadcrumb">
+        <a href="{{ "/" | relURL }}" class="hover:text-ink transition-colors">Home</a>
+        <span class="text-line">/</span>
+        <a href="{{ "/machines/" | relURL }}" class="hover:text-ink transition-colors">The fab</a>
+        {{ with $cat }}
+        <span class="text-line">/</span>
+        <a href="{{ printf "/machines/#%s" .slug | relURL }}" class="hover:text-ink transition-colors">{{ .name }}</a>
+        {{ end }}
+      </nav>
+
+      <div class="max-w-3xl">
+        <div class="flex flex-wrap items-center gap-3">
+          {{ with $cat }}
+          <span class="inline-flex items-center gap-2 rounded-full bg-maroon/10 text-maroon px-3 py-1 text-xs font-medium">
+            <span class="font-mono text-[10px]">{{ printf "%02d" .order }}</span>{{ .name }}
+          </span>
+          {{ end }}
+          {{ with .Params.step }}
+          <span class="font-mono text-xs uppercase tracking-wider text-muted">{{ . }}</span>
+          {{ end }}
+          {{ partial "status.html" .Params.status }}
+        </div>
+
+        <h1 class="font-display font-700 text-4xl sm:text-5xl tracking-tight mt-5 leading-[1.08]">{{ .Title }}</h1>
+        <p class="mt-5 text-lg text-muted leading-relaxed">{{ .Params.summary }}</p>
+      </div>
+
+      {{ with .Params.specs }}
+      <dl class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl">
+        {{ range . }}
+        <div class="bg-surface border border-line rounded-lg px-5 py-4">
+          <dt class="text-xs uppercase tracking-wider text-muted">{{ .label }}</dt>
+          <dd class="font-mono text-sm mt-1.5">{{ .value }}</dd>
+        </div>
+        {{ end }}
+      </dl>
+      {{ end }}
+    </div>
+  </section>
+
+  {{/* ---------- Photos ----------
+       Comes from the "photos:" list in the machine's file. One photo
+       renders large; two or more render as a grid. If there's no
+       "photos:" block at all, this whole section is skipped.
+       ------------------------------------------------------------- */}}
+  {{ with .Params.photos }}
+  <section class="border-b border-line">
+    <div class="mx-auto max-w-6xl px-6 py-14">
+      {{ $single := eq (len .) 1 }}
+      <div class="grid gap-6 {{ if not $single }}sm:grid-cols-2{{ end }}">
+        {{ range . }}
+        <figure class="{{ if $single }}max-w-4xl{{ end }}">
+          <img src="{{ .src | relURL }}"
+               alt="{{ .caption | default (printf "%s in the lab" $.Title) }}"
+               loading="lazy"
+               class="w-full {{ if $single }}max-h-[520px]{{ else }}h-72{{ end }} object-cover rounded-xl border border-line bg-surface" />
+          {{ with .caption }}
+          <figcaption class="flex items-start gap-3 text-sm text-muted mt-3">
+            <span class="h-px w-6 bg-gold shrink-0 mt-2.5"></span>
+            <span>{{ . }}</span>
+          </figcaption>
+          {{ end }}
+        </figure>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+  {{ end }}
+
+  {{/* ---------- How it works (markdown body of the machine's file) ---------- */}}
+  {{ if .Content }}
+  <section class="border-b border-line">
+    <div class="mx-auto max-w-6xl px-6 py-16">
+      <div class="grid lg:grid-cols-[minmax(0,14rem)_minmax(0,42rem)] gap-6 lg:gap-12">
+        <h2 class="text-xs font-medium uppercase tracking-widest text-muted lg:pt-1.5">How it works</h2>
+        <div class="prose text-muted">{{ .Content }}</div>
+      </div>
+    </div>
+  </section>
+  {{ end }}
+
+  {{/* ---------- Subsystems ---------- */}}
+  {{ with .Params.subsystems }}
+  <section class="border-b border-line bg-surface/70">
+    <div class="mx-auto max-w-6xl px-6 py-16">
+      <div class="flex flex-wrap items-baseline justify-between gap-3 mb-9">
+        <h2 class="text-xs font-medium uppercase tracking-widest text-muted">
+          Subsystems <span class="font-mono normal-case tracking-normal text-muted/70">({{ len . }})</span>
+        </h2>
+        <p class="text-sm text-muted">The parts we actually have to build, source, and keep working.</p>
+      </div>
+
+      <ol class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {{ range $i, $s := . }}
+        <li class="bg-paper border border-line rounded-lg p-6">
+          <div class="flex items-center gap-2.5">
+            <span class="font-mono text-xs text-gold">{{ printf "%02d" (add $i 1) }}</span>
+            <p class="font-display font-600">{{ $s.name }}</p>
+          </div>
+          <p class="text-sm text-muted mt-2.5 leading-relaxed">{{ $s.description }}</p>
+        </li>
+        {{ end }}
+      </ol>
+    </div>
+  </section>
+  {{ end }}
+
+  {{/* ---------- Neighbours in the same process module ---------- */}}
+  {{ if gt (len $siblings) 1 }}
+  <section class="border-b border-line">
+    <div class="mx-auto max-w-6xl px-6 py-12">
+      <h2 class="text-xs font-medium uppercase tracking-widest text-muted mb-6">
+        Also in {{ .Params.category }}
+      </h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {{ range $siblings }}
+        {{ if ne .RelPermalink $.RelPermalink }}
+        <a href="{{ .RelPermalink }}" class="machine-card group border border-line bg-surface rounded-lg p-4">
+          <div class="flex items-center justify-between gap-3">
+            {{ with .Params.step }}<span class="font-mono text-[11px] uppercase tracking-wider text-muted">{{ . }}</span>{{ end }}
+            <span class="machine-arrow text-maroon text-xs">&rarr;</span>
+          </div>
+          <p class="font-display font-600 mt-1.5 group-hover:text-maroon transition-colors">{{ .Title }}</p>
+        </a>
+        {{ end }}
+        {{ end }}
+      </div>
+
+      <a href="{{ "/machines/" | relURL }}" class="inline-flex items-center gap-2 mt-8 text-sm font-medium text-maroon hover:underline underline-offset-4">
+        &larr; All machines
+      </a>
+    </div>
+  </section>
+  {{ end }}
+
+  {{ partial "cta.html" . }}
+</article>
+{{ end }}

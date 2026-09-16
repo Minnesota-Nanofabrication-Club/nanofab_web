@@ -1,0 +1,46 @@
+# ===================================================================
+# OFFICERS — the club's leadership, shown in the "Who runs the club"
+# section on the homepage.
+#
+# TO ADD an officer:     copy a whole "- name:" block and edit it.
+# TO REMOVE an officer:  delete their block.
+# TO REORDER:            move blocks up or down. They appear in the
+#                        order listed here, so keep President first.
+#
+# Fields:
+#   name   required — the person's name
+#   role   required — their position, e.g. "President"
+#   major  optional — degree program and/or year. Leave "" to hide.
+#   email  optional — makes their name clickable. Leave "" to hide.
+#   photo  optional — leave "" and their card shows their initials
+#                     instead, which looks intentional rather than
+#                     broken. Photos go in static/images/officers/
+#                     (see README section 4.11).
+#
+# At the start of each school year, update this file — it's the part
+# that goes stale fastest.
+# ===================================================================
+
+- name: President Name
+  role: President
+  major: "Electrical Engineering"
+  email: ""
+  photo: ""
+
+- name: Vice President Name
+  role: Vice President
+  major: "Materials Science"
+  email: ""
+  photo: ""
+
+- name: Treasurer Name
+  role: Treasurer
+  major: "Physics"
+  email: ""
+  photo: ""
+
+- name: Secretary Name
+  role: Secretary
+  major: "Chemical Engineering"
+  email: ""
+  photo: ""

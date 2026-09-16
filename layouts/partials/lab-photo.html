@@ -1,0 +1,22 @@
+{{/* Only renders if labPhoto is set in content/_index.md front matter,
+     so the site still builds cleanly before you've added a real photo. */}}
+{{ if .Params.labPhoto }}
+<section class="border-b border-line">
+  <div class="mx-auto max-w-6xl px-6 py-14">
+    <figure>
+      <img
+        src="{{ .Params.labPhoto | relURL }}"
+        alt="{{ .Params.labPhotoCaption | default (printf "%s lab space" .Site.Title) }}"
+        loading="lazy"
+        class="w-full h-[360px] sm:h-[440px] object-cover rounded-xl border border-line"
+      />
+      {{ if .Params.labPhotoCaption }}
+      <figcaption class="flex items-center gap-3 text-sm text-muted mt-4">
+        <span class="h-px w-6 bg-gold shrink-0"></span>
+        {{ .Params.labPhotoCaption }}
+      </figcaption>
+      {{ end }}
+    </figure>
+  </div>
+</section>
+{{ end }}

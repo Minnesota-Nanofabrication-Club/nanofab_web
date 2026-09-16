@@ -1,0 +1,46 @@
+<section id="backing" class="mx-auto max-w-6xl px-6 py-20 border-b border-line scroll-mt-24">
+  {{ partial "section-head.html" (dict
+      "eyebrow" "03 — Support"
+      "title" "Backed by the University"
+      "lead" "We operate as a registered student organization at the University of Minnesota, Twin Cities, with space, equipment access, and faculty guidance behind us.") }}
+
+  <div class="mt-12 grid md:grid-cols-2 gap-5">
+    {{ range hugo.Data.backing }}
+    <div class="border border-line bg-surface rounded-lg p-6">
+      <div class="flex items-start justify-between gap-4">
+        <h3 class="font-display font-600 text-lg">{{ .title }}</h3>
+        {{ with .url }}
+        <a href="{{ . }}" class="text-xs text-maroon hover:underline underline-offset-4 shrink-0 mt-1">Visit →</a>
+        {{ end }}
+      </div>
+      <p class="text-sm text-muted mt-2.5 leading-relaxed">{{ .description }}</p>
+    </div>
+    {{ end }}
+  </div>
+
+  {{ if hugo.Data.advisors }}
+  <div class="mt-12 pt-10 border-t border-line">
+    <h3 class="text-xs font-medium uppercase tracking-widest text-muted mb-7">Our advisors</h3>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {{ range hugo.Data.advisors }}
+      <div class="flex items-center gap-4">
+        {{ if .photo }}
+        <img src="{{ .photo | relURL }}" alt="{{ .name }}" class="w-14 h-14 rounded-full object-cover border border-line shrink-0" />
+        {{ else }}
+        {{ $words := split .name " " }}
+        {{ $initials := substr (index $words 0) 0 1 }}
+        {{ if gt (len $words) 1 }}{{ $initials = printf "%s%s" $initials (substr (index $words 1) 0 1) }}{{ end }}
+        <div class="w-14 h-14 rounded-full bg-maroon/8 border border-maroon/20 flex items-center justify-center font-display font-600 text-sm text-maroon shrink-0">
+          {{ $initials }}
+        </div>
+        {{ end }}
+        <div>
+          <p class="font-medium text-sm">{{ .name }}</p>
+          <p class="text-xs text-muted mt-0.5 leading-relaxed">{{ .role }}</p>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+</section>

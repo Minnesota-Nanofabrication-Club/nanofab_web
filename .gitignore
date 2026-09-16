@@ -1,0 +1,8 @@
+# Hugo's build output and caches — these are regenerated every build,
+# so they should never be committed.
+public/
+resources/
+.hugo_build.lock
+
+# macOS clutter
+.DS_Store

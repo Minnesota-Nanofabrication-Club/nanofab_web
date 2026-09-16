@@ -1,0 +1,15 @@
+# The items in the "Backed by the University" section — named advisors with
+# photos live separately in data/advisors.yaml, shown just below this.
+# "url" is optional; leave it out and the "Visit →" link just won't render.
+
+- title: Lab space on campus
+  description: We maintain a dedicated workspace with bench equipment, soldering stations, and storage for in-progress hardware.
+  url: ""
+
+- title: College of Science and Engineering
+  description: We're a student group within CSE, drawing members from electrical engineering, materials science, physics, and chemistry.
+  url: "https://cse.umn.edu"
+
+- title: Registered student organization
+  description: Recognized through Student Unions & Activities, which is what gives us access to university space, funding channels, and event support.
+  url: "https://sua.umn.edu/student-groups"

@@ -4,7 +4,7 @@ category: "Gen 2 Patterning"
 step: "Dry Etch"
 weight: 10
 status: "building"
-summary: "Cuts into the wafer with a reactive plasma. It etches straight down, so features stay sharp instead of washing out sideways."
+summary: "Etches straight down with a reactive plasma."
 
 specs:
   - label: "Process pressure"

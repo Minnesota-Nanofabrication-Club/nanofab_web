@@ -10,15 +10,17 @@
             "lead" "Some sentence.") }}
      ============================================================== */}}
 <div class="max-w-2xl">
+  {{/* Short gold rule to the LEFT of the title, on the same line, so
+       the title sits slightly indented after it. The optional small
+       "eyebrow" label, if passed, sits above the title. */}}
   {{ with .eyebrow }}
-  <div class="flex items-center gap-3 mb-5">
-    <span class="h-1 w-10 bg-gold rounded-full"></span>
-    {{/* Was 12px light grey, which was hard to read. Now 13px,
-         semibold, in the dark body colour. */}}
-    <span class="font-mono text-xs font-semibold tracking-widest uppercase text-muted">{{ . }}</span>
-  </div>
+  {{/* 13px, semibold, in the dark body colour. */}}
+  <p class="font-mono text-xs font-semibold tracking-widest uppercase text-muted mb-3">{{ . }}</p>
   {{ end }}
-  <h2 class="font-display font-bold text-3xl sm:text-[2.35rem] leading-tight tracking-tight">{{ .title }}</h2>
+  <div class="flex items-center gap-4">
+    <span class="h-1 w-10 bg-gold rounded-full shrink-0"></span>
+    <h2 class="font-display font-bold text-3xl sm:text-[2.35rem] leading-tight tracking-tight">{{ .title }}</h2>
+  </div>
   {{ with .lead }}
   <p class="text-muted mt-4 text-lg leading-relaxed">{{ . }}</p>
   {{ end }}

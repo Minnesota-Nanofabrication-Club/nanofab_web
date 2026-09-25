@@ -28,8 +28,8 @@ generator before. Follow it top to bottom the first time.
    - [4.5 Add or edit a machine](#45-add-or-edit-a-machine) — *the one you'll use most*
    - [4.6 Machine status dots](#46-machine-status-dots)
    - [4.7 Process categories](#47-process-categories)
-   - [4.8 "What we do" items](#48-what-we-do-items)
-   - [4.9 Support cards and advisors](#49-support-cards-and-advisors)
+   - [4.8 "Mission" items](#48-mission-items)
+   - [4.9 Advisors section](#49-advisors-section)
    - [4.10 Officers — President, VP, and the rest](#410-officers--president-vp-and-the-rest)
    - [4.11 Sponsors](#411-sponsors)
    - [4.12 Images](#412-images)
@@ -37,6 +37,7 @@ generator before. Follow it top to bottom the first time.
    - [4.14 The club logo](#414-the-club-logo)
    - [4.15 Machine documentation (the Google Sheet)](#415-machine-documentation-the-google-sheet) — *built, currently switched off*
    - [4.16 The Documentation section](#416-the-documentation-section) — *where students write things up*
+   - [4.17 Overview pages](#417-overview-pages-the-illustrated-write-up) — *the illustrated write-up*
 5. [Publishing the site](#5-publishing-the-site)
 6. [Troubleshooting](#6-troubleshooting)
 7. [Changing the design itself](#7-changing-the-design-itself)
@@ -136,8 +137,8 @@ umn-nanofab-website/
 ├── data/
 │   ├── categories.yaml     ← the 6 areas + the Gen 1 / Gen 2 split
 │   ├── generations.yaml    ← the two build generations and their bands
-│   ├── pillars.yaml        ← the 3 items under "What we do"
-│   ├── backing.yaml        ← the cards in the "Support" section
+│   ├── pillars.yaml        ← the 3 items under "Mission"
+│   ├── backing.yaml        ← old "Support" cards (not shown right now)
 │   ├── advisors.yaml       ← faculty advisor names, roles, bios, photos
 │   ├── officers.yaml       ← President, VP, Treasurer, Secretary…
 │   ├── sponsors.yaml       ← "Partners & sponsors"
@@ -163,9 +164,9 @@ umn-nanofab-website/
 |---|---|
 | The big headline on the homepage | `content/_index.md` → `title` |
 | The paragraph under the headline | `content/_index.md` → `heroSubhead` |
-| The "What we do" intro paragraph | `content/_index.md` → `missionIntro` |
+| The "Mission" intro paragraph | `content/_index.md` → `missionIntro` |
 | The lab photo or its caption | `content/_index.md` → `labPhoto`, `labPhotoCaption` |
-| The 3 "What we do" items | `data/pillars.yaml` |
+| The 3 "Mission" items | `data/pillars.yaml` |
 | Discord / LinkedIn / Instagram / email / docs links | `hugo.toml` → `[params]` |
 | umn.edu / CSE links | `hugo.toml` → `[params.umn]` |
 | The nav links at the top | `hugo.toml` → `[[menu.main]]` blocks |
@@ -173,7 +174,7 @@ umn-nanofab-website/
 | **Anything about a machine** | that machine's file in `content/machines/` |
 | How the fab is organized (areas, Gen 1 / Gen 2) | `data/categories.yaml` |
 | The Gen 1 / Gen 2 band wording on /machines/ | `data/generations.yaml` |
-| The "Support" cards | `data/backing.yaml` |
+| The old "Support" cards (not shown right now) | `data/backing.yaml` |
 | Advisor names, bios, and photos | `data/advisors.yaml` |
 | **The club logo** | `hugo.toml` → `logo` (see 4.14) |
 | **A machine's timeline, BOM, contributors, references** | the documentation Google Sheet — *off by default*, see 4.15 |
@@ -237,21 +238,71 @@ contactEmail = "nanoclub@umn.edu"
 docsURL      = "https://your-docs-site.example.com"
 ```
 
-Change a URL once here and it updates everywhere it appears — the nav
-button, the hero, the footer, and the bottom of every machine page.
+Change a URL once here and it updates everywhere it appears — the hero,
+the mobile menu, the footer, and the bottom of every machine page.
+
+In the hero, **Join our Discord** and **Explore the fab** sit side by
+side, with the LinkedIn and Instagram icons directly under the Discord
+button (`layouts/partials/hero.html`). There's no Discord button in the
+top-right of the header on desktop; the mobile menu still has a "Join our
+Discord →" link at the bottom.
+
+`docsURL` is **not used anywhere** right now. Every link to the external
+docs site was removed: the header's Docs tab, the footer's Documentation
+link, and the "Technical documentation" box at the bottom of the
+homepage. To bring the homepage box back, add
+`{{ partial "docs.html" . }}` as the last line inside `layouts/index.html`
+(the file `layouts/partials/docs.html` is still there). The footer's bottom row is just the
+copyright line; Discord is linked from the footer's "Get in touch"
+column.
 
 **These are all placeholders right now.** Replace them before publishing.
 
 ### 4.3 University of Minnesota links
 
-Also in `hugo.toml`, under `[params.umn]`. These feed the maroon UMN bar
-at the top of every page and the "University of Minnesota" column in the
-footer.
+Also in `hugo.toml`, under `[params.umn]`. These feed the "University of
+Minnesota" column in the footer and the university name in the header.
+umn.edu and the College of Science and Engineering are already correct.
 
-The one you need to update is `gopherLinkURL` — point it at the club's
-actual listing in UMN's student org directory once you're registered. The
-rest (umn.edu and the College of Science and Engineering) are
-already correct.
+`gopherLinkURL` is no longer shown anywhere: the "Find us on Gopher Link"
+link was removed from the footer. To bring it back, add this line to the
+"Get in touch" list in `layouts/partials/footer.html`:
+
+```
+<li><a href="{{ .Site.Params.umn.gopherLinkURL }}" class="text-muted hover:text-maroon transition-colors">Find us on Gopher Link</a></li>
+```
+
+The homepage hero also no longer has the "Student organization at the
+University of Minnesota" pill above the headline.
+
+### 4.3b The footer text
+
+The sentence under the club name at the bottom of every page ("A student
+organization at the University of Minnesota, Twin Cities, building a
+nanofabrication lab from the bench up.") is typed directly into
+`layouts/partials/footer.html`, near the top:
+
+```html
+<p class="text-muted mt-4 max-w-sm leading-relaxed">
+  A student organization at the
+  <a href="…">University of Minnesota, Twin Cities</a>,
+  building a nanofabrication lab from the bench up.
+</p>
+```
+
+Edit the words between `<p …>` and `</p>`. The `<a …>…</a>` part is the
+underlined link to umn.edu. Keep it, change its text, or delete the
+whole `<a …>…</a>` to drop the link. To remove the sentence entirely,
+delete from `<p` through `</p>`.
+
+The same file also has the footer's link columns (Club, Get in touch,
+University of Minnesota) and the copyright line. **Don't change the
+disclaimer block at the very bottom** ("This group is a Registered
+Student Organization…"). The University requires that exact wording.
+
+**Keep site text short.** Headings, intros, and descriptions are kept to
+one short line on purpose. When adding text anywhere outside a machine's
+own write-up, aim for one sentence.
 
 ### 4.4 The top navigation menu
 
@@ -259,10 +310,17 @@ At the bottom of `hugo.toml`:
 
 ```toml
 [[menu.main]]
-  name = "What we do"
+  name = "Mission"
   url = "/#mission"
   weight = 10
 ```
+
+The menu currently reads **Documentation · Advisors · Team · Sponsors**.
+"Documentation" goes to `/machines/` (the page itself is still titled
+"The Fab"; change `title:` in `content/machines/_index.md` to rename it). (The
+Mission link was removed; the Mission section is still on the homepage
+right under the hero.) The Advisors link goes to `/#backing` (the section's id didn't
+change when its title did).
 
 Each block is one nav link. `weight` sets the order — lower numbers appear
 further left. To add a link, copy a block and give it an unused weight. To
@@ -340,6 +398,10 @@ The **Background** section on a machine page is the plain text written
   `data/categories.yaml`. Copy and paste — don't retype. If it doesn't
   match, the machine silently won't appear anywhere. This is the single
   most common mistake.
+- **Keep `summary` to one short line (under ~10 words).** It's the text
+  inside the machine's card on the homepage and the Documentation page,
+  and the line under the title on the machine's own page. Longer
+  explanations belong in the Background text below the second `---`.
 - **`weight` orders machines within their category.** Use 10, 20, 30… so
   you can slot something in between later without renumbering everything.
 - **`specs` and `subsystems` are lists** — add or delete as many entries
@@ -422,7 +484,7 @@ straight away. Misspell a category and you'll see:
 WARN  MACHINE SETUP — content/machines/thermal-evaporator.md: category
 "Gen 1 Deposition" is not a track name in data/categories.yaml, so this
 machine will NOT appear anywhere on the site. Valid values are:
-Application | Facility | Gen 1 Patterning | …
+Facility | Gen 1 Patterning | Gen 2 Patterning | …
 ```
 
 It also warns you about an invalid `status` or a missing `summary`. So if
@@ -455,15 +517,32 @@ The lab runs **two build generations side by side**:
 - **Gen 1** — the first working line
 - **Gen 2** — the more capable line that follows it
 
-Two areas sit outside that split because both generations use them:
-**Application** and **Facility**.
+**Facility** sits outside that split because both generations use it.
+**Application** (the device the finished line builds toward) belongs to
+**Gen 2 only**. It has a single track with `gen: "Gen 2"`, so it shows up
+in the Gen 2 band and not in Gen 1.
 
-#### How the page is laid out
+#### How the homepage fab section is laid out
+
+The "The fab, machine by machine" section on the homepage
+(`layouts/partials/machines.html`) is grouped **by generation**, not by
+area:
+
+1. the **shared areas** (Facility) across the full width at the top;
+2. a **Gen 1** column (maroon header) and a **Gen 2** column (violet
+   header) side by side. On phones they stack. Each column lists that
+   generation's areas in `order`, with the machines under each.
+
+An area or generation with no machines is skipped. Nothing on the
+homepage needs editing by hand: moving a machine to another track (its
+`category:`) or an area to another generation (its `gen:`) moves it on
+the homepage too.
+
+#### How the /machines/ page is laid out
 
 `/machines/` scrolls in the order the building is organised:
 
-1. the **shared areas** first — Application and Facility, which
-   both lines depend on;
+1. the **shared areas** first — Facility, which both lines depend on;
 2. a full-width **maroon Gen 1 band**, then Gen 1's process areas;
 3. a full-width **violet Gen 2 band**, then Gen 2's process areas.
 
@@ -494,17 +573,29 @@ an area with a Gen 1 and a Gen 2 track appears once in each band.
       gen: "Gen 2"
 ```
 
-An area with no Gen split looks like this — one track, and `gen` empty:
+A shared area has one track with `gen` empty:
+
+```yaml
+- name: Facility
+  order: 1
+  slug: facility
+  description: >-
+    Shared infrastructure both generations run on…
+  tracks:
+    - name: Facility
+      gen: ""
+```
+
+An area that belongs to **one generation only** has one track with that
+`gen` (this is how Application is set up):
 
 ```yaml
 - name: Application
-  order: 1
+  order: 6
   slug: application
-  description: >-
-    The device we’re building toward…
   tracks:
     - name: Application
-      gen: ""
+      gen: "Gen 2"
 ```
 
 #### The full list of track names
@@ -516,12 +607,12 @@ generational one is `#gen1-patterning` / `#gen2-patterning`.
 
 | Area | Gen 1 track | Gen 2 track |
 |---|---|---|
-| 01 Application | `Application` | — |
-| 02 Facility | `Facility` | — |
-| 03 Patterning | `Gen 1 Patterning` | `Gen 2 Patterning` |
-| 04 Doping | `Gen 1 Doping` | `Gen 2 Doping` |
-| 05 Thin Film Deposition | `Gen 1 Thin Film Deposition` | `Gen 2 Thin Film Deposition` |
-| 06 Wafer Inspection & Metrology | `Gen 1 Wafer Inspection & Metrology` | `Gen 2 Wafer Inspection & Metrology` |
+| 01 Facility (shared by both) | `Facility` (one track for both) | — |
+| 02 Patterning | `Gen 1 Patterning` | `Gen 2 Patterning` |
+| 03 Doping | `Gen 1 Doping` | `Gen 2 Doping` |
+| 04 Thin Film Deposition | `Gen 1 Thin Film Deposition` | `Gen 2 Thin Film Deposition` |
+| 05 Wafer Inspection & Metrology | `Gen 1 Wafer Inspection & Metrology` | `Gen 2 Wafer Inspection & Metrology` |
+| 06 Application (Gen 2 only) | — | `Application` |
 
 The **Research** area (with its one machine, Radiation Hardening) is
 commented out at the top of `data/categories.yaml`. See *Machines that
@@ -602,18 +693,33 @@ rules keep the counts right:
 - **Keep `order:` running 1, 2, 3… with no gaps.** It's printed as the
   area's number, so if you remove an area, renumber the ones after it.
 
-### 4.8 "What we do" items
+### 4.8 "Mission" items
+
+**Homepage section headings.** Each homepage section has one big title
+with a short gold rule just to its left, on the same line, and no
+numbered label: **Mission**, **The fab, machine by machine**,
+**Advisors**, **Team**, **Partners & sponsors**. The title is the `"title"`
+line where each section calls `section-head.html`: `mission.html`,
+`machines.html`, `backing.html`, `officers.html`, `sponsors.html` in
+`layouts/partials/`. The gold rule is always there. To add a small label
+above the title, add an `"eyebrow" "…"` line there. In the fab section, areas are listed by name
+only, without numbers or per-area machine counts.
 
 `data/pillars.yaml` — the three numbered items on the homepage. Each is a
 `title` and a `description`. Add or remove blocks freely; the numbering
 updates itself.
 
-### 4.9 Support cards and advisors
+### 4.9 Advisors section
 
-**The three cards** in the "Support" section live in `data/backing.yaml`.
-Each has a `title`, a `description`, and an optional `url`. Leave `url`
-as `""` and no "Visit →" link renders on that card — which is how all
-three are set right now.
+The **Advisors** section on the homepage is the title, one intro sentence
+(the `"lead"` line in `layouts/partials/backing.html`), and the advisor
+cards.
+
+The three cards that used to sit above the advisors (Lab space on campus,
+College of Science and Engineering, Registered student organization)
+have been removed from the page. Their text is still in
+`data/backing.yaml`. To bring them back, restore the block that loops
+over `hugo.Data.backing` in `backing.html` from git history.
 
 **Faculty advisors** live in `data/advisors.yaml` — one block per person:
 
@@ -676,7 +782,7 @@ circles rather than portrait boxes.
 
 ### 4.10 Officers — President, VP, and the rest
 
-The "Who runs the club" section on the homepage comes from
+The "Team" section on the homepage comes from
 `data/officers.yaml`. One block per person:
 
 ```yaml
@@ -709,6 +815,19 @@ everything in it without leaving a blank gap on the page.
 > placeholders (President / Vice President / Treasurer / Secretary) — the
 > roles are probably right, the names definitely aren't.
 
+#### System & Subsystem Leads
+
+Under the officers, the Team section has a **System & Subsystem Leads**
+subsection. It uses the same cards, filled from `data/leads.yaml`, with
+the same fields as `officers.yaml` (`name`, `role`, `major`, `email`,
+`photo`, `photoPosition`). Put what they lead in `role`, e.g.
+`"Spinner — System Lead"` or `"RIE Gas Delivery — Subsystem Lead"`.
+
+To add someone, copy a whole `- name:` block and edit it; to remove
+someone, delete their block. Leads appear in file order. If the file ever
+has no entries, the subsection shows "Coming soon." Someone who is both
+an officer and a lead is listed in both files (reuse the same `photo`).
+
 ### 4.11 Sponsors
 
 `data/sponsors.yaml` — one block per sponsor:
@@ -736,9 +855,11 @@ site.
 
 `logo` is optional:
 
-- `logo: ""` — shows the sponsor's **name as text**. This is what all
-  sponsors do right now.
-- `logo: "/images/sponsors/ideal-vac.png"` — shows their **logo** instead.
+- `logo: "/images/sponsors/ideal-vac.png"` — shows their **logo**, large,
+  with the description under it. The company name is **not** repeated as
+  text; it's used as the logo's alt text for screen readers.
+- `logo: ""` — shows the sponsor's **name as text** instead, for a
+  sponsor who hasn't sent a logo yet.
 
 To add one:
 
@@ -750,15 +871,16 @@ To add one:
    logo: "/images/sponsors/ideal-vac.png"
    ```
 
-**Yes — keep the file small.** The site displays logos at about **40
-pixels tall**, so a huge image gains you nothing and just slows the page
-down. Aim for:
+**Keep the file reasonably small.** The site displays logos up to about
+**96 pixels tall** (more on big monitors), so a huge image gains you
+nothing and just slows the page down. A logo much smaller than that
+(like the current `basler.png`, 238 × 148) will look soft. Aim for:
 
 | | Recommendation |
 |---|---|
 | Format | **SVG** is ideal (stays sharp at any size). **PNG** otherwise |
 | Background | **Transparent** — a white box around the logo looks wrong on the off-white cards |
-| Size | Roughly **400 × 120 px**, or whatever keeps it about 3× wider than tall |
+| Size | At least **600 px wide** (or **200 px tall** for a squarer logo) |
 | File size | Under **100 KB**. Most logos come in far under that |
 
 [Squoosh](https://squoosh.app) will shrink a too-large PNG for free with
@@ -807,7 +929,7 @@ square images work best — around 400 × 400 px is plenty, under about
 500 KB each.
 
 **Sponsor logos** have their own guidance in section 4.11 — short version:
-SVG or PNG, transparent background, about 400 × 120 px, under 100 KB.
+SVG or PNG, transparent background, at least 600 px wide, under 100 KB.
 
 ### 4.13 Colors
 
@@ -879,9 +1001,9 @@ back.
 
 > ### ⚠️ This is built but switched OFF.
 >
-> Machine pages currently show **Background** and **Design
-> architecture** only, and the site links out to the separate docs
-> site via the **Docs** button in the nav. Everything below is wired
+> Machine pages currently show **Background**, **Design
+> architecture**, and **Documentation** (plus Documentation photos),
+> but not the Sheet-driven sections below. Everything below is wired
 > up and dormant — turn it on whenever you're ready, or ignore it.
 >
 > **To switch it on:**
@@ -1207,11 +1329,81 @@ at the left edge of the page. The write-up is capped at `max-w-3xl`
 (about 48rem) so lines stay a comfortable length to read. Change that
 class to `max-w-4xl` or remove it to let the text run wider.
 
-(The **Docs** box on the *homepage* is a different thing. It's
-`layouts/partials/docs.html`, and its position is set by the order of the
-lines in `layouts/index.html`. Move the `{{ partial "docs.html" . }}`
-line up to move it up. Its "06 — Docs" label is typed into `docs.html`,
-so update that number too.)
+(The homepage sections are ordered by the lines in `layouts/index.html`.
+The old "Technical documentation" box, `layouts/partials/docs.html`, is
+currently switched off; see 4.2.)
+
+
+### 4.17 Overview pages (the illustrated write-up)
+
+A machine can have a long-form, illustrated **Overview** section near the
+top of its page, laid out like an industry "use case" page: title and
+intro, a big diagram, a row of key numbers, alternating image/text
+sections, numbered process steps, and references. The Maskless Litho
+Stepper has one, made from the club's *[Master]* PDF.
+
+**Everything is in one file per machine:**
+`data/overviews/<machine>.yaml`, named exactly like the machine's file in
+`content/machines/` (`maskless-stepper.md` → `data/overviews/maskless-stepper.yaml`).
+No HTML to edit. If the file doesn't exist, the section doesn't appear.
+
+The parts, all optional, in the order they show on the page:
+
+```yaml
+title: "Maskless Photolithography Stepper"
+intro: |
+  One or two sentences.
+
+hero:                       # the big diagram under the intro
+  src: "/images/machines/maskless-stepper/architecture.png"
+  caption: "Figure 1: …"
+
+highlights:                 # row of key-number boxes
+  - value: "410 nm"
+    label: "Near-UV exposure LED"
+
+sections:                   # image + text, sides alternate automatically
+  - title: "Optical system"
+    text: |
+      Paragraphs in markdown. **Bold**, [links](https://…), lists.
+
+      Blank line = new paragraph.
+    image: "/images/machines/maskless-stepper/photomask.jpg"
+    caption: "Figure 2: …"
+
+process:                    # numbered step cards
+  title: "Patterning: the ten-step process"
+  intro: |
+    One short paragraph.
+  steps:
+    - title: "Surface preparation"
+      text: "One short line."
+  images:                   # figures under the steps
+    - src: "/images/machines/maskless-stepper/ten-step-process.png"
+      caption: "Figure 7: …"
+
+references:
+  - title: "Wikipedia — Photomask"
+    url: "https://en.wikipedia.org/wiki/Photomask"
+```
+
+- **Change text:** edit it in place. Keep every line of a `|` block
+  indented two spaces more than its field name (same rule as 4.16).
+- **Add a section:** copy a whole `- title:` block under `sections:`.
+  Reorder by moving blocks. A section with no `image` shows as full-width
+  text; use `images:` (a list of `src`/`caption`) for more than one
+  figure.
+- **Add or swap an image:** put the file in
+  `static/images/machines/<machine>/` and point `src` at it, starting
+  with `/images/`. Images are never cropped, and each links to full size.
+- **Remove a part:** delete its block.
+- **Another machine:** copy `maskless-stepper.yaml`, rename it to the
+  other machine's file name, and replace the content. The **Overview**
+  pill appears in that machine's jump bar automatically.
+
+The layout is in `layouts/partials/doc-overview.html`. The Maskless
+stepper's figures were pulled out of the PDF at full resolution into
+`static/images/machines/maskless-stepper/`.
 
 ---
 
@@ -1226,9 +1418,7 @@ Before the site goes public, check off every one of these:
 
 - [ ] `hugo.toml` → `discordURL` is your real Discord invite
 - [ ] `hugo.toml` → `linkedinURL` and `instagramURL` are real
-- [ ] `hugo.toml` → `docsURL` points at your real documentation site
 - [ ] `hugo.toml` → `contactEmail` is an address you actually check
-- [ ] `hugo.toml` → `[params.umn] gopherLinkURL` is your real org listing
 - [ ] Every machine's `status` reflects reality (section 4.6)
 - [ ] `data/advisors.yaml` has your real advisors, or is empty
 - [ ] `data/officers.yaml` has your real officers, or is empty
@@ -1486,6 +1676,22 @@ body copy at 17.5 px / 1.65, and floors on Tailwind's two smallest text
 sizes so nothing on the site renders below 13 px. If text ever feels
 small overall, change the `font-size` in the `body` rule there rather
 than editing templates one by one.
+
+**Big monitors.** Every size on the site is in `rem`, and the "BIG
+SCREENS" rule near the top of `styles.css` makes `1rem` grow on screens
+wider than 1440 px: about 18 px on a 1920 px monitor, about 22 px on a
+2560 px one (capped there). Text, spacing, and the content column all
+scale together, so the page fills a big screen instead of sitting in a
+narrow strip down the middle. Change the `0.005` in that rule to make
+big screens larger or smaller overall. Phones and laptops (up to 1440
+px) are unaffected.
+
+- **Write new sizes in `rem`, not `px`** (e.g. `text-[0.9375rem]`, not
+  `text-[15px]`), or they won't scale on big monitors. Divide px by 16.
+- On screens 1800 px and wider, the hero lab photo stops running off the
+  right edge and sits inside the content column with rounded corners.
+- The circuit drawing in the hero only appears in the empty left margin
+  on screens 1280 px and wider, so it never runs behind the text.
 
 **A gotcha worth knowing.** Tailwind's CDN build injects its stylesheet
 into `<head>` *after* `styles.css` loads. So a plain `.text-xs { … }` in

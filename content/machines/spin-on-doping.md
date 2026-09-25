@@ -4,7 +4,7 @@ category: "Gen 1 Doping"
 step: "Dopant Source"
 weight: 10
 status: "building"
-summary: "Spin-coats a liquid dopant onto the wafer, then bakes it in so the atoms diffuse into the silicon. A low-cost stand-in for ion implantation."
+summary: "Spins on a liquid dopant, then bakes it in."
 
 specs:
   - label: "Dopants"

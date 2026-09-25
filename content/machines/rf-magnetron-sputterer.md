@@ -4,7 +4,7 @@ category: "Gen 2 Thin Film Deposition"
 step: "Insulating Films"
 weight: 10
 status: "planned"
-summary: "Deposits insulators, which the DC sputterer physically can’t. Switching to RF power is what unlocks oxides, nitrides, and real gate dielectrics."
+summary: "Deposits insulating films the DC sputterer can’t."
 
 specs:
   - label: "RF frequency"

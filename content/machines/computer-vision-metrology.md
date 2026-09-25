@@ -4,7 +4,7 @@ category: "Gen 1 Wafer Inspection & Metrology"
 step: "Optical Inspection"
 weight: 10
 status: "building"
-summary: "A camera on a microscope plus software that measures features and flags defects automatically — instead of a person squinting at a hundred dies."
+summary: "A microscope camera that measures features and flags defects."
 
 specs:
   - label: "Optical resolution"

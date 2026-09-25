@@ -4,7 +4,7 @@ category: "Gen 2 Patterning"
 step: "Resist Chemistry"
 weight: 30
 status: "planned"
-summary: "Mixing our own photoresist. Commercial resist is expensive, expires, and ships in quantities a student lab can’t justify — so we make it."
+summary: "Making our own photoresist."
 
 specs:
   - label: "Resist type"

@@ -5,8 +5,9 @@
 #   Gen 1 — the first working line, being built now
 #   Gen 2 — the follow-on line, more capable, built after Gen 1
 #
-# Two areas sit outside that split because they serve both lines:
-# Application and Facility. (Research is commented out below.)
+# Facility sits outside that split because it serves both lines.
+# Application belongs to Gen 2 only (see the bottom of this file).
+# (Research is commented out below.)
 #
 # STRUCTURE
 #   Each block below is an AREA (a section heading on the site).
@@ -36,32 +37,20 @@
 #     - name: Research
 #       gen: ""
 
-- name: Application
-  order: 1
-  slug: application
-  description: >-
-    The device we’re building toward — what all the process steps add
-    up to once the line is running.
-  tracks:
-    - name: Application
-      gen: ""
-
 - name: Facility
-  order: 2
+  order: 1
   slug: facility
   description: >-
-    Shared infrastructure both generations run on: how wafers move and
-    how clean the air around them stays.
+    Wafer handling and clean air for both generations.
   tracks:
     - name: Facility
       gen: ""
 
 - name: Patterning
-  order: 3
+  order: 2
   slug: patterning
   description: >-
-    Printing the shape onto the wafer and cutting it into the material
-    underneath. This is the step that sets how small we can build.
+    Printing and etching the pattern into the wafer.
   tracks:
     - name: Gen 1 Patterning
       gen: "Gen 1"
@@ -69,11 +58,10 @@
       gen: "Gen 2"
 
 - name: Doping
-  order: 4
+  order: 3
   slug: doping
   description: >-
-    Driving impurity atoms into the silicon to set its electrical
-    behavior — the step that turns plain wafer into a device.
+    Adding impurities to set the silicon's electrical behavior.
   tracks:
     - name: Gen 1 Doping
       gen: "Gen 1"
@@ -81,11 +69,10 @@
       gen: "Gen 2"
 
 - name: Thin Film Deposition
-  order: 5
+  order: 4
   slug: deposition
   description: >-
-    Adding material instead of removing it: the metal contacts and
-    insulating layers stacked on top of the patterned wafer.
+    Depositing metal and insulating layers.
   tracks:
     - name: Gen 1 Thin Film Deposition
       gen: "Gen 1"
@@ -93,13 +80,25 @@
       gen: "Gen 2"
 
 - name: Wafer Inspection & Metrology
-  order: 6
+  order: 5
   slug: metrology
   description: >-
-    Measuring what we actually made. Nothing upstream counts until we
-    can see it and probe it.
+    Measuring and testing what we made.
   tracks:
     - name: Gen 1 Wafer Inspection & Metrology
       gen: "Gen 1"
     - name: Gen 2 Wafer Inspection & Metrology
+      gen: "Gen 2"
+
+# Application is Gen 2 only: the device the finished line builds
+# toward. It has a single track, so it shows up in the Gen 2 band and
+# not in Gen 1. It sits last because it's what the process steps
+# above add up to.
+- name: Application
+  order: 6
+  slug: application
+  description: >-
+    The device the process builds toward.
+  tracks:
+    - name: Application
       gen: "Gen 2"

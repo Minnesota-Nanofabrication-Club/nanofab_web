@@ -4,7 +4,7 @@ category: "Facility"
 step: "Contamination Control"
 weight: 20
 status: "building"
-summary: "Clean boxes around each tool instead of a clean room around the whole lab. Far cheaper, and the wafer only ever sees the clean air."
+summary: "Clean-air boxes around each tool instead of a full cleanroom."
 
 specs:
   - label: "Target class"

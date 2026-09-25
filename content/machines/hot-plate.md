@@ -6,13 +6,13 @@
 # change the line below to `draft: false`. It already has a valid
 # category, so it will slot straight into Gen 1 Patterning.
 # ------------------------------------------------------------------
-draft: true
+draft: false
 title: "Hot Plate"
 category: "Gen 1 Patterning"
 step: "Soft & Hard Bake"
 weight: 60
 status: "building"
-summary: "Holds the wafer at a precise temperature to drive solvent out of the photoresist before exposure and to harden it afterward."
+summary: "Bakes photoresist before and after exposure."
 
 specs:
   - label: "Temperature range"

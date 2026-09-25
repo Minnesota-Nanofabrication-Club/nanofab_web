@@ -4,7 +4,7 @@ category: "Gen 1 Patterning"
 step: "Stage Control"
 weight: 30
 status: "building"
-summary: "The software that finds the wafer and lines up each new layer with the one underneath. Get this wrong and every layer after it is wrong too."
+summary: "Software that lines up each new layer with the last."
 
 specs:
   - label: "Overlay target"

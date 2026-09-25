@@ -1,0 +1,147 @@
+{{/* OVERVIEW — the long-form, illustrated write-up for a machine,
+     laid out like an industry "use case" page: title and intro, a
+     big diagram, a row of key numbers, then alternating image/text
+     sections, numbered process steps, and references.
+
+     All the words and images come from data/overviews/<slug>.yaml,
+     where <slug> is the machine's file name (maskless-stepper.md ->
+     data/overviews/maskless-stepper.yaml). Nothing renders if that
+     file doesn't exist. See README section 4.17. */}}
+{{ $o := index (default dict hugo.Data.overviews) .File.ContentBaseName }}
+{{ with $o }}
+<section id="overview" class="border-b border-line scroll-mt-32">
+
+  {{/* ---------- Title, intro, big diagram, key numbers ---------- */}}
+  <div class="mx-auto max-w-6xl px-6 pt-14 pb-12">
+    {{ partial "doc-section-head.html" (dict "title" "Overview") }}
+    <div class="max-w-3xl">
+      {{ with .title }}<h2 class="font-display font-bold text-3xl sm:text-4xl tracking-tight leading-tight">{{ . }}</h2>{{ end }}
+      {{ with .intro }}<div class="prose text-muted text-lg mt-4">{{ . | markdownify }}</div>{{ end }}
+    </div>
+
+    {{ with .hero }}
+    <figure class="mt-10">
+      <a href="{{ strings.TrimPrefix "/" (.src) | relURL }}"
+         class="block rounded-xl border border-line bg-white p-4 sm:p-6 hover:border-maroon transition-colors">
+        <img src="{{ strings.TrimPrefix "/" (.src) | relURL }}" alt="{{ .caption | default "Overview diagram" }}"
+             class="mx-auto w-full max-w-4xl h-auto" />
+      </a>
+      {{ partial "doc-overview-caption" (dict "caption" .caption "src" .src) }}
+    </figure>
+    {{ end }}
+
+    {{ with .highlights }}
+    <dl class="mt-10 grid grid-cols-2 lg:grid-cols-{{ len . }} gap-4">
+      {{ range . }}
+      <div class="rounded-xl border border-line bg-surface p-5 border-t-4 border-t-gold">
+        <dt class="font-display font-bold text-3xl tracking-tight">{{ .value }}</dt>
+        <dd class="text-sm text-muted mt-1.5 leading-snug">{{ .label }}</dd>
+      </div>
+      {{ end }}
+    </dl>
+    {{ end }}
+  </div>
+
+  {{/* ---------- Sections: image and text side by side, alternating ---------- */}}
+  {{ range $i, $s := .sections }}
+  {{ $imgs := $s.images | default slice }}
+  {{ with $s.image }}{{ $imgs = slice (dict "src" . "caption" $s.caption) }}{{ end }}
+  {{ $flip := eq (mod $i 2) 1 }}
+  <div class="border-t border-line {{ if $flip }}bg-surface/60{{ end }}">
+    <div class="mx-auto max-w-6xl px-6 py-14">
+      {{ if $imgs }}
+      <div class="grid gap-10 lg:grid-cols-2 lg:gap-14 items-center">
+        <div class="{{ if $flip }}lg:order-2{{ end }}">
+          <h3 class="font-display font-bold text-2xl sm:text-3xl tracking-tight">{{ $s.title }}</h3>
+          <div class="prose text-muted text-[1.0625rem] mt-5">{{ $s.text | markdownify }}</div>
+        </div>
+        <div class="space-y-8 {{ if $flip }}lg:order-1{{ end }}">
+          {{ range $imgs }}{{ partial "doc-overview-figure" . }}{{ end }}
+        </div>
+      </div>
+      {{ else }}
+      <div class="max-w-3xl">
+        <h3 class="font-display font-bold text-2xl sm:text-3xl tracking-tight">{{ $s.title }}</h3>
+        <div class="prose text-muted text-[1.0625rem] mt-5">{{ $s.text | markdownify }}</div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+
+  {{/* ---------- Numbered process steps ---------- */}}
+  {{ with .process }}
+  <div class="border-t border-line">
+    <div class="mx-auto max-w-6xl px-6 py-14">
+      <div class="max-w-3xl">
+        <h3 class="font-display font-bold text-2xl sm:text-3xl tracking-tight">{{ .title }}</h3>
+        {{ with .intro }}<div class="prose text-muted text-[1.0625rem] mt-5">{{ . | markdownify }}</div>{{ end }}
+      </div>
+
+      {{ with .steps }}
+      <ol class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {{ range $n, $st := . }}
+        <li class="rounded-xl border border-line bg-surface p-5">
+          <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-maroon text-white font-mono text-sm font-semibold">{{ add $n 1 }}</span>
+          <p class="font-display font-semibold text-lg mt-3 leading-snug">{{ $st.title }}</p>
+          {{ with $st.text }}<p class="text-sm text-muted mt-1.5 leading-snug">{{ . }}</p>{{ end }}
+        </li>
+        {{ end }}
+      </ol>
+      {{ end }}
+
+      {{ $proc := . }}
+      {{ $pimgs := .images | default slice }}
+      {{ with .image }}{{ $pimgs = slice (dict "src" . "caption" $proc.caption) }}{{ end }}
+      {{ with $pimgs }}
+      <div class="mt-12 grid gap-8 lg:grid-cols-2 items-start">
+        {{ range . }}{{ partial "doc-overview-figure" . }}{{ end }}
+      </div>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+
+  {{/* ---------- References ---------- */}}
+  {{ with .references }}
+  <div class="border-t border-line bg-surface/60">
+    <div class="mx-auto max-w-6xl px-6 py-12">
+      <h3 class="font-display font-semibold text-xl">References</h3>
+      <ul class="mt-5 grid gap-x-10 gap-y-3 sm:grid-cols-2">
+        {{ range . }}
+        <li>
+          <a href="{{ .url }}" class="text-maroon font-medium hover:underline underline-offset-4">{{ .title }} &#8599;</a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+  </div>
+  {{ end }}
+
+</section>
+{{ end }}
+
+{{/* One figure: image in a white frame (never cropped, links to full
+     size) with its caption underneath. */}}
+{{ define "partials/doc-overview-figure" }}
+<figure>
+  <a href="{{ strings.TrimPrefix "/" (.src) | relURL }}"
+     class="flex items-center justify-center rounded-xl border border-line bg-white p-3 hover:border-maroon transition-colors">
+    <img src="{{ strings.TrimPrefix "/" (.src) | relURL }}" alt="{{ .caption | default "Figure" }}"
+         loading="lazy" class="max-w-full max-h-[28rem] h-auto object-contain" />
+  </a>
+  {{ partial "doc-overview-caption" (dict "caption" .caption "src" .src) }}
+</figure>
+{{ end }}
+
+{{ define "partials/doc-overview-caption" }}
+<figcaption class="flex flex-wrap items-start justify-between gap-x-6 gap-y-2 mt-3">
+  {{ with .caption }}
+  <span class="flex items-start gap-3 text-sm text-muted max-w-xl">
+    <span class="h-px w-6 bg-gold shrink-0 mt-2.5"></span><span>{{ . }}</span>
+  </span>
+  {{ end }}
+  <a href="{{ strings.TrimPrefix "/" (.src) | relURL }}"
+     class="text-sm font-medium text-maroon hover:underline underline-offset-4 shrink-0">Full size &#8599;</a>
+</figcaption>
+{{ end }}

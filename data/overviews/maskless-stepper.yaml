@@ -1,0 +1,190 @@
+# ===================================================================
+# OVERVIEW PAGE for the Maskless Litho Stepper.
+#
+# This file is the long-form, illustrated write-up shown in the
+# "Overview" section of /machines/maskless-stepper/. The file name
+# must match the machine's file name in content/machines/
+# (maskless-stepper.md -> maskless-stepper.yaml). To give another
+# machine an overview, copy this file and rename it.
+#
+# HOW TO EDIT (see README section 4.17 for more):
+#   - Text fields ending in ">-" or "|" are one block of text. Keep
+#     every line of that text indented two spaces further than the
+#     field name. "|" keeps line breaks and allows markdown
+#     (paragraphs, **bold**, [links](https://...), lists).
+#   - Images go in static/images/machines/maskless-stepper/.
+#     Write the path starting with /images/...
+#   - Delete any block you don't want; it just won't show.
+#   - Sections appear in the order listed. Their images alternate
+#     left and right automatically.
+# ===================================================================
+
+title: "Maskless Photolithography Stepper"
+
+intro: |
+  The Minnesota Nanofabrication Club (MNFC) is designing and building a
+  maskless photolithography stepper. This page explains the stepper and
+  the general photolithography process within microchip fabrication.
+
+# The big diagram under the intro.
+hero:
+  src: "/images/machines/maskless-stepper/architecture.png"
+  caption: "Figure 1: Architecture diagram of a DIY maskless photolithography stepper."
+
+# Key numbers, shown as a row of boxes. Keep "value" short.
+highlights:
+  - value: "410 nm"
+    label: "Near-UV exposure LED"
+  - value: "~5 µm"
+    label: "Micromirror size on the DMD"
+  - value: "10×"
+    label: "Objective demagnification"
+  - value: "XYZ"
+    label: "Micrometer stage, micron-level steps"
+
+# The main sections. Each has a title and text; "image" and "caption"
+# are optional. Add "images:" (a list of src/caption) instead of
+# "image" to show more than one figure in a section.
+sections:
+  - title: "Patterning a chip"
+    text: |
+      The fabrication of an integrated circuit (IC) falls into three main
+      categories: film deposition, patterning, and semiconductor doping
+      [[Chris Mack](https://www.lithoguru.com/scientist/lithobasics.html)].
+      In a typical fabrication facility (fab), dozens of machines carry out
+      thousands of individual processing steps, each of which falls into
+      one of these three categories.
+
+      Photolithography steppers are used for patterning: creating the
+      blueprint for a circuit layer on the silicon wafer, similar to how
+      artists use stencils and spray paint on a canvas. Instead of a
+      stencil, conventional systems use a **photomask**: a glass or quartz
+      plate with an opaque patterned layer, usually chrome. The chrome
+      blocks UV light while the clear regions let it through, encoding the
+      circuit pattern that is projected onto the wafer.
+    image: "/images/machines/maskless-stepper/photomask.jpg"
+    caption: "Figure 2: Photomask with 20 copies of the same circuit pattern [Wikipedia]."
+
+  - title: "Optical system"
+    text: |
+      Production lithography machines use photomasks that encode an entire
+      chip layout, or several. That's efficient, but each mask can cost up
+      to several million dollars. A cost-efficient alternative uses a
+      **programmable mask**
+      [[Sam Zeloof](https://www.youtube.com/watch?v=Nxz_ENnmgtI)], hence
+      "maskless" stepper.
+
+      The programmable mask is a **Digital Micromirror Device (DMD)**, found
+      in most 4K movie projectors: a 2D array of individually programmable
+      mirrors about 5 µm wide. We repurposed a projector's DMD to display
+      circuit patterns instead of Batman movies. We removed the original
+      projection lens, which magnifies the image onto a screen, and replaced
+      it with a **10× microscope objective** that demagnifies the DMD image
+      onto the chip.
+
+      Micron-scale lithography needs UV or near-UV light, so we replaced the
+      projector's blue LED with a **410 nm near-UV LED**. The light passes
+      through the Thorlabs optics and the objective onto the chip. Some of it
+      reflects back up to a **10:90 beamsplitter** at 45°, which sends 10% of
+      it into the camera tube so the camera can see the chip (see the
+      projector, objective, and camera tubes in Figure 1).
+
+  - title: "Mechatronic system"
+    text: |
+      A silicon wafer can hold a hundred to several hundred chips, or
+      "dies." A stepper exposes one limited area, an **exposure field**, at
+      a time. The XYZ stage then moves, or **steps**, to the next field so
+      the pattern repeats across a larger chip or wafer. Hence the name
+      "stepper."
+
+      Alignment between layers is critical: a small error can ruin the whole
+      chip. The XYZ stage uses finely threaded **micrometers**, turned by
+      **NEMA stepper motors**, to move with micron-level accuracy.
+      **Proximity sensors** are used during homing to set a known reference
+      position that all later moves are measured from.
+    image: "/images/machines/maskless-stepper/wafer-dies.jpg"
+    caption: "Figure 3: Patterned wafer containing an array of integrated-circuit dies [ASML]."
+
+  - title: "Motion control"
+    text: |
+      The XYZ stage is driven by an **Elegoo Uno R3 running GRBL** firmware.
+      The Arduino sends control signals to stepper-motor drivers, which
+      supply the current for the NEMA motors. GRBL turns high-level
+      movement commands into precisely timed pulses.
+
+      The computer talks to the Arduino over USB serial. Instead of counting
+      motor pulses, it sends commands like "move X by this distance," and
+      GRBL converts that into motor steps using the stage's calibration.
+      Together, the micrometers, motors, drivers, Arduino, and proximity
+      sensors form the stepper's motion-control system.
+    image: "/images/machines/maskless-stepper/elegoo-uno.png"
+    caption: "Figure 4: Arduino Elegoo Uno R3."
+
+  - title: "Software system"
+    text: |
+      A **Python program** on the computer is the high-level controller. It
+      talks to three subsystems: the **camera**, the **XYZ stage**, and the
+      **DLP projector**.
+
+      The camera sends images of the chip for focusing and alignment.
+      Computer vision can find alignment markers and calculate how far the
+      chip needs to move. The program then sends motion commands over USB to
+      the Arduino running GRBL, which moves the stage.
+
+      At the same time, the program controls the pattern the projector
+      displays, so chip position and projected pattern stay coordinated.
+      Camera input, stage control, and projector output together make the
+      software the central controller of the stepper.
+    image: "/images/machines/maskless-stepper/software-architecture.png"
+    caption: "Figure 5: Software architecture of the maskless photolithography stepper."
+
+# The numbered process cards. "intro", "image", and "caption" are
+# optional. Each step has a title and one short line of text.
+process:
+  title: "Patterning: the ten-step photolithography process"
+  intro: |
+    Patterning is repeated 20 to 30 times to build a circuit in layers,
+    from the critical transistor layers with nanometer features up to the
+    interconnect wiring. Each round transfers one circuit pattern onto the
+    wafer in ten steps.
+  images:
+    - src: "/images/machines/maskless-stepper/mosfet-configurations.jpg"
+      caption: "Figure 6: Different configurations of MOSFET [Phys Org]."
+    - src: "/images/machines/maskless-stepper/ten-step-process.png"
+      caption: "Figure 7: Ten-step photolithography process [Microchip Fabrication by Peter Van Zant]."
+  steps:
+    - title: "Surface preparation"
+      text: "Clean and prepare the wafer surface."
+    - title: "Photoresist apply"
+      text: "Spin-coat photoresist onto the wafer."
+    - title: "Soft bake"
+      text: "Drive out solvent and stabilize the resist."
+    - title: "Exposure"
+      text: "Patterned UV light chemically changes the resist."
+    - title: "Development"
+      text: "Exposed positive resist dissolves away."
+    - title: "Hard bake"
+      text: "Strengthen the remaining resist."
+    - title: "Develop inspect"
+      text: "Check the pattern before etching."
+    - title: "Etch"
+      text: "Remove material where the resist is open."
+    - title: "Photoresist removal"
+      text: "Strip away the remaining resist."
+    - title: "Final inspection"
+      text: "Inspect the layer before the next step."
+
+# Sources, shown as a list at the bottom of the overview.
+references:
+  - title: "Chris Mack — Lithography basics"
+    url: "https://www.lithoguru.com/scientist/lithobasics.html"
+  - title: "Wikipedia — Photomask"
+    url: "https://en.wikipedia.org/wiki/Photomask"
+  - title: "Sam Zeloof — Maskless lithography (video)"
+    url: "https://www.youtube.com/watch?v=Nxz_ENnmgtI"
+  - title: "ASML — Lithography principles"
+    url: "https://www.asml.com/en/technology/lithography-principles/pushing-k1-further"
+  - title: "Phys.org — FinFET fin width reaches physical limit"
+    url: "https://phys.org/news/2020-03-scientists-fin-width-finfet-physical-limit.html"
+  - title: "Peter Van Zant — Microchip Fabrication"
+    url: "https://dl.acm.org/doi/10.5555/1593726"

@@ -4,7 +4,7 @@ category: "Gen 1 Patterning"
 step: "Resist Coat"
 weight: 20
 status: "building"
-summary: "Spins the wafer at thousands of RPM to flatten a puddle of photoresist into an even film a few microns thick."
+summary: "Spins photoresist into an even thin film."
 
 # specs:
 #   - label: "Speed range"

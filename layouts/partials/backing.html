@@ -1,24 +1,7 @@
 <section id="backing" class="mx-auto max-w-6xl px-6 py-20 border-b border-line scroll-mt-24">
   {{ partial "section-head.html" (dict
-      "eyebrow" "03 — Support"
-      "title" "What backs us up"
-      "lead" "We run as a registered student organization at the University of Minnesota, with space, equipment access, and faculty guidance behind us.") }}
-
-  {{/* The three support boxes. Content is in data/backing.yaml. */}}
-  <div class="mt-12 grid md:grid-cols-3 gap-5">
-    {{ range hugo.Data.backing }}
-    <div class="border border-line bg-surface rounded-xl p-6 border-t-4 border-t-gold">
-      <div class="flex items-start justify-between gap-4">
-        <h3 class="font-display font-semibold text-xl leading-snug">{{ .title }}</h3>
-        {{/* Only renders if that entry has a "url" set. */}}
-        {{ with .url }}
-        <a href="{{ . }}" class="text-sm font-medium text-maroon hover:underline underline-offset-4 shrink-0 mt-1">Visit →</a>
-        {{ end }}
-      </div>
-      <p class="text-muted mt-3 leading-relaxed">{{ .description }}</p>
-    </div>
-    {{ end }}
-  </div>
+      "title" "Advisors"
+      "lead" "Faculty who guide our work.") }}
 
   {{/* ---------- Advisors ----------
        Each advisor gets a proper portrait next to a short bio, the
@@ -31,19 +14,17 @@
        box at the photo's own proportions shows the whole face.
        ------------------------------------------------------------ */}}
   {{ with hugo.Data.advisors }}
-  <div class="mt-16 pt-12 border-t border-line">
-    <div class="flex flex-wrap items-baseline justify-between gap-3 mb-8">
-      <h3 class="text-xs uppercase tracking-widest text-muted">Our advisors</h3>
-      <p class="text-sm text-faint font-mono">{{ len . }} faculty</p>
-    </div>
-
+  {{/* The three support cards (lab space, CSE, registered student
+       org) that used to sit above this were removed; their text is
+       still in data/backing.yaml if you want them back. */}}
+  <div class="mt-12">
     <div class="grid gap-5 md:grid-cols-2">
       {{ range . }}
       <div class="border border-line bg-surface rounded-xl p-6 flex gap-5">
 
         {{/* Fixed-width portrait column, so every advisor is framed
              identically however many there end up being. */}}
-        <div class="w-[140px] sm:w-[150px] shrink-0">
+        <div class="w-[8.75rem] sm:w-[9.375rem] shrink-0">
           {{ if .photo }}
           {{/* object-position defaults to slightly above centre, which
                is where a face sits in a headshot. Override per person

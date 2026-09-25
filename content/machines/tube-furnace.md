@@ -4,7 +4,7 @@ category: "Gen 1 Thin Film Deposition"
 step: "Oxide & Anneal"
 weight: 20
 status: "building"
-summary: "Heats wafers to about 1000 °C in a controlled gas flow to grow oxide, drive in dopants, and repair process damage."
+summary: "Heats wafers to ~1000 °C to grow oxide and drive in dopants."
 
 # specs:
 #   - label: "Max temperature"

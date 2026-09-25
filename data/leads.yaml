@@ -1,0 +1,112 @@
+# ===================================================================
+# SYSTEM & SUBSYSTEM LEADS — shown under the officers in the "Team"
+# section on the homepage, in their own "System & Subsystem Leads"
+# subsection.
+#
+# Same fields as data/officers.yaml:
+#   name   required — the person’s name
+#   role   required — what they lead, e.g. "Spinner — System Lead"
+#                     or "RIE Gas Delivery — Subsystem Lead"
+#   major  optional — degree program and/or year. Leave "" to hide.
+#   email  optional — shows a clickable email. Leave "" to hide.
+#   photo  optional — leave "" to show their initials instead.
+#                     Photos go in static/images/officers/.
+#   photoPosition
+#          optional — only if a photo crops badly, e.g. "center top".
+#
+# TO ADD a lead:     copy a whole "- name:" block and edit it.
+# TO REMOVE a lead:  delete their block.
+# Leads appear in the order listed here.
+#
+# If this file ever has no entries, the subsection shows "Coming soon."
+# ===================================================================
+
+- name: Leonard Jin
+  role: "Maskless Photolithography Stepper"
+  major: ""
+  email: ""
+  photo: "images/officers/leonard.jpeg"
+
+- name: Arjun Rajavel Senthilvel
+  role: "Tube Furnace"
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Wenteng
+  role: "Spin Coater"
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Bear BlinSchauer
+  role: "DC Magnetron Sputterer"
+  major: ""
+  email: ""
+  photo: "images/officers/bear.jpeg"
+
+- name: David Sandoyan
+  role: "Reactive-Ion Etcher"
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Matt Reed
+  role: "Dopant Synthesis"
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Andrew Choi
+  role: "Inkjet Microplotter"
+  major: ""
+  email: ""
+  photo: "images/officers/Andrew.jpeg"
+
+- name: Avi Raghuvanshi
+  role: "Probe Station"
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Henry Goldberg
+  role: "Laser Interferometry"
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Harshit
+  role: "Computer Vision Metrology"
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Hadi
+  role: "Ultrasonic Cleaner"
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Isynack
+  role: "Electron Microscope"
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Misha
+  role: "Alignment Firmware"
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Shreyans Tibrawalla
+  role: "Polymer Synthesis"
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Vikram
+  role: "Web Development Lead"
+  major: ""
+  email: ""
+  photo: ""

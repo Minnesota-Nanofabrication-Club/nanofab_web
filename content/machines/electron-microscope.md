@@ -4,7 +4,7 @@ category: "Gen 2 Wafer Inspection & Metrology"
 step: "Imaging"
 weight: 20
 status: "building"
-summary: "Scans an electron beam across the wafer to image features far smaller than any light microscope can resolve."
+summary: "Images features too small for a light microscope."
 
 specs:
   - label: "Accelerating voltage"

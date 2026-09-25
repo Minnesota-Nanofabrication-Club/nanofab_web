@@ -4,7 +4,7 @@ category: "Gen 1 Wafer Inspection & Metrology"
 step: "Electrical Test"
 weight: 20
 status: "building"
-summary: "Lands needle-fine tips on micron-scale pads so we can measure finished devices while they’re still on the wafer."
+summary: "Tests finished devices right on the wafer."
 
 specs:
   - label: "Probe tips"

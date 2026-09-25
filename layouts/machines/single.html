@@ -31,6 +31,7 @@
 {{/* The jump bar lists only sections that exist, so an undocumented
      machine reads as a short clean page rather than a broken one. */}}
 {{ $nav := slice }}
+{{ if index (default dict hugo.Data.overviews) .File.ContentBaseName }}{{ $nav = $nav | append (dict "id" "overview" "label" "Overview") }}{{ end }}
 {{ if .Content }}{{ $nav = $nav | append (dict "id" "background" "label" "Background") }}{{ end }}
 {{ if or .Params.architectureDiagram .Params.architectureDiagrams .Params.subsystems }}{{ $nav = $nav | append (dict "id" "architecture" "label" "Architecture") }}{{ end }}
 {{ $nav = $nav | append (dict "id" "documentation" "label" "Documentation") }}
@@ -70,7 +71,7 @@
           {{ with $area }}
           <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium
                        {{ if eq $gen "Gen 2" }}bg-violet/10 text-violet{{ else }}bg-maroon/10 text-maroon{{ end }}">
-            <span class="font-mono text-[11px]">{{ printf "%02d" .order }}</span>{{ .name }}
+            <span class="font-mono text-[0.6875rem]">{{ printf "%02d" .order }}</span>{{ .name }}
           </span>
           {{ end }}
           {{ with .Params.step }}
@@ -98,6 +99,9 @@
 
   {{ partial "doc-nav.html" $nav }}
 
+  {{/* ---------- Overview (data/overviews/<slug>.yaml) ---------- */}}
+  {{ partial "doc-overview.html" . }}
+
   {{/* ---------- Photos ---------- */}}
   {{ with .Params.photos }}
   <section class="border-b border-line">
@@ -109,7 +113,7 @@
           <img src="{{ strings.TrimPrefix "/" (.src) | relURL }}"
                alt="{{ .caption | default (printf "%s in the lab" $.Title) }}"
                loading="lazy"
-               class="w-full {{ if $single }}max-h-[520px]{{ else }}h-72{{ end }} object-contain rounded-xl border border-line bg-surface" />
+               class="w-full {{ if $single }}max-h-[32.5rem]{{ else }}h-72{{ end }} object-contain rounded-xl border border-line bg-surface" />
           {{ with .caption }}
           <figcaption class="flex items-start gap-3 text-sm text-muted mt-3">
             <span class="h-px w-6 bg-gold shrink-0 mt-2.5"></span>
@@ -128,12 +132,7 @@
   <section id="background" class="border-b border-line scroll-mt-32">
     <div class="mx-auto max-w-6xl px-6 py-14">
       {{ partial "doc-section-head.html" (dict "title" "Background") }}
-      <div class="grid lg:grid-cols-[minmax(0,17rem)_minmax(0,42rem)] gap-8 lg:gap-12">
-        <p class="text-sm text-muted leading-relaxed lg:pt-1">
-          What this machine does and why the lab needs it.
-        </p>
-        <div class="prose text-muted text-[17px]">{{ .Content }}</div>
-      </div>
+      <div class="prose text-muted text-[1.0625rem] max-w-3xl">{{ .Content }}</div>
     </div>
   </section>
   {{ end }}
@@ -222,6 +221,5 @@
   </section>
   {{ end }}
 
-  {{ partial "cta.html" . }}
 </article>
 {{ end }}

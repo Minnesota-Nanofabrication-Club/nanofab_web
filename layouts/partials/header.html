@@ -7,8 +7,8 @@
     <a href="{{ strings.TrimPrefix "/" ("/") | relURL }}" class="flex items-center gap-3 group shrink-0">
       {{ partial "logo.html" (dict "size" 34) }}
       <span class="font-display font-bold leading-tight tracking-tight">
-        <span class="block text-[16px]">{{ .Site.Params.shortTitle }}</span>
-        <span class="hidden sm:block text-[11px] font-body font-medium text-muted tracking-normal">
+        <span class="block text-[1rem]">{{ .Site.Params.shortTitle }}</span>
+        <span class="hidden sm:block text-[0.6875rem] font-body font-medium text-muted tracking-normal">
           at the {{ .Site.Params.umn.universityName }}
         </span>
       </span>
@@ -16,19 +16,13 @@
 
     {{/* Nav text is 15px at weight 500 in near-black, not small grey —
          these were hard to read before. Don’t lighten them. */}}
-    <nav class="hidden md:flex items-center gap-7 text-[15px] font-medium text-ink/80">
+    <nav class="hidden md:flex items-center gap-7 text-[0.9375rem] font-medium text-ink/80">
       {{ range .Site.Menus.main }}
       <a href="{{ .URL }}" class="nav-link hover:text-maroon transition-colors">{{ .Name }}</a>
       {{ end }}
-      <a href="{{ .Site.Params.docsURL }}" class="nav-link hover:text-maroon transition-colors">Docs</a>
     </nav>
 
     <div class="flex items-center gap-2">
-      <a href="{{ .Site.Params.discordURL }}"
-         class="hidden sm:inline-flex items-center rounded-md bg-maroon text-white text-sm font-semibold px-4 py-2.5 hover:bg-maroon-dark transition-colors">
-        Join our Discord
-      </a>
-
       {{/* Mobile menu — a checkbox toggle, so no JavaScript is needed. */}}
       <input type="checkbox" id="nav-toggle" class="peer sr-only" />
       <label for="nav-toggle" tabindex="0"
@@ -40,11 +34,10 @@
       </label>
 
       <div class="hidden peer-checked:block md:!hidden absolute top-16 left-0 right-0 bg-paper border-b border-line shadow-sm">
-        <nav class="mx-auto max-w-6xl px-6 py-3 flex flex-col text-[15px] font-medium">
+        <nav class="mx-auto max-w-6xl px-6 py-3 flex flex-col text-[0.9375rem] font-medium">
           {{ range .Site.Menus.main }}
           <a href="{{ .URL }}" class="py-3 border-b border-line/70 text-ink/80 hover:text-maroon transition-colors">{{ .Name }}</a>
           {{ end }}
-          <a href="{{ .Site.Params.docsURL }}" class="py-3 border-b border-line/70 text-ink/80 hover:text-maroon transition-colors">Docs</a>
           <a href="{{ .Site.Params.discordURL }}" class="py-3 font-semibold text-maroon">Join our Discord →</a>
         </nav>
       </div>

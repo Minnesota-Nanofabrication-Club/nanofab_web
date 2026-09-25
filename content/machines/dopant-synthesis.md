@@ -4,7 +4,7 @@ category: "Gen 2 Doping"
 step: "Dopant Chemistry"
 weight: 10
 status: "planned"
-summary: "Making our own spin-on dopant solutions, so we set the doping concentration ourselves instead of buying whatever the catalog offers."
+summary: "Making our own spin-on dopants."
 
 specs:
   - label: "Dopants"

@@ -4,7 +4,7 @@ category: "Gen 1 Thin Film Deposition"
 step: "Metal Films"
 weight: 10
 status: "building"
-summary: "Knocks atoms off a metal target with an argon plasma and lets them land on the wafer, growing a film atom by atom."
+summary: "Deposits thin metal films using an argon plasma."
 
 # specs:
 #   - label: "Base pressure"

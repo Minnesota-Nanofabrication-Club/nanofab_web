@@ -17,14 +17,10 @@
   slug: gen1
   tagline: The first working line
   description: >-
-    Simple tools and proven methods, built to get a real device out
-    of the lab end to end. Everything here either works now or is
-    close to it.
+    Simple, proven tools to make a first working device.
 
 - name: Gen 2
   slug: gen2
   tagline: The follow-on line
   description: >-
-    Finer features, and materials we make ourselves rather than buy.
-    Built once Gen 1 is running — you can't debug a new process and
-    a new tool at the same time.
+    Finer features and in-house materials, built after Gen 1.

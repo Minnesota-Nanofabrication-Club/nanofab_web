@@ -4,43 +4,63 @@
 {{ with hugo.Data.officers }}
 <section id="officers" class="mx-auto max-w-6xl px-6 py-20 border-b border-line scroll-mt-24">
   {{ partial "section-head.html" (dict
-      "eyebrow" "04 — Team"
-      "title" "Who runs the club"
-      "lead" "Officers are elected each year. Any of us is a fine person to contact about getting involved.") }}
+      "title" "Team"
+      "lead" "Elected each year. Reach out to any of us.") }}
 
   <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-    {{ range . }}
-    <div class="border border-line bg-surface rounded-xl p-6 flex flex-col items-start">
+    {{ range . }}{{ partial "person-card" . }}{{ end }}
+  </div>
 
-      {{ if .photo }}
-      {{/* Framed above centre, not dead centre — a face sits in the
-           top half of a headshot, so centring cuts the head off.
-           Override per person with "photoPosition:" in
-           data/officers.yaml. */}}
-      <img src="{{ strings.TrimPrefix "/" (.photo) | relURL }}" alt="{{ .name }}"
-           loading="lazy"
-           class="w-20 h-20 rounded-full object-cover border-2 border-line bg-paper"
-           style="object-position: {{ .photoPosition | default "center 25%" }}" />
-      {{ else }}
-      {{/* No photo yet — show their initials instead. */}}
-      {{ $words := split .name " " }}
-      {{ $initials := substr (index $words 0) 0 1 }}
-      {{ if gt (len $words) 1 }}{{ $initials = printf "%s%s" $initials (substr (index $words 1) 0 1) }}{{ end }}
-      <div class="w-20 h-20 rounded-full bg-maroon/10 border-2 border-maroon/25 flex items-center justify-center font-display font-bold text-xl text-maroon">
-        {{ $initials }}
-      </div>
-      {{ end }}
-
-      <p class="font-mono text-xs font-semibold uppercase tracking-wider text-maroon mt-5">{{ .role }}</p>
-      <p class="font-display font-semibold text-xl mt-1.5 leading-snug">{{ .name }}</p>
-      {{ with .major }}<p class="text-sm text-muted mt-1">{{ . }}</p>{{ end }}
-
-      {{ with .email }}
-      <a href="mailto:{{ . }}"
-         class="text-sm font-medium text-maroon hover:underline underline-offset-4 mt-3 break-all">{{ . }}</a>
-      {{ end }}
+  {{/* ---------- System & Subsystem Leads ----------
+       Same cards, from data/leads.yaml. Shows "Coming soon." until
+       that file has entries. */}}
+  <div class="mt-14">
+    <div class="flex items-center gap-3">
+      <span class="h-1 w-8 bg-gold rounded-full shrink-0"></span>
+      <h3 class="font-display font-semibold text-2xl tracking-tight">System &amp; Subsystem Leads</h3>
     </div>
+    {{ with hugo.Data.leads }}
+    <div class="mt-7 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      {{ range . }}{{ partial "person-card" . }}{{ end }}
+    </div>
+    {{ else }}
+    <p class="text-muted mt-4">Coming soon.</p>
     {{ end }}
   </div>
 </section>
+{{ end }}
+
+{{/* One person's card: photo (or initials), role, name, major, and
+     email. Used for both officers and leads. */}}
+{{ define "partials/person-card" }}
+<div class="border border-line bg-surface rounded-xl p-6 flex flex-col items-start">
+
+  {{ if .photo }}
+  {{/* Framed above centre, not dead centre — a face sits in the
+       top half of a headshot, so centring cuts the head off.
+       Override per person with "photoPosition:" in
+       data/officers.yaml. */}}
+  <img src="{{ strings.TrimPrefix "/" (.photo) | relURL }}" alt="{{ .name }}"
+       loading="lazy"
+       class="w-20 h-20 rounded-full object-cover border-2 border-line bg-paper"
+       style="object-position: {{ .photoPosition | default "center 25%" }}" />
+  {{ else }}
+  {{/* No photo yet — show their initials instead. */}}
+  {{ $words := split .name " " }}
+  {{ $initials := substr (index $words 0) 0 1 }}
+  {{ if gt (len $words) 1 }}{{ $initials = printf "%s%s" $initials (substr (index $words 1) 0 1) }}{{ end }}
+  <div class="w-20 h-20 rounded-full bg-maroon/10 border-2 border-maroon/25 flex items-center justify-center font-display font-bold text-xl text-maroon">
+    {{ $initials }}
+  </div>
+  {{ end }}
+
+  <p class="font-mono text-xs font-semibold uppercase tracking-wider text-maroon mt-5">{{ .role }}</p>
+  <p class="font-display font-semibold text-xl mt-1.5 leading-snug">{{ .name }}</p>
+  {{ with .major }}<p class="text-sm text-muted mt-1">{{ . }}</p>{{ end }}
+
+  {{ with .email }}
+  <a href="mailto:{{ . }}"
+     class="text-sm font-medium text-maroon hover:underline underline-offset-4 mt-3 break-all">{{ . }}</a>
+  {{ end }}
+</div>
 {{ end }}

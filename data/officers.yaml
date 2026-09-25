@@ -41,7 +41,25 @@
   photo: "images/officers/Andrew.jpeg"
 
 - name: Bear BlinSchauer
-  role: Vice President
+  role: Secretary-Treasurer
   major: "Electrical Engineering"
   email: ""
   photo: "images/officers/bear.jpeg"
+
+- name: Rhys
+  role: Outreach and Events Director
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Nathan
+  role: Finance Director
+  major: ""
+  email: ""
+  photo: ""
+
+- name: Avi
+  role: Marketing Director
+  major: ""
+  email: ""
+  photo: ""

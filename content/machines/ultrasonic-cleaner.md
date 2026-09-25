@@ -13,7 +13,7 @@ category: "Gen 2 Patterning"
 step: "Clean"
 weight: 20
 status: "building"
-summary: "Shakes particles and residue off the wafer with high-frequency sound waves in a solvent bath."
+summary: "Cleans wafers with sound waves in a solvent bath."
 
 specs:
   - label: "Frequency"

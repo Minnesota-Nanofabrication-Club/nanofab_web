@@ -1,11 +1,11 @@
 # The three focus areas shown under "What we do."
 # Add, remove, or reorder blocks — they render as a numbered list.
 
-- title: Build the machines
-  description: Every tool in the fab is sourced, built, and calibrated by students. Nothing here arrived as a turnkey system.
+- title: Custom
+  description: Every tool is student-built, sourced, and calibrated from scratch.
 
-- title: Run the process
-  description: Patterning, doping, deposition, inspection — the real wafer-level steps, on equipment we operate ourselves.
+- title: Design
+  description: Patterning, doping, deposition, and inspection—all running on proprietary hardware.
 
-- title: Write it all down
-  description: Build logs and process notes for every machine, so the lab is repeatable and easy to hand off to the next group.
+- title: Build
+  description: Open-source build logs and machines

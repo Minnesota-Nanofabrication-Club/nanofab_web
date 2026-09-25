@@ -31,13 +31,8 @@
         "title" "Documentation"
         "meta" (cond (isset .Params "documentationupdated") (printf "Updated %s" .Params.documentationUpdated) "")) }}
 
-    <p class="-mt-4 mb-8 max-w-2xl text-sm text-muted leading-relaxed">
-      How to actually run and maintain this machine, written by the
-      people who built it.
-    </p>
-
     {{ if .Params.documentation }}
-    <div class="prose text-muted text-[17px] max-w-3xl">
+    <div class="prose text-muted text-[1.0625rem] max-w-3xl">
       {{ .Params.documentation | markdownify }}
     </div>
     {{ else }}
@@ -46,9 +41,9 @@
       <p class="text-sm text-muted mt-2 leading-relaxed">
         If you&rsquo;ve worked on this machine, write it up: setup, the
         procedure, recipes that work, cleanup, and what to do when it
-        misbehaves. Add a <code class="font-mono text-[13px]">documentation:</code>
+        misbehaves. Add a <code class="font-mono text-[0.8125rem]">documentation:</code>
         block to
-        <span class="font-mono text-[13px] text-ink">content/machines/{{ .File.ContentBaseName }}.md</span>
+        <span class="font-mono text-[0.8125rem] text-ink">content/machines/{{ .File.ContentBaseName }}.md</span>
         &mdash; the template is already in that file, commented out.
       </p>
     </div>

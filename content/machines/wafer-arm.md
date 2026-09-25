@@ -4,7 +4,7 @@ category: "Facility"
 step: "Wafer Handling"
 weight: 10
 status: "planned"
-summary: "A robot arm that moves wafers between tools so human hands never touch them. Fingers shed particles, and particles kill devices."
+summary: "A robot arm that moves wafers between tools."
 
 specs:
   - label: "Wafer size"

@@ -123,17 +123,12 @@ disableKinds = ["taxonomy", "term"]
 # block here — you don't need to touch any HTML.
 # ------------------------------------------------------------------
 [[menu.main]]
-  name = "What we do"
-  url = "/#mission"
-  weight = 10
-
-[[menu.main]]
-  name = "The fab"
+  name = "Documentation"
   url = "/machines/"
   weight = 20
 
 [[menu.main]]
-  name = "Support"
+  name = "Advisors"
   url = "/#backing"
   weight = 30
 

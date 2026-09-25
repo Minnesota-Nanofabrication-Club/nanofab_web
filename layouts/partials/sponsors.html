@@ -1,21 +1,22 @@
 <section id="sponsors" class="mx-auto max-w-6xl px-6 py-20 border-b border-line scroll-mt-24">
   {{ partial "section-head.html" (dict
-      "eyebrow" "05 — Partners"
       "title" "Partners & sponsors"
-      "lead" "Our work is made possible in part by the companies below, who supply the hardware a student budget can’t reach on its own.") }}
+      "lead" "Companies that supply our hardware.") }}
 
   <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
     {{ range hugo.Data.sponsors }}
     <div class="border border-line bg-surface rounded-lg p-6 flex flex-col">
-      <div class="h-10 flex items-center mb-5">
+      {{/* The logo IS the name — no separate text heading under it.
+           The name is still used as the image's alt text for screen
+           readers, and shows as text only if there's no logo file. */}}
+      <div class="h-24 flex items-center mb-5">
         {{ if .logo }}
-        <img src="{{ strings.TrimPrefix "/" (.logo) | relURL }}" alt="{{ .name }} logo" loading="lazy" class="max-h-10 max-w-full object-contain object-left" />
+        <img src="{{ strings.TrimPrefix "/" (.logo) | relURL }}" alt="{{ .name }}" loading="lazy" class="max-h-24 max-w-full object-contain object-left" />
         {{ else }}
-        <span class="font-display font-semibold text-xl">{{ .name }}</span>
+        <span class="font-display font-semibold text-2xl">{{ .name }}</span>
         {{ end }}
       </div>
-      {{ if .logo }}<p class="font-display font-semibold">{{ .name }}</p>{{ end }}
-      <p class="text-sm text-muted {{ if .logo }}mt-2{{ end }} leading-relaxed">{{ .description }}</p>
+      <p class="text-sm text-muted leading-relaxed">{{ .description }}</p>
     </div>
     {{ end }}
 
@@ -23,8 +24,7 @@
          EDIT HERE if you want to change this wording. -->
     <div class="border border-dashed border-line rounded-lg p-6 flex flex-col justify-between bg-surface/40">
       <p class="text-sm text-muted leading-relaxed">
-        Interested in supporting student engineering at the University of
-        Minnesota?
+        Want to support the club?
       </p>
       <a href="mailto:{{ .Site.Params.contactEmail }}"
          class="inline-flex items-center gap-2 text-sm font-medium text-maroon hover:underline underline-offset-4 mt-5">

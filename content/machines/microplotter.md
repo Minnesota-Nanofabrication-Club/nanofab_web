@@ -4,7 +4,7 @@ category: "Application"
 step: "Direct Write"
 weight: 10
 status: "building"
-summary: "Prints material straight onto a wafer one tiny droplet at a time — no mask, no resist, no etch."
+summary: "Prints material onto the wafer one droplet at a time."
 
 specs:
   - label: "Feature width"

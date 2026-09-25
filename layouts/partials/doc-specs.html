@@ -11,7 +11,7 @@
   {{ range $sheet }}
   <div class="bg-surface border border-line rounded-lg px-5 py-4">
     <dt class="text-xs uppercase tracking-wider text-muted">{{ .label }}</dt>
-    <dd class="font-mono text-[15px] mt-2 text-ink leading-snug">{{ .target }}</dd>
+    <dd class="font-mono text-[0.9375rem] mt-2 text-ink leading-snug">{{ .target }}</dd>
     {{ with .current }}
     <dd class="font-mono text-xs mt-1.5 text-faint leading-snug">now: {{ . }}</dd>
     {{ end }}
@@ -26,7 +26,7 @@
   {{ range . }}
   <div class="bg-surface border border-line rounded-lg px-5 py-4">
     <dt class="text-xs uppercase tracking-wider text-muted">{{ .label }}</dt>
-    <dd class="font-mono text-[14px] leading-snug mt-1.5 text-ink">{{ .value }}</dd>
+    <dd class="font-mono text-[0.875rem] leading-snug mt-1.5 text-ink">{{ .value }}</dd>
   </div>
   {{ end }}
 </dl>

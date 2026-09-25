@@ -57,6 +57,21 @@ html {
 }
 
 /* -----------------------------------------------------------
+   BIG SCREENS
+   Every size on the site is in rem, so the whole layout (text,
+   spacing, and the 72rem content column) scales off this one
+   number. Up to 1440px wide it's the normal 16px. Past that it
+   grows with the screen, so a 1920px monitor gets ~18.4px and a
+   2560px one ~21.6px, capped at 22px. Without this the site sat in
+   a narrow strip down the middle of a big monitor with small text.
+   To make big screens larger or smaller overall, change 0.005.
+   Always write sizes in rem (not px) so they scale with it.
+----------------------------------------------------------- */
+@media (min-width: 1440px) {
+  html { font-size: min(calc(16px + (100vw - 1440px) * 0.005), 22px); }
+}
+
+/* -----------------------------------------------------------
    READABILITY BASELINE
    The single biggest thing that makes this site easy to read.
    Body copy sits at 17px / 1.65 with a slightly heavier weight
@@ -65,7 +80,7 @@ html {
    rather than editing dozens of templates.
 ----------------------------------------------------------- */
 body {
-  font-size: 17.5px;
+  font-size: 1.09375rem; /* 17.5px at the normal 16px root */
   line-height: 1.65;
   font-weight: 450;
   letter-spacing: 0;
@@ -176,11 +191,22 @@ label:focus-visible,
    what kills the empty margin that used to sit around it.
    72rem = Tailwind's max-w-6xl; 1.5rem = the px-6 page gutter.
 ----------------------------------------------------------- */
-@media (min-width: 1024px) {
+@media (min-width: 1024px) and (max-width: 1799px) {
   .hero-bleed-right {
     margin-right: calc(-1 * (max(0px, 100vw - 72rem) / 2) - 1.5rem);
   }
 }
+/* On very wide monitors the bleed leaves a huge photo hanging off
+   one side, so it stops at the content column and gets its rounded
+   right-hand corners back. */
+@media (min-width: 1800px) {
+  .hero-bleed-right img { border-radius: 1rem; height: auto; aspect-ratio: 5 / 4; }
+  .hero-bleed-right .rounded-b-2xl { border-bottom-right-radius: 1rem; }
+}
+
+/* Hero circuit drawing: exactly as wide as the empty margin to the
+   left of the 72rem content column, so it never runs behind text. */
+.hero-circuit { width: calc((100vw - 72rem) / 2); }
 
 /* -----------------------------------------------------------
    Nav links: a gold underline that wipes in on hover

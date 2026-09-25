@@ -4,7 +4,7 @@ category: "Gen 2 Wafer Inspection & Metrology"
 step: "Film & Surface Metrology"
 weight: 10
 status: "planned"
-summary: "Measures film thickness and surface flatness by counting light waves. Nanometer precision from an optical bench, with nothing ever touching the wafer."
+summary: "Measures film thickness and flatness with light."
 
 # specs:
 #   - label: "Thickness resolution"

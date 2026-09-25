@@ -4,7 +4,7 @@ category: "Gen 1 Patterning"
 step: "Exposure"
 weight: 10
 status: "building"
-summary: "Projects the pattern into the photoresist straight from a design file."
+summary: "Projects the pattern straight from a design file."
 #so changing a design is a re-export instead of a new mask order.
 
 # specs:

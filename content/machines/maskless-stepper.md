@@ -147,26 +147,3 @@ subsystems:
     description: "a Python program coordinates the camera, the XYZ stage, and the projector, sending movement commands over USB to an Arduino running GRBL firmware."
   
 ---
-
-The stepper uses projected ultraviolet light and precision optics to transfer circuit patterns onto photoresist-coated substrates — no photomasks required. Patterns are defined digitally and projected directly.
-
-The design draws inspiration from publicly documented systems developed by Sam Zeloof, the Hacker Fab community, and Huygens Optics, as well as CMU's open-source stepper described in A low-cost, open-source maskless photolithography stepper for microfabrication.
-
-Alignment accuracy and optical resolution are the two most important metrics of a stepper's performance, and both drive nearly every design decision in the system.
-
-
-<!-- This is the machine that makes a student-scale fab viable at all.
-
-Conventional photolithography needs a chrome-on-quartz photomask for every
-layer of every design. Masks cost hundreds to thousands of dollars and take
-weeks to arrive — which means a design mistake is expensive, and iterating is
-effectively impossible on a club budget and timeline.
-
-Maskless lithography replaces the physical mask with a micromirror array. The
-pattern lives in a file. Changing the design costs nothing, students can run
-their own layouts, and the turnaround from "idea" to "exposed wafer" is a single
-afternoon instead of a purchase order.
-
-The trade is throughput: stepping and stitching fields is far slower than
-flood-exposing a whole wafer through a mask at once. For research volumes, that
-trade is obviously worth it. -->

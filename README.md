@@ -387,6 +387,14 @@ The **Background** section on a machine page is the plain text written
 
 - If that part of the file is empty, the Background section and its
   jump-bar link don't appear at all.
+- **To remove Background from one machine:** open its file, find the
+  second `---` (just below `subsystems:`), and delete **everything after
+  it** to the end of the file. Keep the `---` line itself. Only that
+  machine is affected. (The Maskless Litho Stepper is set up this way;
+  its Overview section covers the same ground.)
+- **Don't hide it with `<!-- -->`.** A commented-out block still counts
+  as content, so an empty "Background" heading keeps showing. Delete the
+  text instead; it stays in git history if you ever want it back.
 - The small grey line beside it ("What this machine does and why the
   lab needs it.") is the same on every machine. It's written in
   `layouts/machines/single.html`, in the block marked

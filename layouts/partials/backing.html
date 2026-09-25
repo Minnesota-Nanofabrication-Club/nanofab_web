@@ -52,9 +52,14 @@
           <p class="text-sm text-muted mt-3 leading-relaxed flex-1">{{ . }}</p>
           {{ end }}
 
+          {{ $advisor := . }}
           {{ with .link }}
+          {{/* "LinkedIn page" for linkedin.com links, "Faculty page"
+               otherwise; linkLabel in data/advisors.yaml overrides. */}}
+          {{ $label := cond (in (lower .) "linkedin.com") "LinkedIn page" "Faculty page" }}
+          {{ with $advisor.linkLabel }}{{ $label = . }}{{ end }}
           <a href="{{ . }}" class="text-sm font-medium text-maroon hover:underline underline-offset-4 mt-3 self-start">
-            Faculty page &rarr;
+            {{ $label }} &rarr;
           </a>
           {{ end }}
         </div>

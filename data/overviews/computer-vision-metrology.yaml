@@ -1,0 +1,56 @@
+# ===================================================================
+# OVERVIEW for the Computer Vision Metrology — the illustrated section at the top of
+# /machines/computer-vision-metrology/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Computer Vision Metrology"
+
+intro: |
+  A microscope camera on a motorized stage that measures features and
+  flags defects across the whole wafer, unattended. Inspection is the
+  part of a fab that actually tells you whether anything worked.
+
+highlights:
+  - value: "~0.5 µm"
+    label: "Optical resolution"
+  - value: "Full wafer"
+    label: "Mapped unattended"
+  - value: "Python"
+    label: "Plus OpenCV"
+
+sections:
+  - title: "Why automate it"
+    text: |
+      Measure a hundred sites by hand and you'll get tired, inconsistent
+      numbers, or more likely you won't measure a hundred sites at all.
+
+      So the stage steps across the wafer, the camera shoots each die, and
+      software does the measuring. **Consistency is the feature:** the
+      same code applied to every site means run-to-run comparisons
+      actually mean something.
+
+  - title: "What it measures"
+    text: |
+      It finds edges and reports **linewidth, spacing, and overlay error**
+      at each site: the numbers that say whether lithography is in spec.
+      It also compares each die against its neighbours, and anything
+      present in one and absent in the others is flagged as a defect.
+
+      Results are plotted as a **wafer map**. Where a problem sits on the
+      wafer usually says more about its cause than the raw number does,
+      and a map tells us within minutes whether a process change helped.
+
+process:
+  title: "One inspection run"
+  steps:
+    - title: "Calibrate"
+      text: "Set the pixels-per-micron figure every measurement traces back to."
+    - title: "Step"
+      text: "The motorized stage moves to the next die."
+    - title: "Capture"
+      text: "The camera images the site."
+    - title: "Measure"
+      text: "Software reports linewidth, spacing, overlay, and defects."
+    - title: "Map"
+      text: "Results are plotted by position on the wafer."

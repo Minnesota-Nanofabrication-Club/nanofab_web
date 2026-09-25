@@ -1,0 +1,60 @@
+# ===================================================================
+# OVERVIEW for the Probe Station — the illustrated section at the top of
+# /machines/probe-station/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Probe Station"
+
+intro: |
+  The last station in the line, and the one that closes the loop. It
+  tests finished devices right on the wafer: put a voltage across a
+  device, measure the current, and compare the curve to what theory says
+  it should be.
+
+highlights:
+  - value: "~10 µm"
+    label: "Tungsten probe tip radius"
+  - value: "I–V · C–V"
+    label: "Measurement sweeps"
+  - value: "Vacuum"
+    label: "Wafer chuck hold-down"
+
+sections:
+  - title: "Where guesses get settled"
+    text: |
+      Everything upstream is an act of faith: the oxide is probably the
+      right thickness, the junction is probably at the right depth, the
+      contacts probably adhered. The probe station is where that gets
+      settled.
+
+      When a device doesn't behave, the shape of the failure usually
+      points back at a specific step. A leaky junction implicates the
+      doping or a contaminated furnace; an open circuit implicates
+      metallization or etch. Probing is how a process gets debugged rather
+      than guessed at.
+
+  - title: "Making good contact"
+    text: |
+      Micrometer-driven manipulators place sharpened **tungsten needles**
+      on pads as small as 50 µm. Too blunt and a tip won't break through
+      native oxide; too sharp and it punches straight through the pad.
+
+      A **shielded, grounded dark box** blocks mains hum that would swamp
+      picoamp-level measurements, and blocks light, since semiconductor
+      junctions are photosensitive. Vibration isolation keeps the tips
+      from walking across the pads once they've landed.
+
+process:
+  title: "Testing a device"
+  steps:
+    - title: "Load"
+      text: "Vacuum chuck holds the wafer and contacts its backside."
+    - title: "Find"
+      text: "Locate the device under the stereo microscope."
+    - title: "Land"
+      text: "Micropositioners place the probe tips on the pads."
+    - title: "Sweep"
+      text: "The source-measure unit runs an I–V or C–V sweep."
+    - title: "Compare"
+      text: "Check the curve against what theory predicts."

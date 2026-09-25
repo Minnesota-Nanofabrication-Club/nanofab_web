@@ -1,0 +1,63 @@
+# ===================================================================
+# OVERVIEW for the Hot Plate — the illustrated section at the top of
+# /machines/hot-plate/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Photoresist Hot Plate"
+
+intro: |
+  Two different bakes, same machine. The hot plate bakes photoresist
+  **before** exposure to drive out solvent, and **after** development to
+  toughen the pattern so it survives etching.
+
+highlights:
+  - value: "50–250 °C"
+    label: "Temperature range"
+  - value: "±1 °C"
+    label: "Stability at setpoint"
+  - value: "95 °C, 60 s"
+    label: "Typical soft bake"
+
+sections:
+  - title: "Soft bake"
+    text: |
+      The soft bake comes right after spin coating. Fresh resist is still
+      something like 20–30% solvent, and that solvent has to leave before
+      exposure. Otherwise the film is soft, sticks to anything it touches,
+      and exposes unpredictably.
+
+      Bake too little and the pattern develops poorly. Bake too much and
+      you start thermally decomposing the light-sensitive component, which
+      kills sensitivity.
+
+  - title: "Hard bake"
+    text: |
+      The hard bake comes after development. Now the pattern exists and
+      the job is to toughen it up so it survives etching, cross-linking
+      the polymer and improving its adhesion to the wafer.
+
+  - title: "Holding temperature"
+    text: |
+      A platinum **RTD** reads the aluminum plate's temperature and a
+      **PID loop** holds it, switching the heater through a solid-state
+      relay. Overshoot on the way up to setpoint is a real problem: it can
+      over-bake the resist before the bake has officially started.
+
+      Optional proximity pins float the wafer a fraction of a millimeter
+      above the plate, avoiding backside contamination and trapped
+      particles.
+
+process:
+  title: "Where the bakes fit"
+  steps:
+    - title: "Spin coat"
+      text: "Resist goes on, still full of solvent."
+    - title: "Soft bake"
+      text: "Drive out the solvent before exposure."
+    - title: "Expose"
+      text: "Pattern the resist with UV light."
+    - title: "Develop"
+      text: "The exposed resist washes away."
+    - title: "Hard bake"
+      text: "Toughen the pattern for etching."

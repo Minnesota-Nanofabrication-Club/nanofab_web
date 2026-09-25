@@ -1,0 +1,56 @@
+# ===================================================================
+# OVERVIEW for the Spinner — the illustrated section at the top of
+# /machines/spinner/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Photoresist Spin Coater"
+
+intro: |
+  The spinner turns a dispensed blob of liquid photoresist into a flat,
+  repeatable film. Almost all of lithography's uniformity budget is
+  spent here: everything downstream, from exposure dose to etch depth,
+  assumes the film is the thickness the recipe says it is.
+
+hero:
+  src: "/images/machines/spinner-layout.jpg"
+  caption: "Figure 1: Physical layout: chuck and motor under a hinged lid, with the display, encoder, and switch on the front panel and the electronics inside the housing."
+
+highlights:
+  - value: "ESP32"
+    label: "Runs the spin recipe"
+  - value: "35 A"
+    label: "ESC driving the brushless spindle"
+  - value: "Encoder + LCD"
+    label: "Set the spin recipe on the front panel"
+
+sections:
+  - title: "The physics of a spin"
+    text: |
+      A spin is a balance between **centrifugal thinning** and **solvent
+      evaporation**. Resist flows outward under rotation and at the same
+      time gets more viscous as its solvent leaves, until it becomes too
+      stiff to flow and the thickness locks in.
+
+      That's why spin speed, ramp rate, and ambient humidity all end up in
+      the process notes.
+
+  - title: "Motor control"
+    text: |
+      An **ESP32** drives the brushless spindle motor through a **35 A
+      electronic speed controller**. A rotary encoder and an LCD on the
+      front panel are used to set the spin recipe.
+    image: "/images/machines/spinner-circuit-diagram.jpg"
+    caption: "Figure 2: Motor control: an ESP32 drives the brushless spindle through a 35 A ESC, with a rotary encoder and LCD for setting the spin recipe."
+
+process:
+  title: "What happens during a spin"
+  steps:
+    - title: "Dispense"
+      text: "Liquid resist is dispensed onto the wafer on the chuck."
+    - title: "Spin up"
+      text: "The spindle ramps to the recipe speed."
+    - title: "Thin out"
+      text: "Resist flows outward under rotation."
+    - title: "Lock in"
+      text: "Solvent evaporates until the film stops flowing and its thickness is set."

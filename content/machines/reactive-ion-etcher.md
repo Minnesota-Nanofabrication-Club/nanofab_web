@@ -27,61 +27,57 @@ specs:
 #
 documentationUpdated: "Sept, 2026"
 documentation: |
+  ## Project Overview
+
+  This section describes the plan and schedule for building a reactive ion etching (RIE) system.
+
   ## Timeline
-  
-    Project Timeline - Reactive Ion Etching (RIE)
-    Project Overview
-    This section describes the plan for achieving to build a reactive ion etcher system, with the assigned schedule.
-    ### Pre-Semester System Planning and Supplier Outreach
-    - **Timeline**: Week 1 
-      - Milestone: Get approved for the main funding and general concept for the product.
-    ### Stage 1: Component, CAD, and Prototype Verification
-    - **Timeline**: Week 2-4 
-      - Milestone: Make a 3D model of the etcher system, have the main equipment.
-    ### Stage 2: System Assembly
-    - **Timeline**: Weeks 4-7
-      - Mechanical Assembly
-    - **Timeline**: Week 7-8
-      - Tubing and Gas Dynamics
-    - **Timeline**: Week 8
-      - Milestone: Set up the vacuum, gas flow and electrical system.
-    ### Stage 3: Initial Testing and Calibration
-    - **Timeline**: Weeks 9
-      - Subsystem Bring-Up
-    - **Timeline**: Week 9
-      - System Integration
-    - **Timeline**: Week 10
-      - Calibration and Dry-Run Validation
-    - **Timeline**: Week 10
-      - Milestone: Get the system working primarily without the use of the toxic gases. Get the measuring and regulating equipment calibrated.
-    ### Stage 4: Final testing with toxic gas use
-    - **Timeline:** Weeks 11
-      - Full Pattern Etching
-    - **Timeline**: Week 11
-      - Repeatability and Precision Testing
-    - **Timeline**: Week 11 - 12
-      - Milestone: Have the system functioning with the use of toxic gases, and improve effectiveness.
-      - Documentation
-    - **Timeline**: Weeks 13 – 15
-      - Milestone: Record the full building, maintaining and manufacturing process, with detailed instructions and references.
 
-    ### Schedule Summary
+  ### Pre-Semester: System Planning and Supplier Outreach
+  - **Timeline**: Week 1
+  - **Milestone**: Get approved for the main funding and settle the general concept for the system.
 
-    | Stage | Timeline |
-    |---|---|
-    | Pre-Semester System Planning and Supplier Outreach | Week 1 |
-    | Component, CAD, and Prototype Verification | Weeks 2 – 4 |
-    | System Assembly | Weeks 4 – 8 |
-    | Initial Testing and Calibration | Weeks 9 – 10 |
-    | Final testing with toxic gas use | Weeks 11 – 12 |
-    | Documentation | Weeks 13 – 15 |
+  ### Stage 1:: Component, CAD, and Prototype Verification
+  - **Timeline**: Weeks 2 – 4
+  - **Milestone**: Make a 3D model of the etcher system and have the main equipment in hand.
 
-    Expected Outcome
-    By the end of the semester, Minnesota Nanofabrication Club expects to have a fully functioning RIE system prototype with:
-    - A regulated gas intake and exhaust system.
-    - Achieving the goal of making a 1 micron fonted chip.
-    - Complete build and operating documentation
+  ### Stage 2:: System Assembly
+  - **Mechanical Assembly**: Weeks 4 – 7
+  - **Tubing and Gas Dynamics**: Weeks 7 – 8
+  - **Milestone**: Set up the vacuum, gas flow, and electrical systems. *(Week 8)*
 
+  ### Stage 3:: Initial Testing and Calibration
+  - **Subsystem Bring-Up**: Week 9
+  - **System Integration**: Week 9
+  - **Calibration and Dry-Run Validation**: Week 10
+  - **Milestone**: Get the system working without the toxic gases, and calibrate the measuring and regulating equipment. *(Week 10)*
+
+  ### Stage 4:: Final Testing with Toxic Gas Use
+  - **Full Pattern Etching**: Week 11
+  - **Repeatability and Precision Testing**: Week 11
+  - **Milestone**: Have the system functioning with the toxic gases, and improve its effectiveness. *(Weeks 11 – 12)*
+
+  ### Stage 5:: Documentation
+  - **Timeline**: Weeks 13 – 15
+  - **Milestone**: Record the full build, maintenance, and manufacturing process, with detailed instructions and references.
+
+  ## Schedule Summary
+
+  | Stage | Timeline |
+  |---|---|
+  | Pre-Semester System Planning and Supplier Outreach | Week 1 |
+  | Component, CAD, and Prototype Verification | Weeks 2 – 4 |
+  | System Assembly | Weeks 4 – 8 |
+  | Initial Testing and Calibration | Weeks 9 – 10 |
+  | Final Testing with Toxic Gas Use | Weeks 11 – 12 |
+  | Documentation | Weeks 13 – 15 |
+
+  ## Expected Outcome
+
+  By the end of the semester, Minnesota Nanofabrication Club expects to have a fully functioning RIE system prototype with:
+  - A regulated gas intake and exhaust system.
+  - The ability to make a chip with 1 µm features.
+  - Complete build and operating documentation.
 
 # PHOTOS of this machine. Delete the leading "#" on the lines below
 # once you’ve put real image files in static/images/machines/.

@@ -455,6 +455,179 @@ label:focus-visible,
 .prose th { text-align: left; font-weight: 650; color: #14181C; border-bottom: 2px solid var(--line); padding: 0.5rem 0.75rem 0.5rem 0; }
 .prose td { border-bottom: 1px solid var(--line); padding: 0.55rem 0.75rem 0.55rem 0; }
 
+/* Markdown images, ![Caption](/images/...), placed inline in any
+   write-up. Built by layouts/_default/_markup/render-image.html.
+   Spans rather than <figure>, because markdown wraps images in a
+   <p> and a <figure> isn't allowed inside one. */
+.md-figure { display: block; margin: 1.5rem 0; }
+.md-figure-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  transition: border-color 0.15s ease;
+}
+.md-figure-frame:hover { border-color: var(--maroon); }
+.prose .md-figure-frame { text-decoration: none; }
+.md-figure-frame img { max-width: 100%; max-height: 28rem; height: auto; object-fit: contain; }
+.md-figure-caption {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.md-figure-caption::before {
+  content: "";
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1px;
+  margin-top: 0.65rem;
+  background: var(--gold);
+}
+
+/* -----------------------------------------------------------
+   POLISHED DOCUMENTATION (layouts/partials/doc-writeup-rich.html)
+   Each "##" is a .doc-part; each "###" under it is a .doc-card
+   hanging off a timeline rail.
+----------------------------------------------------------- */
+.doc-rich { counter-reset: docpart; }
+.doc-rich h2, .doc-rich h3 { scroll-margin-top: 8.5rem; }
+
+/* The layout already separates sections, so "---" lines between
+   them would just double up. */
+.doc-rich hr { display: none; }
+
+.doc-part + .doc-part {
+  margin-top: 3.25rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--line);
+}
+.doc-part > .prose > h2:first-child {
+  margin-top: 0;
+  font-size: 1.75rem;
+  letter-spacing: -0.01em;
+}
+.doc-numbered .doc-part.has-h2 { counter-increment: docpart; }
+.doc-numbered .doc-part.has-h2 > .prose > h2:first-child::before {
+  content: counter(docpart, decimal-leading-zero);
+  display: block;
+  font-family: "Courier Prime", ui-monospace, monospace;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--violet);
+  margin-bottom: 0.35rem;
+}
+
+/* The rail and its cards. */
+.doc-cards {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  padding-left: 2rem;
+}
+.doc-part > .doc-cards:first-child { margin-top: 0; }
+.doc-cards::before {
+  content: "";
+  position: absolute;
+  left: 0.4375rem;
+  top: 1.5rem;
+  bottom: 1.5rem;
+  width: 2px;
+  background: var(--line);
+}
+.doc-card {
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 1.35rem 1.5rem 1.4rem;
+  font-size: 0.96875rem;
+  transition: border-color 0.15s ease;
+}
+.doc-card:hover { border-color: #BDB8AD; }
+.doc-card::before {
+  content: "";
+  position: absolute;
+  left: calc(-2rem + 0.0625rem);
+  top: 1.55rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  border-radius: 9999px;
+  background: var(--paper);
+  border: 2px solid var(--maroon);
+}
+.doc-card > h3:first-child { margin-top: 0; font-size: 1.15rem; }
+.doc-card h4 {
+  font-family: "Libre Franklin", system-ui, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--maroon);
+  margin: 1.4rem 0 0.5rem;
+}
+.doc-card ul:last-child, .doc-card ol:last-child { margin-bottom: 0; }
+
+/* "Week 3" / "Stage 1" pulled out of a "### Week 3: Title" heading. */
+.doc-kicker {
+  display: block;
+  font-family: "Courier Prime", ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--maroon);
+  margin-bottom: 0.3rem;
+}
+
+/* "**Milestone**:" and "**STOP-GATE**:" bullets. */
+.prose li.doc-flag {
+  list-style: none;
+  margin: 0.85rem 0 0 -1.25rem;
+  padding: 0.65rem 0.95rem;
+  border-radius: 0 6px 6px 0;
+}
+.prose li.doc-flag > strong:first-child {
+  display: block;
+  font-family: "Courier Prime", ui-monospace, monospace;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.15rem;
+}
+.prose li.doc-flag-milestone { background: #FFF9E8; border-left: 3px solid var(--gold); }
+.prose li.doc-flag-milestone > strong:first-child { color: #8A6400; }
+.prose li.doc-flag-stop { background: var(--tile); border-left: 3px solid var(--maroon); }
+.prose li.doc-flag-stop > strong:first-child { color: var(--maroon); }
+
+/* Tables: framed, header row shaded, scroll sideways on phones. */
+.doc-table-wrap {
+  overflow-x: auto;
+  margin: 1.25rem 0 1.4rem;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+}
+.doc-table-wrap table { margin: 0; min-width: 32rem; }
+.doc-table-wrap th {
+  background: var(--paper);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.doc-table-wrap td { padding: 0.7rem 1rem; vertical-align: top; }
+.doc-table-wrap tr:last-child td { border-bottom: 0; }
+.doc-table-wrap td:first-child { color: #14181C; font-weight: 550; }
+
 
 /* -----------------------------------------------------------
    GENERATION BANDS

@@ -20,7 +20,9 @@
 </dl>
 <p class="font-mono text-xs text-faint mt-3">target &middot; current</p>
 
-{{ else }}
+{{/* A machine whose Overview has a row of key numbers shows those
+     instead, so the same values don't appear twice. */}}
+{{ else if not (index (default dict (index (default dict hugo.Data.overviews) .File.ContentBaseName)) "highlights") }}
 {{ with .Params.specs }}
 <dl class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl">
   {{ range . }}

@@ -1,0 +1,53 @@
+# ===================================================================
+# OVERVIEW for the Wafer Stage Alignment Firmware — the illustrated section at the top of
+# /machines/wafer-stage-alignment-firmware/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Wafer Stage Alignment Firmware"
+
+intro: |
+  Software that lines up each new layer with the last. It's the piece
+  that turns a precise stage and a projector into an actual stepper,
+  which is why it's listed as a machine.
+
+highlights:
+  - value: "< 2 µm"
+    label: "Overlay target"
+  - value: "0.5 µm"
+    label: "Stage resolution per step"
+  - value: "Camera"
+    label: "Plus fiducial marks"
+
+sections:
+  - title: "Overlay"
+    text: |
+      A chip is built from many patterned layers stacked on top of each
+      other. A transistor only works if its gate lands on its channel and
+      its contacts land on both. So each new layer has to line up with the
+      last to within a fraction of a feature size: **overlay**, in fab
+      language.
+
+  - title: "Trust nothing, measure everything"
+    text: |
+      A wafer is never quite where you left it. It gets placed slightly
+      rotated, it expands a little when it's warm, and the stage itself
+      has play in it. So a camera finds marks printed in an earlier layer,
+      and the firmware works out the correction from what it sees.
+
+      Backlash and thermal drift both show up in the motion loop as
+      overlay error.
+
+process:
+  title: "Aligning and exposing a wafer"
+  steps:
+    - title: "Find marks"
+      text: "Locate the alignment crosses from an earlier layer."
+    - title: "Transform"
+      text: "Compute shift, rotation, and scale."
+    - title: "Move"
+      text: "Drive the stage to the corrected target and hold it."
+    - title: "Expose"
+      text: "Fire the exposure at the die."
+    - title: "Step"
+      text: "Move to the next die, re-checking alignment."

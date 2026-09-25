@@ -1,0 +1,64 @@
+# ===================================================================
+# OVERVIEW for the Electron Microscope — the illustrated section at the top of
+# /machines/electron-microscope/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Scanning Electron Microscope"
+
+intro: |
+  An optical microscope cannot resolve features smaller than roughly
+  half the wavelength of visible light, about 200 nm, and practically
+  worse. Electrons have a far shorter effective wavelength, so an
+  electron beam images features a light microscope can't.
+
+highlights:
+  - value: "1–30 kV"
+    label: "Accelerating voltage"
+  - value: "nm-scale"
+    label: "Resolution"
+  - value: "High vacuum"
+    label: "Column and chamber"
+
+sections:
+  - title: "The questions only an SEM answers"
+    text: |
+      Did the etch reach the right depth? Are the sidewalls vertical or
+      sloped? Is the deposited film continuous or is it beading up?
+      Nothing else in the lab can answer those, and they decide whether a
+      process run worked.
+
+      Tilting the stage lets us image a cleaved cross-section and measure
+      etch depth or film thickness directly.
+
+  - title: "The trade-offs"
+    text: |
+      Everything gets harder with electrons. Electrons scatter off air
+      within millimeters, so the sample has to sit in **high vacuum**.
+      Non-conductive samples charge up and distort the image unless
+      they're coated, and the beam itself can damage delicate structures.
+
+  - title: "Where the contrast comes from"
+    text: |
+      A **secondary electron detector** collects low-energy electrons
+      knocked loose from the top few nanometers of the surface. Their
+      yield depends on the local surface angle, which is what gives SEM
+      images their strong sense of topography.
+
+      Magnification is just the ratio of the displayed image size to the
+      scanned area. Zooming in means scanning a smaller patch, not
+      changing any optics.
+
+process:
+  title: "How an image is made"
+  steps:
+    - title: "Pump down"
+      text: "Column and chamber go to high vacuum."
+    - title: "Emit"
+      text: "The gun produces a beam; voltage sets its wavelength."
+    - title: "Focus"
+      text: "Magnetic lenses set beam current and focus it to a point."
+    - title: "Scan"
+      text: "Scan coils raster the beam across the surface."
+    - title: "Detect"
+      text: "Secondary electrons are counted, pixel by pixel, into an image."

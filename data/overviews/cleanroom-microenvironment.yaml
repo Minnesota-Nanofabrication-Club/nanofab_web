@@ -1,0 +1,44 @@
+# ===================================================================
+# OVERVIEW for the Cleanroom Microenvironment — the illustrated section at the top of
+# /machines/cleanroom-microenvironment/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Cleanroom Microenvironments"
+
+intro: |
+  A real cleanroom costs millions and needs a purpose-built building. We
+  don't have one, and we don't need one, because a wafer doesn't care
+  how clean the *room* is. It only cares about the few cubic feet of air
+  directly above it.
+
+highlights:
+  - value: "ISO 5"
+    label: "Target class inside the enclosures"
+  - value: "HEPA"
+    label: "Fan-filter units"
+  - value: "Vertical"
+    label: "Laminar airflow"
+
+sections:
+  - title: "Clean boxes, not a clean room"
+    text: |
+      Instead of cleaning the room, we clean **small boxes around the
+      tools that matter**, and move wafers between them in a covered
+      carrier. Building several small enclosures costs a fraction of
+      cleaning an entire room.
+
+      This is the same idea industry landed on years ago with SMIF pods
+      and EFEMs, scaled down to a student budget. It's the difference
+      between this lab being possible and not.
+
+  - title: "How the air stays clean"
+    text: |
+      HEPA filters with a fan on top push a steady sheet of clean air
+      down over the work area, so particles get swept away from the
+      wafer.
+
+      A **particle counter** inside each enclosure puts a number on
+      "clean", so a failing filter gets noticed. Humidity and static are
+      watched too: photoresist behaves differently at different humidity,
+      and static pulls particles straight onto a wafer.

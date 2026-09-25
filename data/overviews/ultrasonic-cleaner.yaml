@@ -1,0 +1,54 @@
+# ===================================================================
+# OVERVIEW for the Ultrasonic Cleaner — the illustrated section at the top of
+# /machines/ultrasonic-cleaner/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Ultrasonic Wafer Cleaner"
+
+intro: |
+  Cleaning is the least glamorous step in the fab and the one that
+  causes the most failures when it's skipped. A single particle on the
+  wafer during lithography prints as a defect in every layer built on
+  top of it.
+
+highlights:
+  - value: "40 kHz"
+    label: "Ultrasonic frequency"
+  - value: "Acetone · IPA · DI"
+    label: "Solvent sequence"
+  - value: "Up to 60 °C"
+    label: "Bath heating"
+
+sections:
+  - title: "How sound cleans"
+    text: |
+      Piezoelectric transducers under the tank turn electrical drive into
+      pressure waves in the liquid. **Cavitation**, microscopic bubbles
+      collapsing against the wafer, is what actually does the cleaning.
+      Warmer baths cavitate more aggressively, so temperature is a real
+      process knob.
+
+      Solvents sit in glass beakers suspended in the bath, so we can run
+      acetone and IPA without attacking the stainless tank.
+
+  - title: "Never let it air-dry"
+    text: |
+      The wafer never gets a chance to air-dry between steps, because
+      drying is when dissolved contaminants get left behind as spots.
+      Clean time is part of the recipe: too short leaves residue, too long
+      can damage fine features already on the wafer.
+
+process:
+  title: "The solvent sequence"
+  intro: |
+    Ultrasonic agitation at each stage.
+  steps:
+    - title: "Acetone"
+      text: "Dissolves organics."
+    - title: "IPA"
+      text: "Rinses off the acetone."
+    - title: "DI water"
+      text: "Rinses off the IPA."
+    - title: "N₂ dry"
+      text: "Blow-dry before anything can dry on."

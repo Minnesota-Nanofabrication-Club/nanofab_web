@@ -1,0 +1,16 @@
+{{/* How a markdown image — ![Caption](/images/machines/thing.jpg) —
+     renders anywhere markdown is written (documentation blocks,
+     Background text, Overview text). It becomes a framed figure that
+     links to the full-size file, with the text in the square brackets
+     as its caption, matching the figures elsewhere on machine pages.
+
+     Paths starting with "/" get the site's base URL added, so they
+     keep working if the site is published under a sub-folder. */}}
+{{ $src := .Destination }}
+{{ if hasPrefix $src "/" }}{{ $src = strings.TrimPrefix "/" $src | relURL }}{{ end }}
+<span class="md-figure">
+  <a href="{{ $src }}" class="md-figure-frame">
+    <img src="{{ $src }}" alt="{{ .Text }}" loading="lazy" />
+  </a>
+  {{ with .Text }}<span class="md-figure-caption">{{ . }}</span>{{ end }}
+</span>

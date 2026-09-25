@@ -47,22 +47,29 @@
   {{ $imgs := $s.images | default slice }}
   {{ with $s.image }}{{ $imgs = slice (dict "src" . "caption" $s.caption) }}{{ end }}
   {{ $flip := eq (mod $i 2) 1 }}
+  {{/* Image side alternates (right, left, right…) unless the section
+       sets imageSide: "left" or "right". The background shading keeps
+       alternating either way. */}}
+  {{ $imgLeft := $flip }}
+  {{ with $s.imageSide }}{{ $imgLeft = eq (lower .) "left" }}{{ end }}
   <div class="border-t border-line {{ if $flip }}bg-surface/60{{ end }}">
     <div class="mx-auto max-w-6xl px-6 py-14">
       {{ if $imgs }}
       <div class="grid gap-10 lg:grid-cols-2 lg:gap-14 items-center">
-        <div class="{{ if $flip }}lg:order-2{{ end }}">
+        <div class="{{ if $imgLeft }}lg:order-2{{ end }}">
           <h3 class="font-display font-bold text-2xl sm:text-3xl tracking-tight">{{ $s.title }}</h3>
           <div class="prose text-muted text-[1.0625rem] mt-5">{{ $s.text | markdownify }}</div>
         </div>
-        <div class="space-y-8 {{ if $flip }}lg:order-1{{ end }}">
+        <div class="space-y-8 {{ if $imgLeft }}lg:order-1{{ end }}">
           {{ range $imgs }}{{ partial "doc-overview-figure" . }}{{ end }}
         </div>
       </div>
       {{ else }}
-      <div class="max-w-3xl">
+      {{/* No image: heading on the left, text on the right, so the
+           section still uses the full width of the page. */}}
+      <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-14">
         <h3 class="font-display font-bold text-2xl sm:text-3xl tracking-tight">{{ $s.title }}</h3>
-        <div class="prose text-muted text-[1.0625rem] mt-5">{{ $s.text | markdownify }}</div>
+        <div class="prose text-muted text-[1.0625rem] max-w-3xl">{{ $s.text | markdownify }}</div>
       </div>
       {{ end }}
     </div>
@@ -79,7 +86,13 @@
       </div>
 
       {{ with .steps }}
-      <ol class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {{/* Column count follows the number of steps so a row is
+           never left mostly empty: 3 or 6 -> 3 across, 4 or 8 -> 4
+           across, anything else -> 5 across. */}}
+      {{ $n := len . }}
+      {{ $cols := "lg:grid-cols-5" }}
+      {{ if in (slice 3 6) $n }}{{ $cols = "lg:grid-cols-3" }}{{ else if in (slice 4 8) $n }}{{ $cols = "lg:grid-cols-4" }}{{ end }}
+      <ol class="mt-10 grid gap-4 sm:grid-cols-2 {{ $cols }}">
         {{ range $n, $st := . }}
         <li class="rounded-xl border border-line bg-surface p-5">
           <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-maroon text-white font-mono text-sm font-semibold">{{ add $n 1 }}</span>

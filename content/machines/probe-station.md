@@ -47,11 +47,11 @@ specs:
 # One photo renders large; two or more render as a grid.
 # "caption" is optional.
 #
-# photos:
-#   - src: "/images/machines/probe-station-1.jpg"
-#     caption: ""
-#   - src: "/images/machines/probe-station-2.jpg"
-#     caption: ""
+photos:
+  - src: "/images/machines/probe-station-concept.png"
+    caption: ""
+  # - src: "/images/machines/probe-station-2.jpg"
+  #   caption: ""
 
 subsystems:
   - name: "Micropositioners"

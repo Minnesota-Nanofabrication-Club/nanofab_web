@@ -1,0 +1,71 @@
+# ===================================================================
+# OVERVIEW for the Reactive Ion Etcher — the illustrated section at the
+# top of /machines/reactive-ion-etcher/. How to edit: README section
+# 4.17. Delete a block and it just won't show.
+# ===================================================================
+
+title: "Reactive Ion Etching (RIE)"
+
+intro: |
+  Reactive ion etching is what makes **vertical sidewalls** possible.
+  It etches straight down with a reactive plasma, so patterns keep
+  their shape at sizes where a wet etch would undercut them. The goal
+  for this semester is a working RIE prototype that can make a chip
+  with **1 µm features**.
+
+highlights:
+  - value: "13.56 MHz"
+    label: "RF drive, up to 300 W"
+  - value: "10–200 mTorr"
+    label: "Process pressure"
+  - value: "CF₄ · O₂ · Ar"
+    label: "Process gases"
+  - value: "1 µm"
+    label: "Target feature size"
+
+sections:
+  - title: "Why not wet etch?"
+    text: |
+      A purely chemical wet etch attacks material in every direction at
+      once, so it eats sideways under the resist mask by roughly as much
+      as it cuts down. At micron scale that's tolerable. Below that it
+      destroys the pattern.
+
+  - title: "Chemistry plus ions"
+    text: |
+      RIE combines two mechanisms. **Reactive neutrals** do chemistry on
+      the surface, and **ions** accelerated by the plasma sheath slam into
+      it nearly straight down. The chemistry alone would be isotropic; the
+      directional ion bombardment is what biases the etch downward and
+      keeps the sidewalls steep.
+
+      Tuning the balance between the two, through pressure, power, and gas
+      mix, is most of what running this tool is about.
+
+  - title: "What we expect to have"
+    text: |
+      By the end of the semester, a fully functioning RIE prototype with:
+
+      - a regulated gas intake and exhaust system
+      - the ability to make a chip with 1 µm features
+      - complete build and operating documentation
+
+process:
+  title: "Build plan: six stages over one semester"
+  intro: |
+    The system is brought up without toxic gases first. Only once the
+    vacuum, gas flow, and measuring equipment are working and calibrated
+    do the toxic process gases go in.
+  steps:
+    - title: "Planning & funding"
+      text: "Week 1. Main funding approved and the general concept set."
+    - title: "CAD & verification"
+      text: "Weeks 2–4. 3D model of the etcher; main equipment in hand."
+    - title: "Assembly"
+      text: "Weeks 4–8. Mechanical assembly, tubing, gas, and electrical."
+    - title: "Testing & calibration"
+      text: "Weeks 9–10. Working without toxic gases; equipment calibrated."
+    - title: "Toxic gas testing"
+      text: "Weeks 11–12. Full pattern etching, repeatability, precision."
+    - title: "Documentation"
+      text: "Weeks 13–15. Build, maintenance, and operating instructions."

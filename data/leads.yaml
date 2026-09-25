@@ -55,7 +55,7 @@
   role: "Dopant Synthesis"
   major: ""
   email: ""
-  photo: ""
+  photo: "/images/officers/Matt. R.jpg"
 
 - name: Andrew Choi
   role: "Inkjet Microplotter"
@@ -67,7 +67,7 @@
   role: "Probe Station"
   major: ""
   email: ""
-  photo: ""
+  photo: "/images/officers/Avi Raghu.jpeg"
 
 - name: Henry Goldberg
   role: "Laser Interferometry"
@@ -75,17 +75,17 @@
   email: ""
   photo: ""
 
-- name: Harshit
+- name: Harshit Mehendiratta
   role: "Computer Vision Metrology"
   major: ""
   email: ""
-  photo: ""
+  photo: "/images/officers/harshit.jpeg"
 
-- name: Hadi
+- name: Hadi Ahmad
   role: "Ultrasonic Cleaner"
   major: ""
   email: ""
-  photo: ""
+  photo: "/images/officers/Hadi.jpeg"
 
 - name: Isynack
   role: "Electron Microscope"
@@ -103,10 +103,10 @@
   role: "Polymer Synthesis"
   major: ""
   email: ""
-  photo: ""
+  photo: "/images/officers/1731523359195.jpeg"
 
-- name: Vikram
+- name: Vikram Narra
   role: "Web Development Lead"
   major: ""
   email: ""
-  photo: ""
+  photo: "/images/officers/Big V.jpeg"

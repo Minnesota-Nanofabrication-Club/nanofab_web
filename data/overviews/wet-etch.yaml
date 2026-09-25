@@ -1,0 +1,55 @@
+# ===================================================================
+# OVERVIEW for the Wet Etch station — the illustrated section at the top of
+# /machines/wet-etch/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Wet Etch Station"
+
+intro: |
+  A chemical bath that dissolves away everything the photoresist isn't
+  covering. The oldest trick in the fab, and still the right first one:
+  no vacuum, no plasma, no RF supply, and it works today.
+
+highlights:
+  - value: "BOE · KOH · Al"
+    label: "Etch chemistries"
+  - value: "± 1 °C"
+    label: "Bath control"
+  - value: "60–100 nm/min"
+    label: "Typical oxide etch rate"
+
+sections:
+  - title: "How it works, and its limit"
+    text: |
+      Drop a patterned wafer into the right chemistry and the exposed
+      material dissolves while the photoresist protects everything else.
+
+      The limitation is that the etch spreads **sideways as fast as it
+      goes down**, so it undercuts the resist and rounds off small
+      features. That puts a floor on how fine a pattern it can transfer,
+      which is why Gen 2 moves to the reactive ion etcher.
+
+  - title: "Temperature is the whole game"
+    text: |
+      Etch rate roughly doubles every 10 °C, so a bath that drifts is a
+      bath that over-etches. Wet etching is timed, not sensed, so the rate
+      is calibrated on a test wafer before the real one goes in.
+
+      > Buffered oxide etch contains hydrofluoric acid. Dedicated
+      > plasticware, a splash shield, and a trained second person present
+      > are non-negotiable.
+
+process:
+  title: "An etch run"
+  steps:
+    - title: "Calibrate"
+      text: "Measure the etch rate on a test wafer."
+    - title: "Heat"
+      text: "Bring the bath to temperature."
+    - title: "Etch"
+      text: "Immerse the real wafer for the calculated time."
+    - title: "Rinse"
+      text: "Cascade rinse stops the reaction fast."
+    - title: "Dry"
+      text: "Before chemistry can dry into residue."

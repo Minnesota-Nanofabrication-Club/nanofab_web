@@ -1,0 +1,85 @@
+# ===================================================================
+# OVERVIEW for the Tube Furnace — the illustrated section at the top
+# of /machines/tube-furnace/. How to edit: README section 4.17.
+# Everything here is optional; delete a block and it just won't show.
+# ===================================================================
+
+title: "Kanthal Tube Furnace"
+
+intro: |
+  The tube furnace is the most fundamental machine in the fab. It heats
+  wafers to around 1000 °C to grow oxide, drive in dopants, and anneal.
+  Our build is a kanthal-element resistance furnace designed to reach
+  **1100 °C** for annealing and oxidation of doped silicon wafers.
+
+hero:
+  src: "/images/machines/tube-furnace-layout.jpg"
+  caption: "Figure 1: Resistive coil wound around the quartz process tube inside an insulated shell, driven through a solid-state relay from a PID controller running off a thermocouple."
+
+highlights:
+  - value: "1100 °C"
+    label: "Design maximum temperature"
+  - value: "780 W"
+    label: "Heater power at 120 V"
+  - value: "≈18.46 Ω"
+    label: "24-turn Kanthal A1 coil"
+  - value: "~4 weeks"
+    label: "Build time, shipping included"
+
+sections:
+  - title: "Thermal oxidation"
+    text: |
+      Thermal oxidation grows silicon dioxide by consuming the wafer's own
+      silicon at high temperature in an oxygen ambient. This is the step
+      that makes silicon special as a semiconductor material: the native
+      oxide it grows is an excellent insulator, bonds perfectly to the
+      substrate, and can be patterned and etched. No other common
+      semiconductor has an equivalent.
+
+  - title: "Drive-in and annealing"
+    text: |
+      **Dopant drive-in** follows spin-on doping. Dopant atoms sitting on
+      the surface diffuse into the silicon, and time-at-temperature sets
+      how deep the junction goes.
+
+      **Annealing** repairs crystal damage from earlier processing and
+      activates dopant atoms by moving them onto proper lattice sites,
+      where they can actually contribute carriers.
+
+  - title: "How it's built"
+    text: |
+      The heater is a **22 AWG Kanthal A1 coil**, doubled and wound 24
+      turns around a custom **quartz process tube**, then cemented in
+      place. It draws 780 W at 120 V. The coil's resistance is checked
+      with a multimeter before it's cemented over.
+
+      Three layers of **ceramic wool** (about 76 mm in total) insulate the
+      tube, and the whole assembly sits in a sheet-metal casing with end
+      caps and 2" access holes. The coil leads run through
+      high-temperature ceramic sleeving to ceramic terminal blocks.
+
+  - title: "Control and safety"
+    text: |
+      A **thermocouple** is inserted radially at the midpoint of the coil.
+      A **PID controller** reads it and switches the heater through a
+      **zero-cross solid-state relay** in time-proportioning mode.
+
+      An **independent high-limit thermal cutoff** backs up the controller.
+      Commissioning includes a trip test of that cutoff, a low-duty bench
+      test, and a first supervised ramp to 1100 °C.
+
+process:
+  title: "Build plan: four weeks from order to 1100 °C"
+  intro: |
+    About 20–25 hours of hands-on assembly in total. Every part is
+    ordered on day one, so the custom quartz tube (typically 7–14 days
+    from the supplier) sets the schedule.
+  steps:
+    - title: "Design & order"
+      text: "Week 0. Thermal and electrical calculations, BOM, all parts ordered at once."
+    - title: "Shipping"
+      text: "Weeks 1–2. Waiting on the quartz tube; standard parts arrive in 2–5 days."
+    - title: "Coil & insulation"
+      text: "Week 3. Wind and cement the coil, wrap insulation, build the casing."
+    - title: "Wiring & commissioning"
+      text: "Week 4. Control enclosure, thermocouple, cutoff testing, ramp to 1100 °C."

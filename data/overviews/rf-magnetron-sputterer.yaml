@@ -1,0 +1,45 @@
+# ===================================================================
+# OVERVIEW for the RF Magnetron Sputterer — the illustrated section at the top of
+# /machines/rf-magnetron-sputterer/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "RF Magnetron Sputterer"
+
+intro: |
+  The DC sputterer handles metals. This tool deposits the **insulating
+  films** it can't: gate oxides, passivation layers, and the dielectric
+  between metal levels.
+
+highlights:
+  - value: "13.56 MHz"
+    label: "RF drive frequency"
+  - value: "SiO₂ · Si₃N₄ · Al₂O₃"
+    label: "Target materials"
+  - value: "< 5 × 10⁻⁶"
+    label: "Base pressure, Torr"
+
+sections:
+  - title: "Why DC can't do insulators"
+    text: |
+      Point a DC sputterer at an insulator and it stops working: charge
+      builds up on the target face, the plasma chokes, and deposition dies
+      within seconds.
+
+  - title: "What RF changes"
+    text: |
+      RF power **reverses the field millions of times a second**, so
+      accumulated charge gets neutralized on every cycle before it can
+      shut the process down. A matching network tunes the supply to the
+      plasma so the power actually reaches the target.
+
+      That one change opens up the whole insulating half of the materials
+      list. Gen 1 can build a device with metal and thermal oxide; Gen 2
+      needs this tool to build a good one.
+
+  - title: "Film quality"
+    text: |
+      Same requirement as the DC tool, and just as unforgiving: leftover
+      water vapor ends up inside the film. The substrate stage rotates for
+      uniformity and heats, because deposition temperature strongly
+      affects how dense and how stable the film turns out.

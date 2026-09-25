@@ -1,0 +1,116 @@
+# ===================================================================
+# OVERVIEW for the DC Magnetron Sputterer — the illustrated section at
+# the top of /machines/dc-magnetron-sputterer/. How to edit: README
+# section 4.17. Delete a block and it just won't show.
+# ===================================================================
+
+title: "DC Magnetron Sputtering System"
+
+intro: |
+  Sputtering uses electric fields to knock atoms off a target material
+  and deposit them onto a substrate as a thin film. The goal of this
+  machine is to sputter **aluminum metallization layers** and **bulk
+  dielectric oxides**, with the build finished by Winter Break 2026.
+  Start with this [video playlist on sputtering](https://www.youtube.com/playlist?list=PLa3ICAr3RGVUk5borkggWceW8nxZpXyIc).
+
+hero:
+  src: "/images/machines/DCMagnetron.jpg"
+  caption: "Figure 1: Sputtering architecture: substrate holder, magnetron, gas intake, vacuum pump stages, power supply and RF network, and interface panel, on a frame that houses the electronics and vacuum system."
+
+highlights:
+  - value: "Al"
+    label: "First film: aluminum on glass"
+  - value: "1–50 mTorr"
+    label: "Regulated argon process pressure"
+  - value: "0.5–2.0 nm/s"
+    label: "Target deposition rate"
+  - value: "16 weeks"
+    label: "Schedule, Aug 31 to Dec 20"
+
+sections:
+  - title: "How sputtering works"
+    text: |
+      A process gas, usually argon, fills the chamber. Argon atoms lose an
+      electron and the resulting ions are accelerated into the target.
+      Each impact frees material from the target, and that freed material
+      collects on the substrate as a film.
+
+      **RF sputtering** alternates the applied potential to stop charge
+      building up, which is necessary to deposit insulating materials
+      such as aluminum oxide instead of only metals. **Reactive
+      sputtering** swaps some of the inert argon for a reactive gas, so
+      the film becomes a reaction product such as an oxide or nitride.
+
+      **Reading:** Campbell on sputtering and vacuum systems. Optionally,
+      Van Zant for an overview of the different ways sputtering is used.
+
+  - title: "Vacuum, gas, and power"
+    text: |
+      The chamber has to reach high vacuum before deposition starts.
+      Residual water vapor and oxygen get incorporated into the growing
+      film and wreck its conductivity and adhesion. The vacuum subsystem
+      covers chamber construction, vacuum plumbing, and gas control.
+
+      The power subsystem covers both the DC and the RF power supply,
+      plus the matching network that delivers power to the magnetron.
+    image: "/images/machines/DCMagnSub.jpg"
+    caption: "Figure 2: Early subsystem sketches: sputter head and ground shield, argon tank with turbo and roughing pumps, AC step-up and rectifier stage, and Peltier cooling."
+
+  - title: "The magnetron"
+    text: |
+      The magnetron holds the target and is designed in CAD. Initial rough
+      designs (v1) are on the team's
+      [Excalidraw whiteboard](https://app.excalidraw.com/l/3pV8fsMMqar/8ygDm5HuHUY).
+
+      It includes **dark space shields**. The "dark space" is an area in
+      the vicinity of the target edge where no plasma exists during the
+      deposition process.
+    image: "/images/machines/MagnetonMain.jpg"
+    caption: "Figure 3: Magnetron cross-section, with the water channel, insulator, ground shield, and chamber seals."
+
+  - title: "Team and tools"
+    text: |
+      - **Project owner:** Bear BlinSchauer
+      - **Magnetron:** design the magnetron
+      - **Power:** design the DC and RF power supply system
+      - **Vacuum:** design the vacuum chamber, gas, and process flow
+      - **Procurement, finance & partnerships:** BOM, vendor sourcing, budgeting
+      - **Safety:** frame and enclosure, chamber shielding, HV isolation, interlock wiring, operator SOPs
+
+      CAD lives in the team's
+      [Onshape document](https://cad.onshape.com/documents/d79ba195e2051fdc2a5a548a/w/9e5a36d9aba90798ea2b5190/e/a9a373c625e0f8783fb4f3d8?renderMode=0&uiState=6a8f48d0a7f67d7340aa7431).
+      KiCad files and software are tracked in GitHub.
+
+process:
+  title: "Build plan: four phases to Winter Break 2026"
+  intro: |
+    If funding or parts procurement is delayed at Week 3, the timeline
+    pauses and every later date shifts back by the length of the delay.
+    The week-by-week plan is in the Documentation section below.
+  steps:
+    - title: "Procurement & planning"
+      text: "Weeks 1–3. CAD, funding, and ordering. Stop-gate until critical parts are ordered."
+    - title: "Sub-systems & prep"
+      text: "Weeks 4–6. Machining, component testing, sub-assemblies."
+    - title: "Integration & alpha"
+      text: "Weeks 7–10. Vessel assembly, vacuum and plasma alpha tests."
+    - title: "Deposition & beta"
+      text: "Weeks 11–16. First aluminum films, metrology, documentation, and handover."
+
+references:
+  - title: "Hacker Fab — DIY RF sputtering chamber"
+    url: "https://docs.hackerfab.org/home/fab-toolkit/deposition/diy-rf-sputtering-chamber"
+  - title: "Thought Emporium — Sputtering (video)"
+    url: "https://www.youtube.com/watch?v=aljbjJbfghs"
+  - title: "Thought Emporium — Sputtering system (GitHub)"
+    url: "https://github.com/thethoughtemporium/sputteringsystem/tree/main"
+  - title: "Applied Science — Intro to the sputtering process"
+    url: "https://benkrasnow.blogspot.com/2013/11/intro-to-sputtering-process-to-create.html"
+  - title: "Applied Science — More info about sputtering"
+    url: "https://benkrasnow.blogspot.com/2013/12/more-info-about-sputtering-process.html?m=1"
+  - title: "Hackaday — Practical plasma for thin film deposition"
+    url: "https://hackaday.com/2018/04/11/practical-plasma-for-thin-film-deposition/"
+  - title: "Hackaday.io — Sputtering magnetron project"
+    url: "https://hackaday.io/project/188141-sputtering-magnetron"
+  - title: "Finishing.com — Forum thread"
+    url: "https://www.finishing.com/456/54.shtml#gsc.tab=0"

@@ -30,6 +30,8 @@
           {{/* The contact email lives here, not in the hero. */}}
           <li><a href="mailto:{{ .Site.Params.contactEmail }}" class="text-ink font-medium underline decoration-line underline-offset-4 hover:text-maroon hover:decoration-maroon transition-colors break-words">{{ .Site.Params.contactEmail }}</a></li>
           <li><a href="{{ .Site.Params.discordURL }}" class="text-muted hover:text-maroon transition-colors">Discord</a></li>
+          {{ with .Site.Params.linkedinURL }}<li><a href="{{ . }}" class="text-muted hover:text-maroon transition-colors">LinkedIn</a></li>{{ end }}
+          {{ with .Site.Params.instagramURL }}<li><a href="{{ . }}" class="text-muted hover:text-maroon transition-colors">Instagram</a></li>{{ end }}
         </ul>
       </div>
 

@@ -1,0 +1,47 @@
+# ===================================================================
+# OVERVIEW for the Wafer Arm — the illustrated section at the top of
+# /machines/wafer-arm/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Wafer Handling Arm"
+
+intro: |
+  In a commercial fab, nobody picks up a wafer. Our robot arm does the
+  same job at a smaller scale: **pick a wafer up by its back side, carry
+  it, and set it down in the same place every time.**
+
+highlights:
+  - value: "2–4 in"
+    label: "Wafer size"
+  - value: "± 100 µm"
+    label: "Placement accuracy target"
+  - value: "Vacuum"
+    label: "Paddle end effector"
+
+sections:
+  - title: "Why a robot"
+    text: |
+      A human hand, even a gloved one, sheds particles, and a particle
+      sitting on a wafer becomes a defect in whatever gets built on top of
+      it. The vacuum paddle holds the wafer by suction on its back side
+      only, so nothing ever touches the face we're building devices on.
+
+  - title: "Shared infrastructure"
+    text: |
+      Both generations of the line use it, which is why it sits under
+      Facility rather than inside Gen 1 or Gen 2. Its motion control
+      stores tool positions and shares a codebase with the stage alignment
+      firmware. Repeatability matters far more than raw speed.
+
+process:
+  title: "One move"
+  steps:
+    - title: "Pick"
+      text: "Take a wafer from its cassette slot by the back side."
+    - title: "Carry"
+      text: "Follow the stored path to the tool."
+    - title: "Place"
+      text: "Set it down in the same spot every time."
+    - title: "Return"
+      text: "Back out along the same path."

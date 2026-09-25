@@ -1,0 +1,53 @@
+# ===================================================================
+# OVERVIEW for the Photoresist Stripper — the illustrated section at the top of
+# /machines/photoresist-stripper/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Photoresist Stripper"
+
+intro: |
+  Removes the resist mask once it has done its job, clearing the surface
+  for the next layer without disturbing the structures underneath.
+  Stripping sounds trivial and frequently isn't.
+
+highlights:
+  - value: "Wet"
+    label: "Heated solvent bath"
+  - value: "Dry"
+    label: "O₂ plasma ash"
+  - value: "DI + N₂"
+    label: "Rinse and dry to finish"
+
+sections:
+  - title: "Why it's harder than it sounds"
+    text: |
+      Resist that has spent twenty minutes in an RIE plasma is chemically
+      nothing like the resist that went in. Ion bombardment hardens the
+      surface into a cross-linked skin that shrugs off the solvents that
+      would normally dissolve it.
+
+  - title: "Two ways to strip"
+    text: |
+      **Wet stripping** first, because it's gentler and faster: warm
+      solvent swells and lifts off resist that hasn't been hardened.
+
+      **Plasma ashing** as the fallback, because oxygen plasma burns off
+      any organic film as CO₂ and water vapor, regardless of what's been
+      done to it.
+
+      The constraint on both is selectivity: whatever removes the resist
+      has to leave the patterned metal, oxide, or silicon underneath
+      completely alone.
+
+process:
+  title: "A strip cycle"
+  steps:
+    - title: "Solvent bath"
+      text: "Heated solvent lifts off ordinary resist."
+    - title: "Plasma ash"
+      text: "Only if needed: O₂ plasma removes hardened resist."
+    - title: "Rinse"
+      text: "DI water removes any stripper residue."
+    - title: "Dry"
+      text: "Nitrogen dry before the next step."

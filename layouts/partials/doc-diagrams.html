@@ -26,6 +26,12 @@
   {{ end }}
 {{ end }}
 
+{{/* Skip any diagram the Overview already shows higher up. */}}
+{{ $used := partial "overview-srcs.html" . }}
+{{ $keep := slice }}
+{{ range $list }}{{ if not (in $used (strings.TrimPrefix "/" .src)) }}{{ $keep = $keep | append . }}{{ end }}{{ end }}
+{{ $list = $keep }}
+
 {{ with $list }}
 <div class="mb-10 space-y-8">
   {{ range $i, $d := . }}

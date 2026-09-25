@@ -43,7 +43,7 @@ documentation: |
       ### Contribution Information
       - **Project Owner**: Bear BlinSchauer
       - **Magnetron Subsystem**: Design the magnetron.
-      - **Power Subsystem**: Design the DC and RF power supply system[cite: 1].
+      - **Power Subsystem**: Design the DC and RF power supply system.
       - **Vacuum Subsystem**: Design the Vacuum Chamber, gas, and process flow.
       - **Procurement, Finance & Partnerships**: BOM Management, vendor sourcing, budgeting.
       - **Safety**: Frame/enclosure, chamber shielding, HV isolation, interlock wiring, operator SOPs.
@@ -81,8 +81,8 @@ documentation: |
       - Gas Control
 
       ### Power Supply Docs
-      - DC Power Supply[cite: 1]
-      - RF Power Supply[cite: 1]
+      - DC Power Supply
+      - RF Power Supply
 
       ### Magnetron Docs
       - Initial rough magnetron designs (v1): [Excalidraw Whiteboard](https://app.excalidraw.com/l/3pV8fsMMqar/8ygDm5HuHUY)
@@ -93,27 +93,28 @@ documentation: |
 
       ## Timeline
 
-      **Sputterer Project Timeline (Target: Winter Break 2026)**
-      *Note on Shifting: If funding or parts procurement is delayed at Week 3, pause the timeline and shift all subsequent dates back by the length of the delay.*
+      Target completion: **Winter Break 2026**.
 
-      ### Phase 1: Procurement & Planning
+      > **If the schedule slips:** if funding or parts procurement is delayed at Week 3, pause the timeline and shift all subsequent dates back by the length of the delay.
+
+      ### Phase 1:: Procurement & Planning
       - **Week 1 (Aug 31 - Sep 06)**: Finalize mechanical CAD, power delivery, and matching network schematics. Submit formal funding requests.
       - **Week 2 (Sep 07 - Sep 13)**: Funding approval. Follow up with sponsors (e.g., Ideal Vacuum Systems) and establish a contingency BOM if the full budget isn't met.
       - **Week 3 (Sep 14 - Sep 20)**: Parts Ordering. Purchase vacuum pumps, MFCs, target materials, and high-voltage components.
         - **STOP-GATE**: Project may be delayed until critical parts are ordered.
 
-      ### Phase 2: Sub-Systems & Prep
+      ### Phase 2:: Sub-Systems & Prep
       - **Week 4 (Sep 21 - Sep 27)**: Infrastructure & Machining. Machine custom structural components (magnetron housing, chamber mounts). Finalize safety protocols for high voltage and argon/oxygen handling.
       - **Week 5 (Sep 28 - Oct 04)**: Receiving. Inventory shipments. Test individual components (dry scroll pump, turbomolecular pump, gauges) for dead-on-arrival faults.
       - **Week 6 (Oct 05 - Oct 11)**: Sub-assembly. Build and wire isolated sub-systems. Plumb gas control lines and wire the power supply/matching network outside the main chamber.
 
-      ### Phase 3: Integration & Prototyping (Alpha)
+      ### Phase 3:: Integration & Prototyping (Alpha)
       - **Week 7 (Oct 12 - Oct 18)**: Core Assembly. Assemble the vacuum vessel, install the magnetron, and connect sub-systems to the main chassis.
       - **Week 8 (Oct 19 - Oct 25)**: Alpha Test 1 (Vacuum). Execute pump-down, perform leak detection, and verify ultimate base pressure limits. Expect leaks here.
       - **Week 9 (Oct 26 - Nov 01)**: Alpha Test 2 (Plasma). Introduce regulated Argon flow (1-50 mTorr). Apply power to ignite and tune a stable plasma discharge on the cathode.
       - **Week 10 (Nov 02 - Nov 08)**: Troubleshooting. Buffer week to fix alpha failures: patch vacuum leaks, resolve arcing, improve magnetron cooling, or re-order blown components.
 
-      ### Phase 4: Deposition & Polishing (Beta)
+      ### Phase 4:: Deposition & Polishing (Beta)
       - **Week 11 (Nov 09 - Nov 15)**: Beta Prototype. With stable vacuum and plasma, execute first real deposition: Test aluminum sputtering on a glass slide.
       - **Week 12 (Nov 16 - Nov 22)**: Metrology & Tuning. Measure aluminum film thickness/resistivity with a four-point probe. Adjust power, pressure, and distance to hit the 0.5nm/s - 2.0nm/s target rate.
       - **Week 13 (Nov 23 - Nov 29)**: Advanced Testing (Thanksgiving Buffer). Introduce reactive sputtering (Oxygen) to test aluminum oxide or silicon dioxide dielectric deposition.
@@ -121,7 +122,7 @@ documentation: |
       - **Week 15 (Dec 07 - Dec 13)**: Handover. Clean chamber, finalize build documentation, and write standard operating procedures (SOPs).
       - **Week 16 (Dec 14 - Dec 20)**: WINTER BREAK - Project Complete.
 
-      ### Schedule Summary
+      ## Schedule Summary
 
       | Phase | Timeline | Focus |
       |---|---|---|
@@ -144,25 +145,24 @@ documentation: |
 
 subsystems:
   - name: "Vacuum chamber"
-    description: "Has to reach high vacuum before deposition starts. Residual water vapor and oxygen get incorporated into the growing film and wreck its conductivity and adhesion (Chamber Contruction)(Vacuum Plumbing)(Gas Control)."
+    description: "Has to reach high vacuum before deposition starts. Residual water vapor and oxygen get incorporated into the growing film and wreck its conductivity and adhesion Covers chamber construction, vacuum plumbing, and gas control."
   - name: "Power Supply"
-    description: "Powering up the Magnetron (DC Power Supply)(RF Power Supply)"
+    description: "Powers the magnetron. Covers both the DC and the RF power supply."
   - name: "Magnetron"
-    description: "Dark Space Shields: The “Dark Space” is tan area in the vicinity of the target edge where no plasma exists during the deposition process."
+    description: "Includes the dark space shields. The “dark space” is an area in the vicinity of the target edge where no plasma exists during the deposition process."
 
  
 ---
 
-https://www.youtube.com/playlist?list=PLa3ICAr3RGVUk5borkggWceW8nxZpXyIc 
-^ Watch these!
+**Start here:** watch this [video playlist on sputtering](https://www.youtube.com/playlist?list=PLa3ICAr3RGVUk5borkggWceW8nxZpXyIc).
 
 Sputtering is the technique of using electric fields in order to accelerate materials from a target onto a substrate material. A process gas fills the chamber and is accelerated to the target material after losing an electron. The process gas will free material from the target and the freed material will collect on the substrate. 
 
-RF sputtering will alternate the potential of the current applied to eliminate a charge buildup, and is necessary to deposit insulating materials such as Aluminum Oxide, instead of only metals.
+**RF sputtering** will alternate the potential of the current applied to eliminate a charge buildup, and is necessary to deposit insulating materials such as Aluminum Oxide, instead of only metals.
 
-Reactive Sputtering: While sputtering typically inert argon gas is used. However introducing reactive gas can react and create a reaction product such as oxides, nitrides etc.
+**Reactive sputtering:** sputtering normally uses inert argon gas. Introducing a reactive gas instead creates a reaction product, such as an oxide or nitride.
 
-Read Campbell on sputtering and vacuum systems. (Optional) Read zant for an overview of different types of sputtering utilizations. 
+**Reading:** Campbell on sputtering and vacuum systems. Optionally, Van Zant for an overview of the different ways sputtering is used.
 
 
 <!-- Sputtering is how the wires get made.

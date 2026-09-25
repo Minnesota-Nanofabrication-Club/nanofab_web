@@ -1,0 +1,53 @@
+# ===================================================================
+# OVERVIEW for the Developer Station — the illustrated section at the top of
+# /machines/developer/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Developer Station"
+
+intro: |
+  Development is where the pattern becomes real. Up to this point the
+  exposed resist looks identical to the unexposed resist; the difference
+  is chemical, not visual. The developer dissolves away the exposed
+  regions and leaves a polymer stencil on the wafer.
+
+highlights:
+  - value: "TMAH"
+    label: "Developer chemistry"
+  - value: "21 ± 1 °C"
+    label: "Bath temperature"
+  - value: "30–90 s"
+    label: "Typical develop time"
+
+sections:
+  - title: "Latent image to stencil"
+    text: |
+      With a positive resist, UV exposure breaks down a compound that was
+      inhibiting dissolution. Exposed regions wash away in developer and
+      unexposed regions stay. The wafer comes out with a polymer stencil
+      sitting on it, ready to protect the material underneath during etch.
+
+  - title: "Why temperature and time matter"
+    text: |
+      Under- and over-development both show up as **linewidth error**.
+      Develop rate is strongly temperature dependent: a couple of degrees
+      changes how much resist comes off in a fixed time. Once exposure
+      dose is fixed, develop time is the main handle for fine-tuning
+      feature size.
+
+      Agitation keeps fresh developer moving across the surface, so
+      dissolved resist doesn't build up in a stagnant layer and stall the
+      develop unevenly.
+
+process:
+  title: "A develop cycle"
+  steps:
+    - title: "Immerse"
+      text: "The wafer goes fully into the temperature-controlled bath."
+    - title: "Agitate"
+      text: "Fresh developer keeps moving across the surface, on a timer."
+    - title: "Rinse"
+      text: "DI water stops the reaction immediately."
+    - title: "Dry"
+      text: "Nitrogen blow-dry."

@@ -48,16 +48,16 @@ documentation: |
       ### Optical Path
       - F1 and F2 are emitted from the laser and split by the beam splitter.
       - F2 reflects off the reference reflector and back into the beam splitter.
-      - F1, separated from F2, reflects from the measurement reflector. Accounting for the movement of the mirror, the shifted frequency becomes F1 plus delta F1.
-      - F2 and (F1 plus delta F1) converge, and the optical receiver reads the beat frequency F2 minus (F1 plus delta F1), while the reference signal from the laser source outputs F2 minus F1.
+      - F1, separated from F2, reflects from the measurement reflector. Because the mirror is moving, the reflected frequency is Doppler-shifted to F1 + ΔF1.
+      - F2 and F1 + ΔF1 recombine, and the optical receiver reads the beat frequency F2 − (F1 + ΔF1). The laser source separately outputs the reference signal F2 − F1.
 
       ---
 
       ## Signal Processing & Integration
 
       ### Signal Processing
-      - Using an ESP32 microcontroller, the system processes the reference frequency difference (F2 minus F1) and the measurement frequency difference (F2 minus (F1 plus delta F1)).
-      - Expecting frequencies in the low Megahertz range, the system transmits this positional data to a PC via custom software.
+      - Using an ESP32 microcontroller, the system processes the reference frequency difference (F2 − F1) and the measurement frequency difference (F2 − (F1 + ΔF1)).
+      - Expecting frequencies in the low megahertz range, the system transmits this positional data to a PC via custom software.
 
       ### System Integration
       - **Maskless Stepper**: The interferometer feeds position data directly to the motion controller. If the stage overshoots its movement, the software digitally shifts the exposure pattern to align perfectly with the previous field.

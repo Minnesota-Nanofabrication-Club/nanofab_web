@@ -14,9 +14,9 @@ specs:
   - label: "Airflow"
     value: "Vertical laminar"
 
-# photos:
-#   - src: "/images/machines/cleanroom-microenvironment-1.jpg"
-#     caption: ""
+photos:
+  - src: "/images/machines/microenvironment.jpg"
+    caption: ""
 
 # DOCUMENTATION — the write-up section on this machine's page.
 #

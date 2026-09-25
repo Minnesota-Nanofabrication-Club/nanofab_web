@@ -1,0 +1,59 @@
+# ===================================================================
+# OVERVIEW for the Polymer Synthesis — the illustrated section at the top of
+# /machines/polymer-synthesis/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Photoresist Synthesis"
+
+intro: |
+  Photoresist is the single most consumed material in a fab, and for us
+  one of the most awkward to buy. Making our own solves the supply
+  problem, but the real payoff is **control** over sensitivity,
+  contrast, and thickness.
+
+highlights:
+  - value: "Novolac / DNQ"
+    label: "Positive-tone resist"
+  - value: "1–3 µm"
+    label: "Target thickness"
+  - value: "365–405 nm"
+    label: "Exposure wavelength"
+
+sections:
+  - title: "Why make it ourselves"
+    text: |
+      Commercial resist is priced for industrial volumes, has a shelf
+      life, and is a hassle to ship. Sensitivity, contrast, and thickness
+      all come out of the formulation, so tuning the recipe is a way to
+      tune the process. Formulating resist is also a genuinely
+      interesting chemistry project in its own right.
+
+  - title: "What's in the bottle"
+    text: |
+      A **novolac resin** gives the film its body and its resistance to
+      etch chemistry. A **photoactive compound** is the light-sensitive
+      part: exposure changes it from an inhibitor into an acid, which is
+      what makes developer dissolve only the exposed areas.
+
+      **Solvent** sets viscosity, which sets coated thickness, and the mix
+      is filtered to sub-micron, because any speck left in the bottle
+      prints as a defect.
+
+  - title: "Why it's Gen 2"
+    text: |
+      Gen 1 needs to prove out the rest of the line on a known-good
+      commercial resist first. You can't debug a new process and a new
+      material at the same time.
+
+process:
+  title: "From formulation to a trusted resist"
+  steps:
+    - title: "Formulate"
+      text: "Combine resin, photoactive compound, and solvent."
+    - title: "Filter"
+      text: "Down to sub-micron."
+    - title: "Coat"
+      text: "Spin onto test wafers."
+    - title: "Characterize"
+      text: "Contrast curves and dose-to-clear."

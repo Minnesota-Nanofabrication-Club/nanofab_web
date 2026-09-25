@@ -1,0 +1,107 @@
+# ===================================================================
+# OVERVIEW for the Inkjet Microplotter — the illustrated section at the
+# top of /machines/microplotter/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Ultrasonic Microplotter"
+
+intro: |
+  We're building an in-house **ultrasonic microdispensing system**,
+  functionally equivalent to a SonoPlot Microplotter, to print silver
+  conductive traces about **50 µm** wide. It writes material onto the
+  wafer one line at a time, with no mask, no resist, and no etch.
+
+hero:
+  src: "/images/machines/microplotter.jpg"
+  caption: "Figure 1: SonoPlot Microplotter [SonoPlot's patent US 7,849,738 B]."
+
+highlights:
+  - value: "~50 µm"
+    label: "Target silver trace width"
+  - value: "≤ 10 µm"
+    label: "X–Y placement accuracy"
+  - value: "≤ 1 µm"
+    label: "Bidirectional repeatability"
+  - value: "$2.4–3.9k"
+    label: "Estimated build cost"
+
+sections:
+  - title: "Additive instead of subtractive"
+    text: |
+      Conventional processing is *subtractive and parallel*: coat the
+      whole wafer, pattern the whole wafer, etch the whole wafer, remove
+      what you don't want. Enormous throughput, but every step needs
+      resist, chemistry, and a mask.
+
+      Direct-write is *additive and serial*: put material only where it
+      belongs. Far slower, but a design change is just a new toolpath
+      file. That makes it the right tool for prototyping conductive
+      traces, repairing a broken interconnect on an otherwise good wafer,
+      and depositing materials that don't survive lithography chemistry.
+
+  - title: "Ultrasonic dispensing"
+    text: |
+      The design follows the ultrasonic pumping and sensing principles in
+      SonoPlot's patent US 7,849,738 B. An AC drive makes a
+      **piezoelectric element** vibrate a tapered glass capillary near its
+      resonance frequency. At low amplitude, this motion pumps small,
+      controlled amounts of ink through a fluid bridge at the substrate.
+
+      Ink is loaded into the capillary by capillary action. A continuous
+      supply system is out of scope for this project.
+    image: "/images/machines/microplotter2.jpg"
+    caption: "Figure 2: Fluid deposition via ultrasonic pumping [SonoPlot Microplotter Manual]."
+
+  - title: "Gantry and motion"
+    text: |
+      X and Y are **ball-screw linear stages**, each driven by a NEMA 17
+      stepper through a bellows or Oldham coupling. A magnetic angle
+      encoder on each motor shaft catches stalls and linearizes
+      microsteps.
+
+      Absolute X–Y accuracy comes from a **vision system** that finds and
+      centers on fiducial markers. The Z axis is a micrometer turned by a
+      stepper motor, converting rotation into precise linear motion.
+
+  - title: "Finding the surface"
+    text: |
+      The tip has to stop at the right height without crashing. A camera
+      and an **inductive probe** handle the fast, coarse approach. Then
+      the tip descends slowly while the controller watches the **piezo
+      impedance**.
+
+      A current-sense resistor and envelope detector turn changes in piezo
+      current into a slow voltage the ESP32 can read. A calibrated change
+      means the fluid bridge has formed, and Z-motion stops.
+
+  - title: "Software and firmware"
+    text: |
+      A light graphical interface turns vector and design files into
+      G-code. The firmware turns G-code into synchronized X-Y-Z motion and
+      piezo drive commands, with new G-code commands to set the vibration
+      frequency and so the deposition.
+
+      Tuning and diagnostics run over a UART debug connection. As a
+      reach goal, the GUI connects over Ethernet or Bluetooth through the
+      ESP32.
+
+process:
+  title: "From design file to silver trace"
+  steps:
+    - title: "Design"
+      text: "Convert a vector or design file into G-code."
+    - title: "Align"
+      text: "The camera finds fiducial markers and centers the nozzle."
+    - title: "Coarse approach"
+      text: "The inductive probe brings the tip down quickly."
+    - title: "Fine approach"
+      text: "Piezo impedance detects the fluid bridge and stops Z."
+    - title: "Dispense"
+      text: "Ultrasonic pumping writes ink along the toolpath."
+
+references:
+  - title: "SonoPlot patent US 7,849,738 B"
+    url: "https://patentimages.storage.googleapis.com/63/c7/d8/cb41172631c1e9/US7849738.pdf"
+  - title: "Preparing a colloidal silver solution"
+    url: "https://www.sciencedirect.com/science/article/abs/pii/S0254058404003785"

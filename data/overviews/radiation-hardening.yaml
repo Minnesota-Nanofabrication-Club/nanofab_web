@@ -1,0 +1,55 @@
+# ===================================================================
+# OVERVIEW for the Radiation Hardening research thrust — the illustrated section at the top of
+# /machines/radiation-hardening/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Radiation Hardening"
+
+intro: |
+  Building chips that keep working in orbit. Radiation flips bits and
+  degrades transistors, and we want to find out which **layout and
+  process choices** survive it. It's the reason the rest of the lab
+  exists.
+
+highlights:
+  - value: "SEU · TID"
+    label: "Plus latch-up: the failure modes"
+  - value: "Ring osc. + SRAM"
+    label: "Test circuits"
+  - value: "Full Gen 1"
+    label: "Line needed first"
+
+sections:
+  - title: "The problem"
+    text: |
+      Electronics in space get hit constantly by charged particles. A
+      single particle can flip a stored bit, and years of accumulated
+      dose slowly shift transistor threshold voltages until a circuit
+      stops working.
+
+      Commercial radiation-hardened parts exist, but they're expensive,
+      export-controlled, and generations behind mainstream silicon.
+
+  - title: "Why a student fab can take it on"
+    text: |
+      Most hardening happens at the **layout and process level**, not in
+      the circuit diagram, which is exactly the part a fab gets to
+      control. Guard rings, enclosed-gate transistors, and wider spacing
+      all cost area; we want to know what each one buys.
+
+process:
+  title: "The experiment"
+  intro: |
+    Every tool on this site is there to make this experiment possible.
+  steps:
+    - title: "Design"
+      text: "Simple test circuits whose failures are easy to count."
+    - title: "Vary"
+      text: "Draw the same circuit several different ways."
+    - title: "Fabricate"
+      text: "Build every variant on our own line."
+    - title: "Expose"
+      text: "Apply a known radiation dose."
+    - title: "Measure"
+      text: "Characterize on the probe station at each dose step."

@@ -34,9 +34,7 @@ architectureDiagrams:
 
 documentationUpdated: "Sept, 2026"
 documentation: |
-      ## Tube Furnace Project Documentation
-
-      ### Project Summary
+      ## Project Summary
       A kanthal-element resistance tube furnace designed to reach 1100°C for annealing and oxidation of doped silicon wafers.
       
       - **Electrical Specs**: Runs on 780W at 120V through a 22 AWG Kanthal A1 coil (24 turns, ≈18.46Ω).
@@ -61,7 +59,7 @@ documentation: |
 
       ### Week 3: Core Mechanical & Thermal Assembly
       - **Days 1–2** (~2–3 hrs + 12+ hr cure): Cement the tube's wound zone; allow to cure overnight.
-      - **Days 2–3** (~2–3 hrs + 12+ hr cure): Wind the Kanthal coil (24 turns, 22 AWG doubled). Verify resistance ($R \approx 18.46\,\Omega$) using a multimeter prior to cementing over. Allow to cure overnight.
+      - **Days 2–3** (~2–3 hrs + 12+ hr cure): Wind the Kanthal coil (24 turns, 22 AWG doubled). Verify resistance (R ≈ 18.46 Ω) using a multimeter prior to cementing over. Allow to cure overnight.
       - **Day 4** (~2 hrs): Wrap 3 layers of ceramic wool insulation (~76mm total thickness). Route Kanthal leads through high-temperature ceramic sleeving.
       - **Session 5** (~3 hrs): Assemble sheet-metal casing and end caps. Drill 2" access holes and the radial thermocouple port.
       - **Milestone**: Core furnace physical assembly complete.
@@ -77,12 +75,12 @@ documentation: |
 
       ## Schedule Summary
 
-      | Phase | Timeline | Key Deliverables & Focus |
+      | Timeline | Phase | Key Deliverables & Focus |
       |---|---|---|
-      | Week 0 | Week 0 | Design, calculations, BOM, and immediate order placement |
-      | Weeks 1–2 | Weeks 1–2 | Lead-time buffer for custom quartz tube delivery |
-      | Week 3 | Week 3 | Coil winding, cementing, ceramic insulation, casing assembly |
-      | Week 4 | Week 4 | Control panel wiring, sensor integration, testing to 1100°C |
+      | Week 0 | Design, Theory & Procurement | Design, calculations, BOM, and immediate order placement |
+      | Weeks 1–2 | Shipping & Lead Time | Lead-time buffer for custom quartz tube delivery |
+      | Week 3 | Core Mechanical & Thermal Assembly | Coil winding, cementing, ceramic insulation, casing assembly |
+      | Week 4 | Wiring, Control Enclosure & Commissioning | Control panel wiring, sensor integration, testing to 1100°C |
     #
     #   > A callout, for anything that can hurt someone or break the tool.
 
@@ -97,13 +95,13 @@ documentation: |
     #   - src: "/images/machines/tube-furnace-2.jpg"
     #     caption: ""
 
-# subsystems:
-#   - name: "Vacuum chamber"
-#     description: "Has to reach high vacuum before deposition starts. Residual water vapor and oxygen get incorporated into the growing film and wreck its conductivity and adhesion (Chamber Contruction)(Vacuum Plumbing)(Gas Control)."
-#   - name: "Power Supply"
-#     description: "Powering up the Magnetron (DC Power Supply)(RF Power Supply)"
-#   - name: "Magnetron"
-#     description: "Dark Space Shields: The “Dark Space” is tan area in the vicinity of the target edge where no plasma exists during the deposition process." 
+subsystems:
+  - name: "Enclosure"
+    description: "a specialized containment system designed to address unique safety, contamination, and thermal management challenges"
+  - name: "PID Control System"
+    description: "regulates internal heating elements through closed-loop feedback to maintain precise, stable thermal profiles without dangerous overshoots"
+  - name: "Internal Quartz Tube"
+    description: "serves as the core reaction and containment chamber" 
 ---
 
 The tube furnace is the most fundamental machine in the fab, and it does three

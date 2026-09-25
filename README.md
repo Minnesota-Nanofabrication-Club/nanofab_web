@@ -37,7 +37,8 @@ generator before. Follow it top to bottom the first time.
    - [4.14 The club logo](#414-the-club-logo)
    - [4.15 Machine documentation (the Google Sheet)](#415-machine-documentation-the-google-sheet) — *built, currently switched off*
    - [4.16 The Documentation section](#416-the-documentation-section) — *where students write things up*
-   - [4.17 Overview pages](#417-overview-pages-the-illustrated-write-up) — *the illustrated write-up*
+   - [4.17 Overview pages](#417-overview-pages-the-illustrated-write-up) — *the illustrated write-up at the top of every machine page*
+   - [4.18 Moving an image on a machine page](#418-moving-an-image-on-a-machine-page)
 5. [Publishing the site](#5-publishing-the-site)
 6. [Troubleshooting](#6-troubleshooting)
 7. [Changing the design itself](#7-changing-the-design-itself)
@@ -253,10 +254,14 @@ link, and the "Technical documentation" box at the bottom of the
 homepage. To bring the homepage box back, add
 `{{ partial "docs.html" . }}` as the last line inside `layouts/index.html`
 (the file `layouts/partials/docs.html` is still there). The footer's bottom row is just the
-copyright line; Discord is linked from the footer's "Get in touch"
-column.
+copyright line.
 
-**These are all placeholders right now.** Replace them before publishing.
+The footer's **Get in touch** column lists, in order: the contact email,
+Discord, LinkedIn, and Instagram (`layouts/partials/footer.html`). They
+all come from the settings above. Set `linkedinURL` or `instagramURL` to
+`""` to drop that link from the footer. To add another platform, add a
+setting under `[params]` and copy one of the `<li>` lines in that
+column.
 
 ### 4.3 University of Minnesota links
 
@@ -387,6 +392,10 @@ The **Background** section on a machine page is the plain text written
 
 - If that part of the file is empty, the Background section and its
   jump-bar link don't appear at all.
+- **If the machine has an Overview** (a file in `data/overviews/`, see
+  4.17), the Background section is not shown. Every machine has one
+  now, so put new explanatory text in the Overview instead. The body
+  text is kept in the machine's file as a source to copy from.
 - **To remove Background from one machine:** open its file, find the
   second `---` (just below `subsystems:`), and delete **everything after
   it** to the end of the file. Keep the `---` line itself. Only that
@@ -746,7 +755,8 @@ over `hugo.Data.backing` in `backing.html` from git history.
 | `name` | yes | |
 | `role` | yes | Title and department, one line |
 | `bio` | no | Two or three sentences. Leave `""` to hide |
-| `link` | no | Their faculty page. Leave `""` to hide |
+| `link` | no | Their faculty page, lab site, or LinkedIn. Leave `""` to hide |
+| `linkLabel` | no | Text on the link button — see "The link button" below |
 | `photo` | no | Leave `""` and the card shows their initials |
 | `photoPosition` | no | Only if a photo crops badly — see below |
 
@@ -773,20 +783,62 @@ best (800 × 1200 is ideal); a square photo is fine; a wide landscape
 photo will lose its edges.
 
 If one photo still crops badly, add `photoPosition` to **that person
-only** — the second value is how far down the photo the framing sits:
+only**. It picks which part of the photo stays in the frame when the
+edges are trimmed. It takes two values: **left→right**, then
+**top→bottom**.
 
 ```yaml
 photoPosition: "center top"   # very top; use if hair is clipped
 photoPosition: "center 15%"   # the default
 photoPosition: "center 40%"   # lower; use if the face sits low
+photoPosition: "25% 0%"       # keep more of the LEFT side, top edge
+photoPosition: "75% 0%"       # keep more of the RIGHT side, top edge
+```
+
+#### Centering a face that looks off to one side or cut off
+
+The frame is taller than it is wide, so a square or wide photo has its
+**sides** trimmed to fit. If the face isn't in the middle of the original, it
+ends up pushed against one edge of the frame, which looks like it's
+being cut.
+
+1. Open the original photo and look at where the face is. Left of
+   centre? Use a first value **below 50%**. Right of centre? **Above
+   50%**. `50%` (or `center`) trims both sides equally.
+2. Add `photoPosition` under that person's `photo:` line and preview.
+   Adjust in steps of about 10–15% until the face sits in the middle.
+3. For the second value, `0%` keeps the very top of the photo. A square
+   photo already shows its full height, so for those the second value
+   changes nothing. It only matters for tall photos.
+
+**Example:** Scott Hareland's photo is a 171 × 171 square with his face
+left of centre, so it's set to:
+
+```yaml
+  photo: "/images/advisors/Scott.jpeg"
+  photoPosition: "25% 0%"
+```
+
+`photoPosition` can only choose what to keep. It can't add anything
+that isn't in the file. If the top of someone's hair touches the top edge
+of the **original** photo, it will touch the top of the frame too. The
+fix for that is a better source photo: ask for a larger portrait
+(ideally 800 × 1200) with some space above the head.
+
+#### The link button
+
+The button under an advisor's bio reads **Faculty page →**. If the
+`link` goes to linkedin.com, it reads **LinkedIn page →**
+automatically. For anything else, like a lab website, set the text
+yourself:
+
+```yaml
+  link: "https://example.umn.edu/talghader-lab"
+  linkLabel: "Lab website"
 ```
 
 Officer photos work the same way (`data/officers.yaml`), except they're
 circles rather than portrait boxes.
-
-> The file currently holds **three placeholders** — `Advisor Name`,
-> `Second Advisor`, and `Third Advisor`, each with a `TODO` bio. Replace
-> them with your real advisors, or delete any block you don't need.
 
 ### 4.10 Officers — President, VP, and the rest
 
@@ -1186,6 +1238,40 @@ That's the only fiddly part. Everything else is ordinary markdown.
 | `\| a \| b \|` rows | a table, for recipes and measured values |
 | `> text` | a gold callout, for hazards and gotchas |
 
+#### How the write-up is laid out
+
+You write plain markdown. The page turns its structure into a designed
+layout automatically (`layouts/partials/doc-writeup-rich.html`):
+
+| You write | The page shows |
+|---|---|
+| `## Timeline` | A new numbered section (01, 02, …) with a divider above it |
+| `### Anything` under a `##` | A white card on a vertical timeline line, one card per `###` |
+| `### Week 3: Core assembly` | A small maroon **WEEK 3** label above the title "Core assembly". Also works for `Weeks 1–2:`, `Day 4:`, `Stage 1:`, `Phase 2:`, `Step 5:` |
+| `- **Milestone**: Assembly complete.` | A gold "MILESTONE" callout box |
+| `- **STOP-GATE**: Wait for parts.` | A maroon "STOP-GATE" callout box |
+| A table | A framed table with a shaded header that scrolls sideways on phones |
+| `---` on its own line | Nothing. The sections are already separated, so it's hidden |
+
+With three or more `##` headings (or, if there's only one `##`, three or
+more `###`), an **On this page** menu appears down the left on wide
+screens.
+
+So the best structure is: one `##` per big topic (Summary, Timeline,
+Schedule Summary, References), and one `###` per step, phase, or
+subsystem inside it. A summary table should get its own `##`, not a
+`###`, or it will show up as a step on the timeline.
+
+**Keeping the old single-column look:** add
+`documentationLayout: "plain"` to a machine's file. No machine uses it
+right now; every page, the Maskless Litho Stepper included, gets the
+sectioned layout.
+
+**The "On this page" menu** lists the write-up's `##` headings (for
+example Project Overview, Timeline, Schedule Summary, Expected Outcome)
+and jumps to each one when clicked. It stays in view while you scroll.
+To make a heading show up in it, give it its own `##` line.
+
 #### New lines, indenting, and pasted text
 
 **Pressing Enter once does not start a new line on the site.** Markdown
@@ -1296,8 +1382,9 @@ machine itself near the top of the page.
 
 The order of sections on a machine page is set by the order of the
 blocks in `layouts/machines/single.html`. Right now it runs: header →
-photos → Background → Design architecture → **Documentation** →
-Documentation photos → timeline, BOM, contributors, references → other machines in the same
+**Overview** → photos → Background (only for machines with no Overview) →
+Design architecture → **Documentation** → Documentation photos →
+timeline, BOM, contributors, references → other machines in the same
 track. It's the same template for every machine, so one change moves
 the section on all of them.
 
@@ -1344,74 +1431,382 @@ currently switched off; see 4.2.)
 
 ### 4.17 Overview pages (the illustrated write-up)
 
-A machine can have a long-form, illustrated **Overview** section near the
-top of its page, laid out like an industry "use case" page: title and
-intro, a big diagram, a row of key numbers, alternating image/text
-sections, numbered process steps, and references. The Maskless Litho
-Stepper has one, made from the club's *[Master]* PDF.
+**Every machine page opens with an Overview.** It's the first thing a
+visitor sees under the title: a heading and intro, a big diagram, a row
+of key numbers, then sections that alternate text and pictures,
+numbered process steps, and references. It's the same layout the
+Maskless Litho Stepper was designed with. The detailed, student-written
+**Documentation** (4.16) comes further down the page.
 
-**Everything is in one file per machine:**
-`data/overviews/<machine>.yaml`, named exactly like the machine's file in
-`content/machines/` (`maskless-stepper.md` → `data/overviews/maskless-stepper.yaml`).
-No HTML to edit. If the file doesn't exist, the section doesn't appear.
+Each machine's Overview is **one file**:
 
-The parts, all optional, in the order they show on the page:
-
-```yaml
-title: "Maskless Photolithography Stepper"
-intro: |
-  One or two sentences.
-
-hero:                       # the big diagram under the intro
-  src: "/images/machines/maskless-stepper/architecture.png"
-  caption: "Figure 1: …"
-
-highlights:                 # row of key-number boxes
-  - value: "410 nm"
-    label: "Near-UV exposure LED"
-
-sections:                   # image + text, sides alternate automatically
-  - title: "Optical system"
-    text: |
-      Paragraphs in markdown. **Bold**, [links](https://…), lists.
-
-      Blank line = new paragraph.
-    image: "/images/machines/maskless-stepper/photomask.jpg"
-    caption: "Figure 2: …"
-
-process:                    # numbered step cards
-  title: "Patterning: the ten-step process"
-  intro: |
-    One short paragraph.
-  steps:
-    - title: "Surface preparation"
-      text: "One short line."
-  images:                   # figures under the steps
-    - src: "/images/machines/maskless-stepper/ten-step-process.png"
-      caption: "Figure 7: …"
-
-references:
-  - title: "Wikipedia — Photomask"
-    url: "https://en.wikipedia.org/wiki/Photomask"
+```
+data/overviews/<machine>.yaml
 ```
 
-- **Change text:** edit it in place. Keep every line of a `|` block
-  indented two spaces more than its field name (same rule as 4.16).
-- **Add a section:** copy a whole `- title:` block under `sections:`.
-  Reorder by moving blocks. A section with no `image` shows as full-width
-  text; use `images:` (a list of `src`/`caption`) for more than one
-  figure.
-- **Add or swap an image:** put the file in
-  `static/images/machines/<machine>/` and point `src` at it, starting
-  with `/images/`. Images are never cropped, and each links to full size.
-- **Remove a part:** delete its block.
-- **Another machine:** copy `maskless-stepper.yaml`, rename it to the
-  other machine's file name, and replace the content. The **Overview**
-  pill appears in that machine's jump bar automatically.
+The name must match the machine's file in `content/machines/` exactly:
+`tube-furnace.md` → `data/overviews/tube-furnace.yaml`. There's no HTML
+to edit. Delete the file and the Overview disappears. Every machine
+already has one, including the hidden (draft) ones.
 
-The layout is in `layouts/partials/doc-overview.html`. The Maskless
-stepper's figures were pulled out of the PDF at full resolution into
-`static/images/machines/maskless-stepper/`.
+#### Step by step: editing a machine's Overview
+
+1. **Open the file.** On github.com, go to `data/overviews/`, click the
+   machine's file, then the pencil icon. Or open it in VS Code.
+2. **Edit the text in place.** Text after `text: |` or `intro: |` is
+   markdown: **bold**, [links](https://…), lists, and `> ` callouts
+   all work. Leave a blank line between paragraphs.
+3. **Keep the indentation.** Every line under `text: |` stays indented
+   two spaces further than the word `text`. This is the only rule that
+   breaks the build if you get it wrong. The error names the line.
+4. **Preview.** Run `hugo server` and open the machine's page (see
+   section 2), or commit on github.com and check the live site a minute
+   later.
+
+#### Step by step: adding a picture
+
+1. **Put the image file in `static/images/machines/`.** You can use a
+   subfolder per machine, like `static/images/machines/tube-furnace/`.
+   Use lowercase, hyphens, no spaces: `coil-winding.jpg`.
+2. **Point to it from the Overview**, starting the path with
+   `/images/` and leaving out `static`:
+
+   ```yaml
+   sections:
+     - title: "How it's built"
+       text: |
+         The coil is wound around the quartz tube…
+       image: "/images/machines/tube-furnace/coil-winding.jpg"
+       caption: "Figure 2: The Kanthal coil before cementing."
+   ```
+
+3. Number captions in order: Figure 1 is the hero diagram, then Figure
+   2, 3, … down the page.
+
+Images are never cropped, and each one links to its full-size file. A
+section with an image shows text and picture side by side, and the sides
+swap on every section automatically. A section with no image shows its
+heading on the left and text on the right.
+
+**Pictures only show once per page.** If an image used in the Overview
+is also listed under `architectureDiagrams:` or `documentationPhotos:`
+in the machine's own file, it's skipped in those lower sections. If that
+leaves a section empty, the section and its jump-bar pill disappear
+too.
+
+#### Step by step: an Overview for a new machine
+
+1. Create the machine first (4.5).
+2. Copy a similar machine's Overview file, for example
+   `data/overviews/probe-station.yaml`, and rename the copy to the new
+   machine's file name.
+3. Replace the content, block by block, top to bottom (the parts are
+   described below). Delete any block you don't have content for yet;
+   it just won't show.
+4. Preview and commit.
+
+#### The parts of an Overview file
+
+All parts are optional. They appear on the page in this order:
+
+```yaml
+title: "Kanthal Tube Furnace"      # big heading under "Overview"
+
+intro: |                           # 2–4 sentences: what it is, why it matters
+  The tube furnace heats wafers to around 1000 °C…
+
+hero:                              # the big diagram under the intro
+  src: "/images/machines/tube-furnace-layout.jpg"
+  caption: "Figure 1: …"
+
+highlights:                        # 3 or 4 key-number boxes
+  - value: "1100 °C"               # keep it short: a number and a unit
+    label: "Design maximum temperature"
+
+sections:                          # the main content, one block each
+  - title: "Thermal oxidation"
+    text: |
+      Paragraphs in markdown.
+    image: "/images/…"             # optional
+    caption: "Figure 2: …"         # optional
+    imageSide: "left"              # optional: "left" or "right" (see 4.18)
+  # for several pictures in one section, use this instead of image:
+  #   images:
+  #     - src: "/images/…"
+  #       caption: "…"
+
+process:                           # numbered step cards
+  title: "Build plan: four weeks from order to 1100 °C"
+  intro: |                         # optional
+    One short paragraph.
+  steps:                           # 3–6 steps read best (up to 10 work)
+    - title: "Design & order"
+      text: "One short sentence."
+  images:                          # optional figures under the steps
+    - src: "/images/…"
+      caption: "…"
+
+references:                        # links shown at the bottom
+  - title: "Hacker Fab — DIY RF sputtering chamber"
+    url: "https://…"
+```
+
+What goes where:
+
+| Part | Use it for | Tip |
+|---|---|---|
+| `intro` | What the machine does and why the lab needs it | Readers decide here whether to keep reading |
+| `highlights` | The 3–4 numbers that define the machine | They **replace** the spec boxes under the page title, so the same values don't show twice |
+| `sections` | How it works, how it's built, safety, team | 2–5 sections. One idea per section |
+| `process` | How it's used (the steps of a run), or the build plan | Cards line up best with 3, 4, 5, 6, or 8 steps |
+| `references` | Papers, datasheets, videos, build logs | Titles like "Source — what it is" |
+
+**Overview or Documentation?** The Overview is the polished summary that
+anyone can read in two minutes. The Documentation section (4.16) is the
+working detail: week-by-week schedules, procedures, recipes, and
+troubleshooting. When a big milestone lands, update both: the Overview's
+numbers and steps, and the Documentation's timeline.
+
+**Stick to what's true.** Only put numbers in `highlights` that the
+team has measured or designed to. If it's a target, say so in the label
+("Target feature size").
+
+#### Behind the scenes
+
+- The layout is `layouts/partials/doc-overview.html`.
+- Markdown images (`![Caption](/images/…)`) are turned into framed
+  figures by `layouts/_default/_markup/render-image.html`.
+- `layouts/partials/overview-srcs.html` lists the Overview's images so
+  lower sections can skip repeats.
+- When an Overview exists, `layouts/machines/single.html` hides the
+  Background section and the fallback spec boxes (`doc-specs.html`).
+- The Maskless Stepper's figures were pulled out of the club's *[Master]*
+  PDF at full resolution into `static/images/machines/maskless-stepper/`.
+
+### 4.18 Moving an image on a machine page
+
+Images aren't placed by dragging. **An image shows up wherever its
+lines sit in a file**, so moving an image means cutting its lines and
+pasting them somewhere else. These are all the places an image can
+live on a machine page. Find the one it's in now, then pick where it should go.
+
+| Where it shows on the page | Which file | What the lines look like |
+|---|---|---|
+| **Overview**: the big diagram under the intro | `data/overviews/<machine>.yaml` | `hero:` → `src:` + `caption:` |
+| **Overview**: beside a section's text | `data/overviews/<machine>.yaml` | `image:` + `caption:` inside a `sections:` block |
+| **Overview**: under the numbered steps | `data/overviews/<machine>.yaml` | `images:` inside `process:` |
+| **Design architecture** | `content/machines/<machine>.md` | `architectureDiagrams:` list |
+| **Inside the Documentation text** | `content/machines/<machine>.md` | `![Caption](/images/…)` in the `documentation:` block |
+| **Documentation photos** (below the write-up) | `content/machines/<machine>.md` | `documentationPhotos:` list |
+| Near the top, under the title | `content/machines/<machine>.md` | `photos:` list |
+
+After any move, run `hugo server` and check the page (section 2).
+
+#### Swap an Overview image to the other side
+
+Section images alternate automatically: the first section's image is on
+the **right**, the second's on the **left**, and so on. To pin one
+section's image to a side, add `imageSide:` under its `caption:`:
+
+```yaml
+  - title: "Vacuum, gas, and power"
+    text: |
+      The chamber has to reach high vacuum…
+    image: "/images/machines/DCMagnSub.jpg"
+    caption: "Figure 2: Early subsystem sketches…"
+    imageSide: "right"          # or "left"
+```
+
+Only that section changes. The shaded and white background bands keep
+alternating. On phones, the text always comes first and the image below
+it, whatever the side.
+
+#### Move an image to a different Overview section
+
+1. In `data/overviews/<machine>.yaml`, find the `image:` line and the
+   `caption:` line under it (and `imageSide:` if there is one).
+2. Cut those lines.
+3. Paste them into the other section, **under that section's `text:`
+   block**, lined up with its `title:` (four spaces in):
+
+   ```yaml
+     - title: "Control and safety"
+       text: |
+         A thermocouple is inserted radially…
+       image: "/images/machines/tube-furnace/controller.jpg"
+       caption: "Figure 3: The PID controller and SSR."
+   ```
+
+4. If both sections should have a picture, you don't have to move
+   anything: add `image:` and `caption:` to the second one.
+5. Renumber the "Figure N" captions so they run in order down the page.
+
+**Two or more images in one section:** use `images:` instead of
+`image:`. They stack top to bottom in the order listed, so reordering
+the list reorders the pictures:
+
+```yaml
+    images:
+      - src: "/images/machines/spinner-layout.jpg"
+        caption: "Figure 2: Layout."
+      - src: "/images/machines/spinner-circuit-diagram.jpg"
+        caption: "Figure 3: Circuit."
+```
+
+#### Move a whole section (text and image together)
+
+Sections appear in the order they're listed under `sections:`. Cut the
+whole block, from its `- title:` line down to just before the next
+`- title:`, and paste it where you want it. The image travels with it.
+Because sides alternate, moving a section can flip which side its image
+is on. Add `imageSide:` if it matters.
+
+#### Make an image the big one at the top (the hero)
+
+1. Cut its `src` path and caption from wherever it is now.
+2. Paste them under `hero:`, near the top of the Overview file:
+
+   ```yaml
+   hero:
+     src: "/images/machines/tube-furnace-layout.jpg"
+     caption: "Figure 1: …"
+   ```
+
+3. Only one image can be the hero. Move the old hero into a section
+   (see above), or delete it.
+
+#### Move an image into or out of the Overview
+
+- **From Design architecture or Documentation photos into the
+  Overview:** you don't have to delete it from the machine's file. Add
+  it to the Overview (hero, a section, or the process), and it's
+  **automatically left out** of the lower section, so it only appears
+  once. If that leaves the lower section empty, the section and its
+  jump-bar pill disappear.
+- **Out of the Overview, back down the page:** delete its lines from
+  the Overview file. If it's still listed under `architectureDiagrams:`
+  or `documentationPhotos:`, it reappears there by itself.
+
+#### Put an image in the middle of the Documentation text
+
+To show a picture at an exact spot in a write-up (next to the step it
+belongs to, for example), put a markdown image line there:
+
+```yaml
+documentation: |
+  ## Timeline
+
+  ### Week 3: Core Mechanical & Thermal Assembly
+  ![Figure 2: The coil after winding, before cementing.](/images/machines/tube-furnace/coil.jpg)
+
+  - **Days 1–2**: Cement the tube's wound zone…
+```
+
+- The text in `[ ]` becomes the caption. The path goes in `( )`.
+- Keep the line indented like the rest of the block (see 4.16), with a
+  blank line after it.
+- It shows as a framed figure that links to the full-size file, the same
+  as images elsewhere on the page. This also works in the Background
+  text and in any Overview `text: |` block.
+- **The file name can't contain spaces** in this form. Rename
+  `Coil Photo.jpg` to `coil-photo.jpg` first.
+- To move it, cut the line and paste it somewhere else in the block.
+
+#### Reorder Design architecture or Documentation photos
+
+Both are lists in the machine's file in `content/machines/`. They show
+in list order: top of the list = first on the page. Cut a `- src:` line
+and the `caption:` line under it (if any) and paste them higher or
+lower in the list.
+
+```yaml
+architectureDiagrams:
+  - src: "/images/machines/spinner-layout.jpg"        # shows first
+    caption: "Physical layout…"
+  - src: "/images/machines/spinner-circuit-diagram.jpg"
+    caption: "Motor control…"
+```
+
+Keep the `- src:` lines lined up with each other, and each `caption:`
+two spaces further in than its `- src:`.
+
+#### Crop an image (trim a black bar, border, or extra space)
+
+The site **never crops images**. It always shows the whole file, so
+labels and edges don't get cut off. That also means anything unwanted
+at the edge of a picture (a black bar from a screenshot, a window
+border, too much white space) shows on the page too. The fix is to crop
+the image file itself, then point the page at the cropped file.
+
+**Example:** the probe station drawing,
+`static/images/machines/Nanofab probe station.png`, had a black bar
+down its right edge, left over from a screenshot. The bar was cut off
+and the result saved as `static/images/machines/probe-station-concept.png`.
+In `content/machines/probe-station.md`, the `photos:` entry now points
+at the new file. The original was left alone, so nothing is lost.
+
+**On a Mac (Preview):**
+
+1. Open the image in Preview.
+2. Drag a box over the part you want to **keep**. If you don't get a
+   box, choose Tools → Rectangular Selection first. Zoom in
+   (<kbd>⌘</kbd> <kbd>+</kbd>) to line the edge up exactly.
+3. Tools → **Crop** (<kbd>⌘</kbd> <kbd>K</kbd>).
+4. File → **Export…** and save it under a **new name**: lowercase,
+   hyphens, no spaces, for example `probe-station-concept.png`. Save it
+   into `static/images/machines/`. Exporting instead of saving keeps the
+   original as it was.
+
+**On Windows (Photos):** open the image, click **Edit image** (or
+<kbd>Ctrl</kbd> <kbd>E</kbd>), choose **Crop**, drag the edges in, then
+**Save as copy** with a new lowercase-hyphen name.
+
+**Then point the page at the new file.** Find the old path in the
+machine's file (`content/machines/<machine>.md`) or its Overview
+(`data/overviews/<machine>.yaml`) and change it:
+
+```yaml
+photos:
+  - src: "/images/machines/probe-station-concept.png"
+```
+
+Tips:
+
+- **Keep a small margin.** Stop the crop a few pixels short of the
+  drawing, so its edge doesn't touch the frame on the page.
+- **Check the whole edge.** A bar can be dark only part of the way down.
+  Zoom out and look at all four edges before exporting.
+- **Delete the original only when you're sure.** If it's not in git yet,
+  deleting it means it's gone. If nothing on the site uses it anymore,
+  it's safe to remove.
+- **On github.com only?** You can't crop there. Download the image,
+  crop it as above, and upload the new file into `static/images/machines/`
+  with **Add file → Upload files**.
+
+#### What you can't change from these files
+
+- **Size.** Images always fit the width of their column and are never
+  cropped. Overview figures stop at about 28rem tall, Documentation
+  photos sit in fixed-height frames. To change those limits, edit
+  `max-h-[28rem]` in `layouts/partials/doc-overview.html`, `h-80
+  sm:h-96` in `layouts/partials/doc-photos.html`, or `.md-figure-frame
+  img` in `static/css/styles.css`.
+- **Image above or below the text in an Overview section.** Sections
+  are always side by side on wide screens. For a picture on its own,
+  full width, make it the hero, or put it in the `process:` `images:`.
+- **Which sections exist and their order on the page** (Overview,
+  Architecture, Documentation…). That's the template; see "Moving it
+  higher up the page" in 4.16.
+
+#### If an image doesn't show
+
+- The path must start with `/images/` and leave out `static`.
+- Capitals must match exactly: `Coil.JPG` and `coil.jpg` are different
+  files once the site is published.
+- The file has to actually be in `static/images/…`. On github.com,
+  upload it into that folder first.
+- A YAML error naming a line usually means the pasted lines are
+  indented differently from their neighbours.
 
 ---
 

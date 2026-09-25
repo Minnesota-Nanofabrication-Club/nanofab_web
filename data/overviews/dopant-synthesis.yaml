@@ -1,0 +1,57 @@
+# ===================================================================
+# OVERVIEW for the Dopant Synthesis — the illustrated section at the top of
+# /machines/dopant-synthesis/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Dopant Synthesis"
+
+intro: |
+  Gen 1 dopes wafers with commercial spin-on dopant: reliable, but only
+  at whatever concentration the vendor sells. Gen 2 makes its own, so
+  **doping concentration becomes a design parameter** instead of a
+  catalogue choice.
+
+highlights:
+  - value: "B · P"
+    label: "Boron (p-type), phosphorus (n-type)"
+  - value: "Sol-gel"
+    label: "Spin-on glass carrier"
+  - value: "1e18–1e20"
+    label: "Target range, cm⁻³"
+
+sections:
+  - title: "A dial instead of a menu"
+    text: |
+      The point isn't cost. A device that needs a specific junction
+      profile needs a dopant source tuned to it. Off-the-shelf products
+      give you a handful of fixed options; a sol-gel we mix ourselves
+      gives us a dial.
+
+      That matters directly for the radiation work: hardness against total
+      dose depends on how the junctions are doped.
+
+  - title: "The chemistry"
+    text: |
+      A **silica precursor** carries boron or phosphorus. It spins on as a
+      liquid and bakes down into a solid glass film holding the dopant.
+      How much dopant goes into the mix sets how much ends up in the
+      silicon.
+
+      Film uniformity matters: streaks in the coated layer become streaks
+      in the doping, and those become device-to-device variation across
+      the wafer.
+
+process:
+  title: "From mix to recipe table"
+  steps:
+    - title: "Mix"
+      text: "Add boron or phosphorus to the sol-gel at a chosen concentration."
+    - title: "Coat"
+      text: "Spin the liquid onto the wafer."
+    - title: "Bake"
+      text: "It densifies into a solid doped-glass film."
+    - title: "Drive in"
+      text: "Furnace time and temperature carry dopant into the silicon."
+    - title: "Measure"
+      text: "Four-point-probe sheet resistance goes into the recipe table."

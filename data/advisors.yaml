@@ -18,8 +18,18 @@
 #                     bio, not a CV. Leave "" and the card just shows
 #                     their name and role.
 #   link   optional — their faculty page. Leave "" to hide it.
+#                     The button reads "Faculty page", or "LinkedIn
+#                     page" automatically when the link is to
+#                     linkedin.com.
+#   linkLabel optional — different text for that button, e.g.
+#                     "Lab website". Leave it out to use the default.
 #   photo  optional — leave "" and the card shows their initials,
 #                     which looks intentional rather than broken.
+#   photoPosition optional — which part of the photo to keep when
+#                     it's trimmed to fit the frame: "X% Y%", where
+#                     X is left→right and Y is top→bottom. Default
+#                     "center 15%". Use it when a face looks off-centre
+#                     or cut off. See README 4.9.
 #
 # PHOTOS go in static/images/advisors/. Any size works — they’re
 # cropped to a square automatically, centred on the middle of the
@@ -64,3 +74,14 @@
      can be found on her website listed below.
   link: "https://cse.umn.edu/ece/bethanie-stadler"
   photo: "/images/advisors/stadler.png"
+
+- name: Scott Hareland
+  role: Adjunct Professor — Electrical & Computer Engineering
+  bio: >-
+    Professor Hareland has been advising the club since its founding, he has developed skills on
+    semiconductor devices, applied physics, and medical systems. Extra information can be found on his LinkedIn profile listed below.
+  link: "https://www.linkedin.com/in/scott-hareland-ph-d-410a903/"
+  photo: "/images/advisors/Scott.jpeg"
+  # His face sits left of centre in the original, so shift the framing
+  # left (25% across) to centre it. See README 4.9.
+  photoPosition: "25% 0%"

@@ -31,10 +31,15 @@
         "title" "Documentation"
         "meta" (cond (isset .Params "documentationupdated") (printf "Updated %s" .Params.documentationUpdated) "")) }}
 
-    {{ if .Params.documentation }}
+    {{/* documentationLayout: "plain" in a machine's file keeps the
+         original single-column write-up. Everything else gets the sectioned layout in
+         doc-writeup-rich.html. */}}
+    {{ if and .Params.documentation (eq .Params.documentationLayout "plain") }}
     <div class="prose text-muted text-[1.0625rem] max-w-3xl">
       {{ .Params.documentation | markdownify }}
     </div>
+    {{ else if .Params.documentation }}
+    {{ partial "doc-writeup-rich.html" . }}
     {{ else }}
     <div class="rounded-xl border border-dashed border-line bg-surface/50 p-6 max-w-3xl">
       <p class="font-display font-semibold text-lg">Not written up yet</p>

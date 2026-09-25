@@ -1,0 +1,78 @@
+{{/* POLISHED DOCUMENTATION LAYOUT — called from doc-writeup.html.
+
+     Takes the same markdown "documentation:" block and lays it out
+     like a finished page instead of one long column of bullets:
+
+       - every "## Heading" becomes its own numbered section
+       - every "### Heading" under it becomes a card on a timeline
+         rail, so phases / weeks / subsystems read as distinct steps
+       - "### Week 3: Title", "### Stage 1: Title", "### Phase 2: …"
+         get the "Week 3" part pulled out as a small label above
+       - a bullet starting "**Milestone**:" becomes a gold callout,
+         and "**STOP-GATE**:" a maroon one
+       - tables get a frame and scroll sideways on phones
+       - an "On this page" menu down the left, on wide screens
+
+     Students don't have to do anything differently — keep writing
+     normal markdown with ## and ### headings. */}}
+{{ $html := .Params.documentation | markdownify | string }}
+
+{{ $html = replaceRE `<table>` `<div class="doc-table-wrap"><table>` $html }}
+{{ $html = replaceRE `</table>` `</table></div>` $html }}
+{{ $html = replaceRE `<li><strong>Milestone</strong>:?\s*` `<li class="doc-flag doc-flag-milestone"><strong>Milestone</strong> ` $html }}
+{{ $html = replaceRE `<li><strong>STOP-GATE</strong>:?\s*` `<li class="doc-flag doc-flag-stop"><strong>Stop-gate</strong> ` $html }}
+{{ $html = replaceRE `(<h3[^>]*>)((?:Weeks?|Days?|Phase|Stage|Step)\s[^:<]{1,20}):\s*` `${1}<span class="doc-kicker">${2}</span>` $html }}
+
+{{/* Menu entries: the ## headings, or the ### ones if there's only
+     a single ## (a proposal with one title and many subsections). */}}
+{{ $heads := findRE `<h2 id="[^"]+">.*?</h2>` $html }}
+{{ if lt (len $heads) 2 }}
+  {{ $heads = findRE `<h3 id="[^"]+">.*?</h3>` $html }}
+{{ end }}
+{{ $showMenu := ge (len $heads) 3 }}
+{{ $numbered := ge (len (findRE `<h2 ` $html)) 2 }}
+
+<div class="{{ if $showMenu }}lg:grid lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-14{{ end }}">
+
+  {{ if $showMenu }}
+  <aside class="hidden lg:block">
+    <nav class="sticky top-36" aria-label="Documentation contents">
+      <p class="text-xs uppercase tracking-widest text-muted mb-3">On this page</p>
+      <ol class="space-y-1 border-l border-line">
+        {{ range $heads }}
+        {{ $id := replaceRE `^<h[23] id="([^"]+)">.*$` "$1" . }}
+        {{ $label := . | replaceRE `<span class="doc-kicker">.*?</span>` "" | plainify | htmlUnescape }}
+        <li>
+          <a href="#{{ $id }}"
+             class="block -ml-px border-l-2 border-transparent pl-3 py-1 text-sm leading-snug text-muted hover:text-maroon hover:border-maroon transition-colors">
+            {{ $label }}
+          </a>
+        </li>
+        {{ end }}
+      </ol>
+    </nav>
+  </aside>
+  {{ end }}
+
+  <div class="doc-rich max-w-3xl {{ if $numbered }}doc-numbered{{ end }}">
+    {{ range $i, $p := split $html "<h2" }}
+      {{ $part := cond (eq $i 0) $p (printf "<h2%s" $p) }}
+      {{ if trim $part " \n\t" }}
+      {{ $cards := split $part "<h3" }}
+      <section class="doc-part {{ if gt $i 0 }}has-h2{{ end }}">
+        {{ with trim (index $cards 0) " \n\t" }}
+        <div class="prose text-muted text-[1.0625rem]">{{ . | safeHTML }}</div>
+        {{ end }}
+        {{ if gt (len $cards) 1 }}
+        <div class="doc-cards">
+          {{ range after 1 $cards }}
+          <div class="doc-card prose text-muted">{{ printf "<h3%s" . | safeHTML }}</div>
+          {{ end }}
+        </div>
+        {{ end }}
+      </section>
+      {{ end }}
+    {{ end }}
+  </div>
+
+</div>

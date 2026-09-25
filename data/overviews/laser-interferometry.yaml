@@ -1,0 +1,80 @@
+# ===================================================================
+# OVERVIEW for Laser Interferometry — the illustrated section at the
+# top of /machines/laser-interferometry/. How to edit: README section
+# 4.17. Delete a block and it just won't show.
+# ===================================================================
+
+title: "Heterodyne Laser Interferometer"
+
+intro: |
+  Laser interferometry measures distance with light, to nanometers,
+  without touching anything. Our system gives the X and Y stages of the
+  maskless stepper **real-time, closed-loop position feedback**, and it
+  can measure film thickness and flatness.
+
+hero:
+  src: "/images/machines/LinearInterferometer.drawio.png"
+  caption: "Figure 1: Heterodyne interferometer: a two-frequency HeNe laser, reference and measurement reflectors, an optical receiver, and an ESP32 streaming data to a PC."
+
+highlights:
+  - value: "F1 · F2"
+    label: "Two frequencies from a Zeeman-split HeNe laser"
+  - value: "nm"
+    label: "Resolution, set by the laser wavelength"
+  - value: "MHz"
+    label: "Beat frequencies read by an ESP32"
+  - value: "Non-contact"
+    label: "Nothing touches the surface"
+
+sections:
+  - title: "Measuring with light"
+    text: |
+      Light reflecting off the top of a thin film and light reflecting off
+      the bottom travel slightly different distances. Where those two
+      waves line up they brighten; where they oppose, they cancel. The
+      resulting pattern encodes the film thickness, and since the laser's
+      wavelength is known exactly, so is the thickness.
+
+      That gives us **nanometer measurements without touching anything**,
+      which matters because a stylus profiler scratches the surface it's
+      measuring.
+    image: "/images/machines/Michealson Interferometer.drawio.png"
+    caption: "Figure 2: A basic Michelson interferometer: one beam split into two paths and recombined at a detector."
+
+  - title: "Why heterodyne"
+    text: |
+      Because the stepper's projection field is smaller than the wafer,
+      the substrate has to be stepped precisely. A homodyne system, such
+      as a Mach-Zehnder interferometer, is susceptible to DC noise.
+
+      A **heterodyne** interferometer avoids that. When a magnetic field
+      is applied to a standard HeNe laser tube, the **Zeeman effect**
+      splits the beam into two known frequencies, F1 and F2. Position
+      comes from comparing their beat frequencies rather than from raw
+      brightness.
+
+  - title: "Where it plugs in"
+    text: |
+      - **Maskless stepper:** the interferometer feeds position data
+        directly to the motion controller. If the stage overshoots, the
+        software digitally shifts the exposure pattern to line up with
+        the previous field.
+      - **Probe station:** when moving between microscopic die pads, the
+        stage makes sub-micron step-and-repeat moves, so probes land
+        squarely on metal contacts without scratching surrounding layers.
+      - **Deposition:** today we estimate sputtered film thickness from
+        time and power. With this tool, we measure it.
+
+process:
+  title: "The signal path"
+  steps:
+    - title: "Two frequencies"
+      text: "The Zeeman-split laser emits F1 and F2."
+    - title: "Split"
+      text: "A beam splitter sends F2 to the reference reflector and F1 to the measurement reflector."
+    - title: "Doppler shift"
+      text: "The moving measurement mirror shifts F1 to F1 + ΔF1."
+    - title: "Beat"
+      text: "The receiver reads F2 − (F1 + ΔF1); the laser outputs the reference F2 − F1."
+    - title: "Position"
+      text: "An ESP32 compares the two and sends position to the PC."

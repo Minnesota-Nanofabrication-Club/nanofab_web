@@ -1,0 +1,55 @@
+# ===================================================================
+# OVERVIEW for the Spin-On Doping process — the illustrated section at the top of
+# /machines/spin-on-doping/. How to edit: README section 4.17.
+# Delete a block and it just won't show.
+# ===================================================================
+
+title: "Spin-On Doping"
+
+intro: |
+  Doping is how silicon stops being an inert crystal and starts being an
+  electronic device. We spin on a liquid dopant, then bake it in,
+  getting to a p–n junction chemically instead of with a
+  multi-million-dollar ion implanter.
+
+highlights:
+  - value: "B · P"
+    label: "Boron (p-type), phosphorus (n-type)"
+  - value: "200 °C"
+    label: "Densification bake"
+  - value: "900–1000 °C"
+    label: "Drive-in, in N₂"
+
+sections:
+  - title: "Why doping matters"
+    text: |
+      Adding a few parts per million of boron or phosphorus changes
+      silicon's conductivity by orders of magnitude. Putting p-type
+      material next to n-type material creates a **junction**, the
+      building block under every diode and transistor.
+
+  - title: "Chemistry instead of an implanter"
+    text: |
+      Industry uses ion implantation: accelerate dopant ions to tens of
+      keV and fire them into the wafer. It's precise, and the machine
+      costs several million dollars.
+
+      Spin-on doping coats a dopant-bearing glass on the surface, heats
+      it, and lets diffusion carry the atoms in. Less control over the
+      exact profile, but it uses equipment we already have. Junction depth
+      goes as the square root of time, so doubling the depth costs four
+      times the furnace time.
+
+process:
+  title: "The doping sequence"
+  steps:
+    - title: "Mask"
+      text: "Patterned oxide blocks diffusion outside the windows."
+    - title: "Coat"
+      text: "Spin on the boron or phosphorus glass."
+    - title: "Densify"
+      text: "Bake at 200 °C into a solid doped film."
+    - title: "Drive in"
+      text: "900–1000 °C in nitrogen in the tube furnace."
+    - title: "Strip"
+      text: "Dilute HF removes the spent glass."

@@ -4,15 +4,18 @@
 # TO ADD a sponsor:     copy a whole "- name:" block and edit it.
 # TO REMOVE a sponsor:  delete their block, OR put a # in front of
 #                       each of its lines to hide them temporarily
-#                       (see the commented-out Basler block below —
-#                       deleting the #s puts them straight back).
+#                       (deleting the #s puts them straight back).
 #
 # "logo" is optional:
 #   logo: ""                              -> shows the sponsor’s name as text
 #   logo: "/images/sponsors/name.png"     -> shows their logo instead
 #
-# Logo files go in static/images/sponsors/. Keep them small — the site
-# displays them about 40 pixels tall. See README section 4.10.
+# "url" is optional — the company's website. It adds a "Visit website"
+# link at the bottom of their card and makes the logo clickable.
+#   linkLabel: "Get in touch"   -> different text for that link
+#
+# Logo files go in static/images/sponsors/, trimmed tight with no blank
+# border. The site shows them up to 80 px tall. See README section 4.11.
 #
 # The dashed "interested in supporting us?" card at the end is built
 # into the template, not listed here — its wording lives in
@@ -22,9 +25,9 @@
 - name: Ideal Vac
   description: Vacuum systems and components supporting our fabrication work.
   logo: "/images/sponsors/ideal-vac.png"
-# ---- Not a sponsor yet. Delete the leading "#" on the three lines
-# ---- below to put them back on the site.
-#
--  name: Basler
-   description: Machine vision cameras used for imaging and inspection in the lab.
-   logo: "/images/sponsors/basler.png"
+  url: "https://www.idealvac.com/"
+
+- name: Basler
+  description: Machine vision cameras used for imaging and inspection in the lab.
+  logo: "/images/sponsors/basler-logo.png"
+  url: "https://www.baslerweb.com/"

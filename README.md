@@ -896,20 +896,75 @@ an officer and a lead is listed in both files (reuse the same `photo`).
 - name: Ideal Vac
   description: Vacuum systems and components supporting our fabrication work.
   logo: "/images/sponsors/ideal-vac.png"
+  url: "https://www.idealvac.com/"
 ```
+
+| Field | Required? | Notes |
+|---|---|---|
+| `name` | yes | Used as the logo's alt text, or shown as text if there's no logo |
+| `description` | yes | One sentence on what they provide |
+| `logo` | no | See "Adding a sponsor's logo" below |
+| `url` | no | Their website. Adds a link at the bottom of the card and makes the logo clickable |
+| `linkLabel` | no | Text for that link. Default **Visit website** |
 
 | To do this | Do this |
 |---|---|
 | **Add** a sponsor | Copy a whole `- name:` block and edit it |
 | **Remove** a sponsor for good | Delete their block |
-| **Take one off the site for now** | Put a `#` in front of each of their three lines |
+| **Take one off the site for now** | Put a `#` in front of each of their lines |
 | **Put a hidden one back** | Delete the `#` from the front of those lines |
 
 That last pair is worth knowing. Commenting a sponsor out keeps their text
 sitting in the file ready to restore, rather than making you retype it
-later. **Basler is currently commented out this way** at the bottom of the
-file — deleting the three `#` characters puts them straight back on the
-site.
+later.
+
+#### The link to a sponsor's website
+
+With a `url:`, the card gets a **Visit website →** link at the bottom,
+lined up across all the cards. The logo becomes clickable too. Both open the
+company's site in a new tab, so visitors don't lose the club's page.
+
+- Use the company's main site (`https://www.baslerweb.com/`), or a
+  specific page if they'd prefer, such as a university-program or
+  contact page.
+- To change the wording for one sponsor, add `linkLabel:`:
+
+  ```yaml
+    url: "https://www.idealvac.com/contact"
+    linkLabel: "Get in touch"
+  ```
+
+- Leave `url:` out and the card has no link, as before.
+
+#### The hidden "Want to support the club?" card
+
+There used to be a dashed card after the sponsors saying **Want to
+support the club? Get in touch →**, which emailed the club
+(`contactEmail` in `hugo.toml`). It's **commented out, not deleted**, so
+it's easy to bring back.
+
+It's near the bottom of `layouts/partials/sponsors.html`, wrapped like
+this:
+
+```
+{{/* HIDDEN: the dashed "Want to support the club? … */}}
+{{/*
+<div class="border border-dashed …">
+  … Want to support the club? … Get in touch → …
+</div>
+*/}}
+```
+
+- **To show it again:** delete the line that is only `{{/*` and the
+  line that is only `*/}}`. Leave the `HIDDEN:` note or delete it too;
+  it's a complete comment on its own, so either is fine.
+- **To change its wording** while it's back, edit the text inside the
+  `<div>`.
+
+Why `{{/* */}}` and not `<!-- -->`: an HTML comment still sends the
+hidden card to every visitor's browser, where anyone can see it with
+View Source. A Hugo comment is removed when the site is built, so it
+only exists in the file.
 
 #### Adding a sponsor's logo
 
@@ -932,27 +987,58 @@ To add one:
    ```
 
 **Keep the file reasonably small.** The site displays logos up to about
-**96 pixels tall** (more on big monitors), so a huge image gains you
+**80 pixels tall and 184 pixels wide**, so a huge image gains you
 nothing and just slows the page down. A logo much smaller than that
-(like the current `basler.png`, 238 × 148) will look soft. Aim for:
+will look soft. Aim for:
 
 | | Recommendation |
 |---|---|
 | Format | **SVG** is ideal (stays sharp at any size). **PNG** otherwise |
 | Background | **Transparent** — a white box around the logo looks wrong on the off-white cards |
 | Size | At least **600 px wide** (or **200 px tall** for a squarer logo) |
+| Edges | **Trimmed tight** to the logo, with no blank border (see below) |
 | File size | Under **100 KB**. Most logos come in far under that |
 
 [Squoosh](https://squoosh.app) will shrink a too-large PNG for free with
 no visible quality loss. If all you have is a logo on a white background,
 ask the company for a transparent version — most have one ready to send.
 
-Wide logos and tall logos both work; the site scales them to fit the card
-and never stretches or distorts them.
+#### Making logos look the same size
 
-> The two files already in `static/images/sponsors/` (`ideal-vac.png` and
-> `basler.png`) are grey **placeholder graphics**, not real logos. Replace
-> them with the real thing before pointing any `logo:` field at them.
+Every logo gets the same box: at most **80 px tall** and at most
+**11.5rem (184 px) wide**. A tall, blocky logo stops at the height limit;
+a long, wide one stops at the width limit. That way a stacked logo like
+Ideal Vacuum's and a long wordmark like Basler's come out about the same
+visual size. Logos are never stretched or distorted.
+
+**The #1 reason a logo looks too small is blank space in the file.** The
+site sizes the whole image, border included. If half the file is white
+margin, the logo itself shows at half size next to its neighbours.
+
+**Example:** `basler.png` was a 238 × 148 image, but the logo inside it
+was only about 200 × 70. The rest was white border. Next to
+`ideal-vac.png`, which fills its file edge to edge, Basler looked tiny.
+The fix was to crop the border off. The result was saved as
+`basler-logo.png`, and `data/sponsors.yaml` points at that file.
+
+To trim a logo:
+
+1. Open it in Preview (Mac) or Photos (Windows).
+2. Crop to the logo, leaving just 2–3 px of space around it. The steps
+   are in "Crop an image" in 4.18.
+3. Export it into `static/images/sponsors/` under a new name (for
+   example `company-logo.png`) and point `logo:` at it.
+
+**If logos still look unbalanced**, change the limits in
+`layouts/partials/sponsors.html`, on the `<img>` line:
+
+- `max-h-20` is the height limit (20 = 80 px; `max-h-16` = 64 px,
+  `max-h-24` = 96 px).
+- `max-w-[11.5rem]` is the width limit. Make it smaller if wide logos
+  look too big, larger if they look too small.
+
+The limits apply to every sponsor at once, so change them in small steps
+and check all the logos together.
 
 ### 4.12 Images
 

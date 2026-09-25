@@ -5,23 +5,45 @@
 
   <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
     {{ range hugo.Data.sponsors }}
+    {{ $sponsor := . }}
     <div class="border border-line bg-surface rounded-lg p-6 flex flex-col">
       {{/* The logo IS the name — no separate text heading under it.
            The name is still used as the image's alt text for screen
            readers, and shows as text only if there's no logo file. */}}
       <div class="h-24 flex items-center mb-5">
+        {{ with .url }}<a href="{{ . }}" target="_blank" rel="noopener" class="block" aria-label="{{ $sponsor.name }} website">{{ end }}
         {{ if .logo }}
-        <img src="{{ strings.TrimPrefix "/" (.logo) | relURL }}" alt="{{ .name }}" loading="lazy" class="max-h-24 max-w-full object-contain object-left" />
+        {{/* Capped by height AND width, so a tall logo and a wide logo
+             come out looking the same size: tall ones stop at the
+             height limit, wide ones at the width limit. Logo files
+             should be trimmed to the logo with no blank border
+             (README 4.11). */}}
+        <img src="{{ strings.TrimPrefix "/" (.logo) | relURL }}" alt="{{ .name }}" loading="lazy" class="max-h-20 max-w-[11.5rem] w-auto h-auto object-contain object-left" />
         {{ else }}
         <span class="font-display font-semibold text-2xl">{{ .name }}</span>
         {{ end }}
+        {{ if .url }}</a>{{ end }}
       </div>
-      <p class="text-sm text-muted leading-relaxed">{{ .description }}</p>
+      <p class="text-sm text-muted leading-relaxed flex-1">{{ .description }}</p>
+      {{/* Link to the company's site, styled like the "Get in touch"
+           link on the dashed card so the row lines up. Text can be
+           changed per sponsor with linkLabel in data/sponsors.yaml. */}}
+      {{ with .url }}
+      <a href="{{ . }}" target="_blank" rel="noopener"
+         class="inline-flex items-center gap-2 text-sm font-medium text-maroon hover:underline underline-offset-4 mt-5 self-start">
+        {{ $sponsor.linkLabel | default "Visit website" }} &rarr;
+      </a>
+      {{ end }}
     </div>
     {{ end }}
 
-    <!-- Empty sponsor slot — an intentional invitation, not a placeholder image.
-         EDIT HERE if you want to change this wording. -->
+    {{/* HIDDEN: the dashed "Want to support the club? Get in touch →"
+         card that used to sit after the sponsors. It emailed the club
+         (contactEmail in hugo.toml). To bring it back, delete the two
+         marker lines around it: the line that is only an opening
+         comment marker, and the line that is only a closing one.
+         See README 4.11. */}}
+    {{/*
     <div class="border border-dashed border-line rounded-lg p-6 flex flex-col justify-between bg-surface/40">
       <p class="text-sm text-muted leading-relaxed">
         Want to support the club?
@@ -31,5 +53,6 @@
         Get in touch →
       </a>
     </div>
+    */}}
   </div>
 </section>

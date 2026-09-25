@@ -11,7 +11,7 @@
         "title" "The fab, machine by machine"
         "lead" "Two build generations run side by side. Gen 1 is the first working line; Gen 2 is the more capable one that follows it. Click any machine for its subsystems and build status.") }}
 
-    <a href="{{ "/machines/" | relURL }}"
+    <a href="{{ strings.TrimPrefix "/" ("/machines/") | relURL }}"
        class="inline-flex items-center gap-2 rounded-md border-2 border-maroon text-maroon px-5 py-2.5 text-sm font-semibold hover:bg-maroon hover:text-white transition-colors shrink-0 md:mb-1">
       All {{ len $machines }} machines →
     </a>

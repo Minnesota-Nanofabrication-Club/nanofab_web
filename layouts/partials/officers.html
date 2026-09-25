@@ -17,7 +17,7 @@
            top half of a headshot, so centring cuts the head off.
            Override per person with "photoPosition:" in
            data/officers.yaml. */}}
-      <img src="{{ .photo | relURL }}" alt="{{ .name }}"
+      <img src="{{ strings.TrimPrefix "/" (.photo) | relURL }}" alt="{{ .name }}"
            loading="lazy"
            class="w-20 h-20 rounded-full object-cover border-2 border-line bg-paper"
            style="object-position: {{ .photoPosition | default "center 25%" }}" />

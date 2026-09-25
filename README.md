@@ -1427,6 +1427,16 @@ brand-new section, or change how something looks, that lives in `layouts/`:
   them all together.
 - `layouts/partials/track-column.html` — one Gen 1 or Gen 2 column.
 - `layouts/partials/logo.html` — the club logo, with the `nF` fallback.
+- **Linking to an image or page from a template:** write
+  `{{ strings.TrimPrefix "/" (.photo) | relURL }}`, not `{{ .photo }}` or
+  `{{ .photo | relURL }}`. On GitHub Pages the site lives in a subfolder
+  (`…github.io/nanofab_web/`). Hugo's `relURL` only adds that subfolder
+  when the path *doesn't* start with `/`, and every image path in the
+  content starts with `/images/…`. Without the `TrimPrefix`, the image
+  loads from the wrong place and shows as broken on the live site, even
+  though it looks fine in `hugo server`. Menu links (`.URL` in
+  `header.html`) and `.RelPermalink` already include the subfolder, so
+  use those as they are.
 - `static/css/styles.css` — the handful of things Tailwind can't do: the
   readability baseline, the blueprint grid, the hero animation, the
   card hover effects, and the hero photo's full-bleed edge.

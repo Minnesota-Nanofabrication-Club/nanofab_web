@@ -12,7 +12,7 @@
 {{ $logo := site.Params.logo }}
 
 {{ if $logo }}
-<img src="{{ $logo | relURL }}"
+<img src="{{ strings.TrimPrefix "/" ($logo) | relURL }}"
      alt="{{ site.Params.logoAlt | default site.Title }}"
      class="shrink-0 w-auto object-contain"
      style="height:{{ $size }}px" />

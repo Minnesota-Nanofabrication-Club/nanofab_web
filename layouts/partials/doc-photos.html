@@ -29,9 +29,9 @@
         {{/* Fixed-height frame, image scaled to fit inside it
              (object-contain), so photos in the same row line up
              without any of them being cut off. */}}
-        <a href="{{ $p.src | relURL }}"
+        <a href="{{ strings.TrimPrefix "/" ($p.src) | relURL }}"
            class="group flex items-center justify-center h-80 sm:h-96 rounded-xl border border-line bg-white p-3 group-hover:border-maroon hover:border-maroon transition-colors">
-          <img src="{{ $p.src | relURL }}"
+          <img src="{{ strings.TrimPrefix "/" ($p.src) | relURL }}"
                alt="{{ $p.caption | default (printf "Documentation photo %d for the %s" (add $i 1) $.Title) }}"
                loading="lazy"
                class="max-w-full max-h-full object-contain" />
@@ -42,7 +42,7 @@
             <span class="h-px w-6 bg-gold shrink-0 mt-2.5"></span><span>{{ . }}</span>
           </span>
           {{ end }}
-          <a href="{{ $p.src | relURL }}"
+          <a href="{{ strings.TrimPrefix "/" ($p.src) | relURL }}"
              class="text-sm font-medium text-maroon hover:underline underline-offset-4 shrink-0">
             Full size &#8599;
           </a>

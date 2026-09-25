@@ -33,8 +33,8 @@
     {{/* bg-paper backs transparent PNGs; no padding, so a diagram
          with a dark background fills its frame rather than floating
          in a pale ring. */}}
-    <a href="{{ $d.src | relURL }}" class="group block">
-      <img src="{{ $d.src | relURL }}"
+    <a href="{{ strings.TrimPrefix "/" ($d.src) | relURL }}" class="group block">
+      <img src="{{ strings.TrimPrefix "/" ($d.src) | relURL }}"
            alt="{{ $d.caption | default (printf "Design diagram %d for the %s" (add $i 1) $.Title) }}"
            loading="lazy"
            class="w-full rounded-xl border border-line bg-paper group-hover:border-maroon transition-colors" />
@@ -45,7 +45,7 @@
         <span class="h-px w-6 bg-gold shrink-0 mt-2.5"></span><span>{{ . }}</span>
       </span>
       {{ end }}
-      <a href="{{ $d.src | relURL }}"
+      <a href="{{ strings.TrimPrefix "/" ($d.src) | relURL }}"
          class="text-sm font-medium text-maroon hover:underline underline-offset-4 shrink-0">
         Full size &#8599;
       </a>

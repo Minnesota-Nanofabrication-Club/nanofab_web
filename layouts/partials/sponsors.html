@@ -9,7 +9,7 @@
     <div class="border border-line bg-surface rounded-lg p-6 flex flex-col">
       <div class="h-10 flex items-center mb-5">
         {{ if .logo }}
-        <img src="{{ .logo | relURL }}" alt="{{ .name }} logo" loading="lazy" class="max-h-10 max-w-full object-contain object-left" />
+        <img src="{{ strings.TrimPrefix "/" (.logo) | relURL }}" alt="{{ .name }} logo" loading="lazy" class="max-h-10 max-w-full object-contain object-left" />
         {{ else }}
         <span class="font-display font-semibold text-xl">{{ .name }}</span>
         {{ end }}

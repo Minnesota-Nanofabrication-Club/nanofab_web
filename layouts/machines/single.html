@@ -48,9 +48,9 @@
     <div class="relative mx-auto max-w-6xl px-6 pt-12 pb-14">
 
       <nav class="text-sm text-muted mb-8 flex flex-wrap items-center gap-x-2" aria-label="Breadcrumb">
-        <a href="{{ "/" | relURL }}" class="hover:text-maroon transition-colors">Home</a>
+        <a href="{{ strings.TrimPrefix "/" ("/") | relURL }}" class="hover:text-maroon transition-colors">Home</a>
         <span class="text-line">/</span>
-        <a href="{{ "/machines/" | relURL }}" class="hover:text-maroon transition-colors">The fab</a>
+        <a href="{{ strings.TrimPrefix "/" ("/machines/") | relURL }}" class="hover:text-maroon transition-colors">The fab</a>
         {{ with $area }}
         <span class="text-line">/</span>
         {{/* /machines/ is split into a shared part then one band per
@@ -58,7 +58,7 @@
              #gen2-patterning rather than plain #patterning. */}}
         {{ $anchor := .slug }}
         {{ if $gen }}{{ $anchor = printf "%s-%s" (lower (replace $gen " " "")) .slug }}{{ end }}
-        <a href="{{ printf "/machines/#%s" $anchor | relURL }}" class="hover:text-maroon transition-colors">{{ .name }}</a>
+        <a href="{{ strings.TrimPrefix "/" (printf "/machines/#%s" $anchor) | relURL }}" class="hover:text-maroon transition-colors">{{ .name }}</a>
         {{ end }}
       </nav>
 
@@ -106,7 +106,7 @@
       <div class="grid gap-6 items-start {{ if not $single }}sm:grid-cols-2{{ end }}">
         {{ range . }}
         <figure class="{{ if $single }}max-w-4xl{{ end }}">
-          <img src="{{ .src | relURL }}"
+          <img src="{{ strings.TrimPrefix "/" (.src) | relURL }}"
                alt="{{ .caption | default (printf "%s in the lab" $.Title) }}"
                loading="lazy"
                class="w-full {{ if $single }}max-h-[520px]{{ else }}h-72{{ end }} object-contain rounded-xl border border-line bg-surface" />
@@ -215,7 +215,7 @@
         {{ end }}
       </div>
 
-      <a href="{{ "/machines/" | relURL }}" class="inline-flex items-center gap-2 mt-8 text-sm font-semibold text-maroon hover:underline underline-offset-4">
+      <a href="{{ strings.TrimPrefix "/" ("/machines/") | relURL }}" class="inline-flex items-center gap-2 mt-8 text-sm font-semibold text-maroon hover:underline underline-offset-4">
         &larr; All machines
       </a>
     </div>

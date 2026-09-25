@@ -49,7 +49,7 @@
                is where a face sits in a headshot. Override per person
                with "photoPosition:" in data/advisors.yaml if a
                particular photo needs different framing. */}}
-          <img src="{{ .photo | relURL }}" alt="{{ .name }}"
+          <img src="{{ strings.TrimPrefix "/" (.photo) | relURL }}" alt="{{ .name }}"
                loading="lazy"
                class="w-full aspect-[3/4] object-cover rounded-lg border border-line bg-paper"
                style="object-position: {{ .photoPosition | default "center 15%" }}" />

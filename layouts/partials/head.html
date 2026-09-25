@@ -17,7 +17,7 @@
 <link rel="canonical" href="{{ .Permalink }}" />
 
 {{/* Favicon — uses the club logo once params.logo is set in hugo.toml. */}}
-{{ with .Site.Params.logo }}<link rel="icon" href="{{ . | relURL }}" />{{ end }}
+{{ with .Site.Params.logo }}<link rel="icon" href="{{ strings.TrimPrefix "/" (.) | relURL }}" />{{ end }}
 
 <!-- ============================================================
      FONTS
@@ -87,4 +87,4 @@
   };
 </script>
 
-<link rel="stylesheet" href="{{ "css/styles.css" | relURL }}" />
+<link rel="stylesheet" href="{{ strings.TrimPrefix "/" ("css/styles.css") | relURL }}" />

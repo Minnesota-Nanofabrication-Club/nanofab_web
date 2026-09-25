@@ -17,7 +17,7 @@
 <div class="relative hero-bleed-right">
   <figure class="relative">
     <img
-      src="{{ . | relURL }}"
+      src="{{ strings.TrimPrefix "/" (.) | relURL }}"
       alt="{{ $.Params.labPhotoCaption | default (printf "%s lab space" $.Site.Params.shortTitle) }}"
       class="w-full h-[280px] sm:h-[380px] lg:h-[540px] object-cover rounded-l-2xl lg:rounded-r-none rounded-r-2xl border border-line shadow-[0_24px_60px_-30px_rgba(20,24,28,0.45)]"
     />

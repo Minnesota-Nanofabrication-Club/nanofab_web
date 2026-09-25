@@ -1,21 +1,22 @@
 <section id="mission" class="mx-auto max-w-6xl px-6 py-20 border-b border-line scroll-mt-24">
-  <div class="grid md:grid-cols-[1fr_1.25fr] gap-12 lg:gap-20">
+  <div class="grid md:grid-cols-[1fr_1.3fr] gap-12 lg:gap-20">
     {{ partial "section-head.html" (dict
         "eyebrow" "01 — Mission"
         "title" "What we do") }}
 
     <div>
-      <p class="text-lg text-muted leading-relaxed">
+      <p class="text-xl text-muted leading-relaxed">
         {{ .Params.missionIntro }}
       </p>
 
-      <dl class="mt-10 space-y-8">
+      {{/* The three focus areas. Content is in data/pillars.yaml. */}}
+      <dl class="mt-10 space-y-7">
         {{ range $i, $p := hugo.Data.pillars }}
         <div class="flex gap-5">
-          <span class="font-mono text-xs text-gold pt-1.5 shrink-0">{{ printf "%02d" (add $i 1) }}</span>
-          <div class="border-l-2 border-maroon/25 pl-5">
-            <dt class="font-display font-600 text-lg leading-snug">{{ $p.title }}</dt>
-            <dd class="text-sm text-muted mt-1.5 leading-relaxed">{{ $p.description }}</dd>
+          <span class="font-mono text-sm font-semibold text-gold-deep pt-1 shrink-0">{{ printf "%02d" (add $i 1) }}</span>
+          <div class="border-l-[3px] border-maroon/30 pl-5">
+            <dt class="font-display font-semibold text-xl leading-snug">{{ $p.title }}</dt>
+            <dd class="text-muted mt-2 leading-relaxed">{{ $p.description }}</dd>
           </div>
         </div>
         {{ end }}

@@ -1,45 +1,109 @@
 ---
 title: "Tube Furnace"
-category: "Thermal Processing & Doping"
-step: "Oxidation & Anneal"
-weight: 10
+category: "Gen 1 Thin Film Deposition"
+step: "Oxide & Anneal"
+weight: 20
 status: "building"
-summary: "Heats wafers to ~1000 °C in a controlled gas atmosphere to grow silicon dioxide, drive in dopants, and anneal out process damage."
+summary: "Heats wafers to about 1000 °C in a controlled gas flow to grow oxide, drive in dopants, and repair process damage."
 
-specs:
-  - label: "Max temperature"
-    value: "~1100 °C"
-  - label: "Tube diameter"
-    value: "2 in quartz"
-  - label: "Ambients"
-    value: "Dry O₂, wet O₂, N₂"
+# specs:
+#   - label: "Max temperature"
+#     value: "~1100 °C"
+#   - label: "Tube diameter"
+#     value: "2 in quartz"
+#   - label: "Ambients"
+#     value: "Dry O₂, wet O₂, N₂"
 
-# PHOTOS of this machine. Delete the leading "#" on the lines below
-# once you've put real image files in static/images/machines/.
-# One photo renders large; two or more render as a grid.
-# "caption" is optional.
+# DESIGN DIAGRAMS, shown at the top of "Design architecture".
+# Add as many as you like — copy a "- src:" pair for each one.
+architectureDiagrams:
+  - src: "/images/machines/tube-furnace-layout.jpg"
+    caption: "Resistive coil wound around the quartz process tube inside an insulated shell, driven through a solid-state relay from a PID controller running off a thermocouple."
+
+# DOCUMENTATION — the write-up section on this machine's page.
 #
-# photos:
-#   - src: "/images/machines/tube-furnace-1.jpg"
-#     caption: ""
-#   - src: "/images/machines/tube-furnace-2.jpg"
-#     caption: ""
+# Delete the leading "#" from the lines below and write in markdown.
+# The "|" means "keep everything below as one block of text", so
+# EVERY line inside has to stay indented two spaces further than
+# "documentation:". That indentation is the only fiddly part.
+#
+# Headings (##), numbered and bulleted lists, **bold**, `code`,
+# fenced code blocks, tables, and > callouts all render.
+# See README section 4.16.
+#
 
-subsystems:
-  - name: "Quartz process tube"
-    description: "Fused quartz is used because it stays dimensionally stable at 1000 °C and doesn't contaminate silicon. Metals would — trace metal diffusing into the wafer destroys carrier lifetime."
-  - name: "Resistive heating elements"
-    description: "Wound around the tube in zones. Multiple zones exist to create a flat temperature plateau in the middle of the furnace rather than a single peak."
-  - name: "PID controller & thermocouples"
-    description: "Type-K or type-R thermocouples feed a PID loop per zone. Oxide growth rate depends exponentially on temperature, so a 10 °C error is a large thickness error."
-  - name: "Gas delivery"
-    description: "Selects the ambient. Dry O₂ grows thin, dense, high-quality oxide slowly; steam (wet O₂) grows thick oxide much faster but less densely; N₂ gives an inert anneal with no growth."
-  - name: "Wafer boat & push rod"
-    description: "A quartz boat carries wafers into the hot zone. It's pushed in and pulled out slowly — thermal shock will crack a silicon wafer outright."
-  - name: "Insulation & shell"
-    description: "Ceramic fiber insulation keeps the outside touchable and, more importantly, keeps the hot zone thermally uniform."
-  - name: "Exhaust"
-    description: "Vents process gases and any dopant byproducts safely out of the lab."
+documentationUpdated: "Sept, 2026"
+documentation: |
+      ## Tube Furnace Project Documentation
+
+      ### Project Summary
+      A kanthal-element resistance tube furnace designed to reach 1100°C for annealing and oxidation of doped silicon wafers.
+      
+      - **Electrical Specs**: Runs on 780W at 120V through a 22 AWG Kanthal A1 coil (24 turns, ≈18.46Ω).
+      - **Control System**: Driven by a PID controller operating a zero-cross SSR in time-proportioning mode, backed by an independent high-limit thermal cutoff.
+      - **Build Duration**: Total lead time is ~4 weeks (governed primarily by custom quartz tube shipping), requiring ~20-25 hours of total hands-on assembly time.
+
+      ---
+
+      ## Timeline & Build Schedule
+
+      ### Week 0: Design, Theory & Procurement
+      - **Tasks**:
+        - Finalize design & engineering (thermal/electrical calculations, component selection, BOM).
+        - Most design time is spent refining parameters based on thermal and electrical calculations.
+        - Compile a summarized theory document covering all calculations and design rationale.
+        - Order all components simultaneously on Day 1 to parallelize shipping.
+
+      ### Weeks 1–2: Shipping & Lead Time
+      - **Status**: No active assembly work (waiting on component deliveries).
+      - **Long-pole Item**: Custom quartz tube (typically 7–14 days from supplier).
+      - **Standard Parts**: Expected arrival within 2–5 days.
+
+      ### Week 3: Core Mechanical & Thermal Assembly
+      - **Days 1–2** (~2–3 hrs + 12+ hr cure): Cement the tube's wound zone; allow to cure overnight.
+      - **Days 2–3** (~2–3 hrs + 12+ hr cure): Wind the Kanthal coil (24 turns, 22 AWG doubled). Verify resistance ($R \approx 18.46\,\Omega$) using a multimeter prior to cementing over. Allow to cure overnight.
+      - **Day 4** (~2 hrs): Wrap 3 layers of ceramic wool insulation (~76mm total thickness). Route Kanthal leads through high-temperature ceramic sleeving.
+      - **Session 5** (~3 hrs): Assemble sheet-metal casing and end caps. Drill 2" access holes and the radial thermocouple port.
+      - **Milestone**: Core furnace physical assembly complete.
+
+      ### Week 4: Wiring, Control Enclosure & Commissioning
+      - **Day 1** (~2 hrs): Mount ceramic terminal blocks. Insert the 5" thermocouple probe radially at the coil midpoint.
+      - **Day 2** (~3–4 hrs): Construct the control enclosure: mount PID, SSR with heatsink, IEC inlet module, and terminal blocks. Wire full power and control/sensing paths.
+      - **Day 3** (~2 hrs): Final system integration: connect furnace body to control enclosure, mount to stand, and label all connections.
+      - **Day 4** (~3–4 hrs): System commissioning: visual inspection, high-limit cutoff trip testing, low-duty bench test, and initial supervised ramp to 1100°C.
+      - **Milestone**: System wired, fully commissioned, and validated at 1100°C.
+
+      ---
+
+      ## Schedule Summary
+
+      | Phase | Timeline | Key Deliverables & Focus |
+      |---|---|---|
+      | Week 0 | Week 0 | Design, calculations, BOM, and immediate order placement |
+      | Weeks 1–2 | Weeks 1–2 | Lead-time buffer for custom quartz tube delivery |
+      | Week 3 | Week 3 | Coil winding, cementing, ceramic insulation, casing assembly |
+      | Week 4 | Week 4 | Control panel wiring, sensor integration, testing to 1100°C |
+    #
+    #   > A callout, for anything that can hurt someone or break the tool.
+
+    # PHOTOS of this machine. Delete the leading "#" on the lines below
+    # once you’ve put real image files in static/images/machines/.
+    # One photo renders large; two or more render as a grid.
+    # "caption" is optional.
+    #
+    # photos:
+    #   - src: "/images/machines/tube-furnace-1.jpg"
+    #     caption: ""
+    #   - src: "/images/machines/tube-furnace-2.jpg"
+    #     caption: ""
+
+# subsystems:
+#   - name: "Vacuum chamber"
+#     description: "Has to reach high vacuum before deposition starts. Residual water vapor and oxygen get incorporated into the growing film and wreck its conductivity and adhesion (Chamber Contruction)(Vacuum Plumbing)(Gas Control)."
+#   - name: "Power Supply"
+#     description: "Powering up the Magnetron (DC Power Supply)(RF Power Supply)"
+#   - name: "Magnetron"
+#     description: "Dark Space Shields: The “Dark Space” is tan area in the vicinity of the target edge where no plasma exists during the deposition process." 
 ---
 
 The tube furnace is the most fundamental machine in the fab, and it does three
@@ -58,3 +122,5 @@ goes.
 **Annealing** repairs crystal damage from earlier processing and activates
 dopant atoms by moving them onto proper lattice sites, where they can actually
 contribute carriers.
+
+

@@ -1,0 +1,30 @@
+# ===================================================================
+# THE TWO BUILD GENERATIONS.
+#
+# These are the big coloured bands you scroll past on /machines/.
+# Each one is followed by that generation's process areas, in the
+# order set in data/categories.yaml.
+#
+# "name" MUST match the "gen:" values used in data/categories.yaml
+# ("Gen 1" / "Gen 2") — that's how machines get sorted into bands.
+# "slug" is used for #links, so keep it lowercase with no spaces.
+#
+# To add a Gen 3 later: add a block here, then add a matching track
+# to each area in data/categories.yaml. Nothing else to change.
+# ===================================================================
+
+- name: Gen 1
+  slug: gen1
+  tagline: The first working line
+  description: >-
+    Simple tools and proven methods, built to get a real device out
+    of the lab end to end. Everything here either works now or is
+    close to it.
+
+- name: Gen 2
+  slug: gen2
+  tagline: The follow-on line
+  description: >-
+    Finer features, and materials we make ourselves rather than buy.
+    Built once Gen 1 is running — you can't debug a new process and
+    a new tool at the same time.

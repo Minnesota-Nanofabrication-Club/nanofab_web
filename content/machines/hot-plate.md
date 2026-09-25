@@ -1,8 +1,16 @@
 ---
+
+# ------------------------------------------------------------------
+# PARKED. This machine isn't in the current Gen 1 / Gen 2 org chart,
+# so it's hidden from the site rather than deleted. To bring it back:
+# change the line below to `draft: false`. It already has a valid
+# category, so it will slot straight into Gen 1 Patterning.
+# ------------------------------------------------------------------
+draft: true
 title: "Hot Plate"
-category: "Lithography"
+category: "Gen 1 Patterning"
 step: "Soft & Hard Bake"
-weight: 20
+weight: 60
 status: "building"
 summary: "Holds the wafer at a precise temperature to drive solvent out of the photoresist before exposure and to harden it afterward."
 
@@ -13,6 +21,34 @@ specs:
     value: "±1 °C at setpoint"
   - label: "Typical soft bake"
     value: "95 °C, 60 s"
+
+# DOCUMENTATION — the write-up section on this machine's page.
+#
+# Delete the leading "#" from the lines below and write in markdown.
+# The "|" means "keep everything below as one block of text", so
+# EVERY line inside has to stay indented two spaces further than
+# "documentation:". That indentation is the only fiddly part.
+#
+# Headings (##), numbered and bulleted lists, **bold**, `code`,
+# fenced code blocks, tables, and > callouts all render.
+# See README section 4.16.
+#
+# documentationUpdated: "Month Year"
+# documentation: |
+#   ## Setup
+#   What to check before switching on.
+#
+#   ## Running it
+#   1. First step.
+#   2. Second step.
+#
+#   ## Cleaning up
+#   What to do afterwards, and where things live.
+#
+#   ## When it goes wrong
+#   Symptoms and what they usually mean.
+#
+#   > A callout, for anything that can hurt someone or break the tool.
 
 # PHOTOS of this machine. Delete the leading "#" on the lines below
 # once you've put real image files in static/images/machines/.

@@ -1,45 +1,81 @@
-{{/* Homepage preview of the fab: the six process modules with their
-     machines, each linking to its own page. The full detail lives at
-     /machines/ (layouts/machines/list.html). */}}
+{{/* Homepage preview of the fab: every area with its machines, each
+     one a clickable row. The full detail lives at /machines/
+     (layouts/machines/list.html). */}}
 {{ $machines := where .Site.RegularPages "Section" "machines" }}
-{{ $cats := sort hugo.Data.categories "order" }}
+{{ $areas := sort hugo.Data.categories "order" }}
 
 <section id="machines" class="mx-auto max-w-6xl px-6 py-20 border-b border-line scroll-mt-24">
   <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
     {{ partial "section-head.html" (dict
         "eyebrow" "02 — The fab"
-        "title" "Building the fab, machine by machine"
-        "lead" "Our tools are grouped by process module, in the order a wafer moves through them. Every machine has its own page covering the subsystems it's built from.") }}
+        "title" "The fab, machine by machine"
+        "lead" "Two build generations run side by side. Gen 1 is the first working line; Gen 2 is the more capable one that follows it. Click any machine for its subsystems and build status.") }}
 
     <a href="{{ "/machines/" | relURL }}"
-       class="inline-flex items-center gap-2 text-sm font-medium text-maroon hover:underline underline-offset-4 shrink-0 md:mb-1">
+       class="inline-flex items-center gap-2 rounded-md border-2 border-maroon text-maroon px-5 py-2.5 text-sm font-semibold hover:bg-maroon hover:text-white transition-colors shrink-0 md:mb-1">
       All {{ len $machines }} machines →
     </a>
   </div>
 
-  <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-    {{ range $cats }}
-    {{ $items := where $machines ".Params.category" .name }}
-    {{ if $items }}
-    <div class="border border-line bg-surface rounded-lg p-6 flex flex-col">
-      <div class="flex items-baseline gap-2.5">
-        <span class="font-mono text-xs text-gold">{{ printf "%02d" .order }}</span>
-        <h3 class="font-display font-600 text-lg leading-snug">{{ .name }}</h3>
+  {{/* CSS columns rather than a grid: areas have very different
+       heights (Patterning has seven machines, Doping has two), and a
+       grid would stretch the short ones to match the tall one. */}}
+  <div class="mt-12 lg:columns-2 lg:gap-5">
+    {{ range $areas }}
+    {{ $area := . }}
+
+    {{/* Skip an area that has no machines in it yet. */}}
+    {{ $areaMachines := slice }}
+    {{ range .tracks }}
+      {{ $areaMachines = $areaMachines | append (where $machines ".Params.category" .name) }}
+    {{ end }}
+
+    {{ if $areaMachines }}
+    <div class="border border-line bg-surface rounded-xl p-6 mb-5 break-inside-avoid">
+
+      <div class="flex items-baseline justify-between gap-3 pb-4 border-b-2 border-gold/60">
+        <div class="flex items-baseline gap-2.5">
+          <span class="font-mono text-sm text-gold-deep font-semibold">{{ printf "%02d" .order }}</span>
+          <h3 class="font-display font-semibold text-xl leading-snug">{{ .name }}</h3>
+        </div>
+        <span class="font-mono text-xs text-faint shrink-0">
+          {{ len $areaMachines }}
+        </span>
       </div>
 
-      <ul class="mt-5 space-y-px flex-1">
-        {{ range sort $items "Weight" }}
-        <li>
-          <a href="{{ .RelPermalink }}"
-             class="group flex items-center justify-between gap-3 -mx-2 px-2 py-2 rounded hover:bg-paper transition-colors">
-            <span class="text-sm group-hover:text-maroon transition-colors">{{ .Title }}</span>
-            <span class="hidden lg:block flex-1 border-b border-dotted border-line/80 mx-1" aria-hidden="true"></span>
-            {{ with .Params.step }}<span class="font-mono text-[10px] uppercase tracking-wider text-muted/70 shrink-0 hidden lg:inline">{{ . }}</span>{{ end }}
-            <span class="text-maroon text-xs shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">→</span>
-          </a>
-        </li>
+      <div class="mt-5 space-y-5">
+        {{ range .tracks }}
+        {{ $items := where $machines ".Params.category" .name }}
+        {{ if $items }}
+        <div>
+          {{ with .gen }}
+          <div class="flex items-center gap-2.5 mb-2.5">
+            <span class="gen-chip {{ if eq . "Gen 1" }}gen-1{{ else }}gen-2{{ end }}">{{ . }}</span>
+            <span class="h-px flex-1 {{ if eq . "Gen 2" }}bg-violet/30{{ else }}bg-maroon/25{{ end }}"></span>
+          </div>
+          {{ end }}
+
+          <ul class="space-y-2">
+            {{ range sort $items "Weight" }}
+            <li>
+              {{/* A tinted, outlined box — no arrow. The shaded fill
+                   is what marks it as clickable, and it deepens on
+                   hover. See .machine-row in static/css/styles.css. */}}
+              <a href="{{ .RelPermalink }}"
+                 class="machine-row group flex items-center justify-between gap-3 rounded-lg px-4 py-3">
+                <span class="font-semibold text-[15px] group-hover:text-maroon transition-colors">{{ .Title }}</span>
+                {{ with .Params.step }}
+                <span class="font-mono text-[11px] uppercase tracking-wider text-faint shrink-0 hidden sm:inline">{{ . }}</span>
+                {{ end }}
+              </a>
+            </li>
+            {{ end }}
+          </ul>
+        </div>
         {{ end }}
-      </ul>
+        {{ end }}
+      </div>
+
     </div>
     {{ end }}
     {{ end }}

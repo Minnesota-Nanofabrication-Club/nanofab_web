@@ -1,10 +1,11 @@
 # The three focus areas shown under "What we do."
+# Add, remove, or reorder blocks — they render as a numbered list.
 
-- title: Process engineering
-  description: Running the actual wafer-level steps — patterning, doping, thin-film deposition — on equipment we operate ourselves.
+- title: Build the machines
+  description: Every tool in the fab is sourced, built, and calibrated by students. Nothing here arrived as a turnkey system.
 
-- title: Equipment builds
-  description: Every machine in the fab is sourced, built, calibrated, and maintained by the team, not bought as a turnkey system.
+- title: Run the process
+  description: Patterning, doping, deposition, inspection — the real wafer-level steps, on equipment we operate ourselves.
 
-- title: Documentation
-  description: Build logs and process notes for every machine, so the lab stays repeatable and easy to hand off between members.
+- title: Write it all down
+  description: Build logs and process notes for every machine, so the lab is repeatable and easy to hand off to the next group.

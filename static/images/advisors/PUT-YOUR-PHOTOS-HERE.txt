@@ -1,4 +1,41 @@
-Put advisor photos here, one file per person (e.g. jane-smith.jpg).
-Then point "photo:" at the matching path in data/advisors.yaml, e.g.
-photo: "/images/advisors/jane-smith.jpg"
-Delete this text file once you've added your photos.
+ADVISOR PHOTOS
+==============
+
+1. Put the photo in this folder.
+
+2. Name it lowercase, with hyphens, NO SPACES, and with the correct
+   file extension:
+
+       joseph-talghader.jpg        <- good
+       Jane Smith.jpg.webp         <- bad (space, and .webp on a JPEG)
+
+   If you're not sure what a file actually is, run:
+       file yourphoto.jpg
+
+3. Point at it in data/advisors.yaml:
+
+       photo: "/images/advisors/joseph-talghader.jpg"
+
+
+WHAT KIND OF PHOTO
+------------------
+A normal portrait headshot. Photos are shown in a 3:4 portrait box
+and framed slightly above centre, which is where a face sits in a
+headshot — so heads don't get cut off.
+
+Portrait orientation works best (e.g. 800 x 1200). A square photo is
+fine. A wide landscape photo will lose its left and right edges.
+Around 800 px on the short side is plenty; bigger just makes the
+page slower.
+
+
+IF A PHOTO STILL CROPS BADLY
+----------------------------
+Add a photoPosition line to that one person in data/advisors.yaml.
+The second value is how far down the photo the framing sits:
+
+    photoPosition: "center top"   <- very top; use if hair is clipped
+    photoPosition: "center 15%"   <- the default
+    photoPosition: "center 40%"   <- lower; use if the face sits low
+
+Everyone else is unaffected.

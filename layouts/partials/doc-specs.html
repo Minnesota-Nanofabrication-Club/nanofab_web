@@ -1,0 +1,34 @@
+{{/* TARGET SPECS, in the page header.
+
+     Prefers the "specs" tab of the documentation Sheet, which gives
+     a target AND where we actually are. Falls back to the older
+     label/value list in the machine's own file, so a machine that
+     isn't in the Sheet yet still shows something. */}}
+{{ $sheet := where (default (slice) hugo.Data.sheets.specs) "machine" .File.ContentBaseName }}
+
+{{ if $sheet }}
+<dl class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl">
+  {{ range $sheet }}
+  <div class="bg-surface border border-line rounded-lg px-5 py-4">
+    <dt class="text-xs uppercase tracking-wider text-muted">{{ .label }}</dt>
+    <dd class="font-mono text-[15px] mt-2 text-ink leading-snug">{{ .target }}</dd>
+    {{ with .current }}
+    <dd class="font-mono text-xs mt-1.5 text-faint leading-snug">now: {{ . }}</dd>
+    {{ end }}
+  </div>
+  {{ end }}
+</dl>
+<p class="font-mono text-xs text-faint mt-3">target &middot; current</p>
+
+{{ else }}
+{{ with .Params.specs }}
+<dl class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl">
+  {{ range . }}
+  <div class="bg-surface border border-line rounded-lg px-5 py-4">
+    <dt class="text-xs uppercase tracking-wider text-muted">{{ .label }}</dt>
+    <dd class="font-mono text-[14px] leading-snug mt-1.5 text-ink">{{ .value }}</dd>
+  </div>
+  {{ end }}
+</dl>
+{{ end }}
+{{ end }}

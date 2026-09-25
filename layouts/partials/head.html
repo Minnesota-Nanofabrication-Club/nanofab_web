@@ -1,7 +1,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-{{/* Page title: "Tube Furnace — UMN Nanofabrication Club" on inner pages,
+{{/* Page title: "Tube Furnace — Nanofabrication Club…" on inner pages,
      just the site name + tagline on the homepage. */}}
 {{ if .IsHome }}
   <title>{{ .Site.Title }} — {{ .Site.Params.tagline }}</title>
@@ -16,13 +16,31 @@
 <meta property="og:type" content="website" />
 <link rel="canonical" href="{{ .Permalink }}" />
 
+{{/* Favicon — uses the club logo once params.logo is set in hugo.toml. */}}
+{{ with .Site.Params.logo }}<link rel="icon" href="{{ . | relURL }}" />{{ end }}
+
 <!-- ============================================================
      FONTS
-     Space Grotesk = headings, Inter = body text, JetBrains Mono = data/codes only
+
+     Fraunces       = headings
+     Libre Franklin = body text
+     Courier Prime  = numbers, spec values, small labels
+
+     Picked for character rather than neutrality. Fraunces is an
+     old-style serif with a "wonk" axis (see styles.css) that gives
+     the headings a hand-cut look; Libre Franklin is a Franklin
+     Gothic revival, so it reads institutional rather than generic;
+     Courier Prime is a proper typewriter face, which suits a lab
+     notebook better than a coding mono does.
+
+     Deliberately NOT Inter / Space Grotesk / Geist / JetBrains Mono
+     — that combination is the house style of every AI and developer
+     tool landing page, and it is what made this site look generic.
+     If you swap any of these, avoid those four.
 ============================================================ -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..700,0..100,0..1&family=Libre+Franklin:wght@400..700&display=swap" rel="stylesheet" />
 
 <!-- ============================================================
      TAILWIND (CDN build — no separate build step required)
@@ -40,21 +58,29 @@
           ink: '{{ .Site.Params.colors.ink }}',
           line: '{{ .Site.Params.colors.line }}',
           muted: '{{ .Site.Params.colors.muted }}',
+          faint: '{{ .Site.Params.colors.faint }}',
           maroon: {
             DEFAULT: '{{ .Site.Params.colors.maroon }}',
             dark: '{{ .Site.Params.colors.maroonDark }}',
           },
-          gold: '{{ .Site.Params.colors.gold }}',
+          gold: {
+            DEFAULT: '{{ .Site.Params.colors.gold }}',
+            deep: '{{ .Site.Params.colors.goldDeep }}',
+          },
           signal: {
             green: '{{ .Site.Params.colors.signalGreen }}',
             amber: '{{ .Site.Params.colors.signalAmber }}',
           },
           blueprint: '{{ .Site.Params.colors.blueprint }}',
+          violet: {
+            DEFAULT: '{{ .Site.Params.colors.violet }}',
+            soft: '{{ .Site.Params.colors.violetSoft }}',
+          },
         },
         fontFamily: {
-          display: ['"Space Grotesk"', 'sans-serif'],
-          body: ['Inter', 'sans-serif'],
-          mono: ['"JetBrains Mono"', 'monospace'],
+          display: ['Fraunces', 'Georgia', 'serif'],
+          body: ['"Libre Franklin"', 'system-ui', 'sans-serif'],
+          mono: ['"Courier Prime"', 'ui-monospace', 'monospace'],
         },
       },
     },

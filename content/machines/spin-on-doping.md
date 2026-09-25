@@ -1,10 +1,10 @@
 ---
 title: "Spin-On Doping"
-category: "Thermal Processing & Doping"
+category: "Gen 1 Doping"
 step: "Dopant Source"
-weight: 20
+weight: 10
 status: "building"
-summary: "Applies a liquid dopant film by spin coating, then uses the furnace to drive those atoms into the silicon — ion implantation's low-cost cousin."
+summary: "Spin-coats a liquid dopant onto the wafer, then bakes it in so the atoms diffuse into the silicon. A low-cost stand-in for ion implantation."
 
 specs:
   - label: "Dopants"
@@ -14,8 +14,36 @@ specs:
   - label: "Drive-in"
     value: "900 – 1000 °C in N₂"
 
+# DOCUMENTATION — the write-up section on this machine's page.
+#
+# Delete the leading "#" from the lines below and write in markdown.
+# The "|" means "keep everything below as one block of text", so
+# EVERY line inside has to stay indented two spaces further than
+# "documentation:". That indentation is the only fiddly part.
+#
+# Headings (##), numbered and bulleted lists, **bold**, `code`,
+# fenced code blocks, tables, and > callouts all render.
+# See README section 4.16.
+#
+# documentationUpdated: "Month Year"
+# documentation: |
+#   ## Setup
+#   What to check before switching on.
+#
+#   ## Running it
+#   1. First step.
+#   2. Second step.
+#
+#   ## Cleaning up
+#   What to do afterwards, and where things live.
+#
+#   ## When it goes wrong
+#   Symptoms and what they usually mean.
+#
+#   > A callout, for anything that can hurt someone or break the tool.
+
 # PHOTOS of this machine. Delete the leading "#" on the lines below
-# once you've put real image files in static/images/machines/.
+# once you’ve put real image files in static/images/machines/.
 # One photo renders large; two or more render as a grid.
 # "caption" is optional.
 #
@@ -37,7 +65,7 @@ subsystems:
   - name: "Oxide strip"
     description: "The spent dopant glass is etched off in dilute HF afterward, leaving a clean doped silicon surface."
   - name: "Masking oxide"
-    description: "Patterned SiO₂ from the furnace blocks diffusion where we don't want it, so doping lands only inside the windows we opened."
+    description: "Patterned SiO₂ from the furnace blocks diffusion where we don’t want it, so doping lands only inside the windows we opened."
 ---
 
 Doping is how silicon stops being an inert crystal and starts being an

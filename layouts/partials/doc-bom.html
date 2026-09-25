@@ -1,0 +1,83 @@
+{{/* BILL OF MATERIALS for one machine.
+
+     Rows come from the "bom" tab of the documentation Sheet.
+     status: have | ordered | needed
+     unitCost should be a plain number (12.50, not $12.50) so the
+     totals add up — a value that isn't a number is shown as-is and
+     left out of the sum. */}}
+{{ $rows := . }}
+{{ $have := len (where $rows "status" "have") }}
+
+{{/* Running total: qty x unitCost, skipping anything non-numeric. */}}
+{{ $total := 0.0 }}
+{{ range $rows }}
+  {{ $q := 1.0 }}{{ with .qty }}{{ $q = (float (. | default 1)) }}{{ end }}
+  {{ with .unitCost }}
+    {{ if findRE `^[0-9]*\.?[0-9]+$` (printf "%v" .) }}
+      {{ $total = add $total (mul $q (float .)) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+<section id="bom" class="border-b border-line bg-surface/60 scroll-mt-32">
+  <div class="mx-auto max-w-6xl px-6 py-14">
+    {{ partial "doc-section-head.html" (dict
+        "title" "Bill of materials"
+        "meta" (printf "%d of %d parts in hand" $have (len $rows))) }}
+
+    {{ partial "doc-sample-note.html" $rows }}
+
+    {{/* The table is wider than a phone; it scrolls sideways rather
+         than dropping columns, so nothing is hidden. Say so, since
+         a cut-off edge isn't always obvious. */}}
+    <p class="sm:hidden text-xs text-faint mb-2">Scroll the table sideways for cost and status &rarr;</p>
+
+    <div class="overflow-x-auto -mx-6 px-6">
+      <table class="doc-table min-w-[44rem]">
+        <thead>
+          <tr>
+            <th scope="col">Part</th>
+            <th scope="col">Supplier</th>
+            <th scope="col" class="num">Qty</th>
+            <th scope="col" class="num">Unit</th>
+            <th scope="col" class="num">Total</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ range $rows }}
+          {{ $q := 1.0 }}{{ with .qty }}{{ $q = (float (. | default 1)) }}{{ end }}
+          {{ $numeric := and .unitCost (findRE `^[0-9]*\.?[0-9]+$` (printf "%v" (.unitCost | default ""))) }}
+          <tr>
+            <td>
+              {{ if .link }}
+              <a href="{{ .link }}" class="font-medium text-ink hover:text-maroon underline decoration-line underline-offset-4 hover:decoration-maroon">{{ .part }}</a>
+              {{ else }}
+              <span class="font-medium text-ink">{{ .part }}</span>
+              {{ end }}
+              {{ with .note }}<span class="block text-sm text-muted mt-0.5 leading-snug">{{ . }}</span>{{ end }}
+            </td>
+            <td>
+              <span class="text-muted">{{ .supplier | default "—" }}</span>
+              {{ with .partNumber }}<span class="block font-mono text-xs text-faint mt-0.5">{{ . }}</span>{{ end }}
+            </td>
+            <td class="num text-muted">{{ .qty | default "1" }}</td>
+            <td class="num text-muted">{{ if $numeric }}${{ lang.FormatNumber 2 (float .unitCost) }}{{ else }}{{ .unitCost | default "—" }}{{ end }}</td>
+            <td class="num text-ink">{{ if $numeric }}${{ lang.FormatNumber 2 (mul $q (float .unitCost)) }}{{ else }}—{{ end }}</td>
+            <td>{{ partial "doc-bom-status.html" .status }}</td>
+          </tr>
+          {{ end }}
+        </tbody>
+        {{ if gt $total 0.0 }}
+        <tfoot>
+          <tr>
+            <td colspan="4" class="text-muted">Estimated total</td>
+            <td class="num text-ink">${{ lang.FormatNumber 2 $total }}</td>
+            <td></td>
+          </tr>
+        </tfoot>
+        {{ end }}
+      </table>
+    </div>
+  </div>
+</section>

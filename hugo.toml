@@ -1,6 +1,6 @@
 baseURL = "https://example.com/"
 locale = "en-us"
-title = "UMN Nanofabrication Club"
+title = "Nanofabrication Club at the University of Minnesota"
 
 # This site doesn't use tags or categories as blog-style taxonomies
 # (machines are grouped via data/categories.yaml instead), so turn the
@@ -14,11 +14,40 @@ disableKinds = ["taxonomy", "term"]
 [params]
   tagline = "University of Minnesota, Twin Cities"
   shortTitle = "Nanofabrication Club"
-  discordURL = "https://discord.gg/your-invite-code"
-  linkedinURL = "https://www.linkedin.com/company/your-org-here"
-  instagramURL = "https://www.instagram.com/your-handle-here"
-  contactEmail = "umn-nanofab-club@umn.edu"
-  docsURL = "https://your-docs-site.example.com"
+  discordURL = "https://discord.gg/G9T6bk84w"
+  linkedinURL =  "https://www.linkedin.com/company/minnesota-nanofabrication-club/"
+  instagramURL = "https://www.instagram.com/minnesota_nanofab_club/?hl=en"
+  contactEmail = "nanoclub@umn.edu"
+  docsURL = "https://minnesota-nanofabrication-club.github.io/club_website/"
+
+  # ----------------------------------------------------------------
+  # MACHINE DOCUMENTATION SHEET — CURRENTLY OFF
+  #
+  # The machine pages can pull a timeline, bill of materials,
+  # contributors, and reference list out of one Google Sheet. That
+  # whole system is built and dormant: the page sections only render
+  # when there's data, and there is none, so nothing shows.
+  #
+  # TO TURN IT ON:
+  #   1. Set up the Sheet — see
+  #      scripts/sheet-template/HOW-TO-SET-UP-THE-SHEET.txt
+  #   2. Uncomment the line below and paste in the Sheet's ID.
+  #   3. Uncomment the two sync steps and the "schedule" block in
+  #      .github/workflows/deploy.yml.
+  # See README section 4.15.
+  # ----------------------------------------------------------------
+  # docsSheetId = ""
+
+  # ----------------------------------------------------------------
+  # CLUB LOGO
+  # Drop your logo file in static/images/logo/ and put its path here.
+  # Anything that works in a browser is fine (.svg is sharpest, .png
+  # with a transparent background is the next best thing).
+  # Leave it as "" and the site falls back to the "nF" square.
+  # A square-ish logo looks best; it renders at 32px in the header.
+  # ----------------------------------------------------------------
+  logo = "/images/logo/mnfc-wafer-logo.png"
+  logoAlt = "Nanofabrication Club wafer logo"
 
   # ----------------------------------------------------------------
   # University of Minnesota links. These are what tie the site to the
@@ -33,6 +62,25 @@ disableKinds = ["taxonomy", "term"]
     # your real org URL once the club is registered.
     gopherLinkURL = "https://gopherlink.umn.edu"
 
+    # --------------------------------------------------------------
+    # REQUIRED BY THE UNIVERSITY. Every registered student org has to
+    # carry this exact sentence on its public platforms. Don't reword
+    # it. See README section 9 ("UMN branding rules").
+    # --------------------------------------------------------------
+    rsoDisclaimer = "This group is a Registered Student Organization and is independent from the University of Minnesota."
+
+    # --------------------------------------------------------------
+    # The official "Block M RSO" mark — the ONLY University trademark
+    # a registered student org may use. It has to be requested; it is
+    # NOT in the public logo download.
+    #
+    # WHERE IT GOES: the very bottom of the page, on its own, next to
+    # the disclaimer and away from the club logo and name. That
+    # placement is required, not a design choice — see README 9.
+    # Drop the file in static/images/logo/ and put its path here.
+    # --------------------------------------------------------------
+    rsoMark = ""
+
   # ----------------------------------------------------------------
   # Color tokens used by Tailwind's inline config in
   # layouts/partials/head.html. Change a hex value here and it updates
@@ -41,19 +89,34 @@ disableKinds = ["taxonomy", "term"]
   # maroon + gold are the official University of Minnesota brand
   # colors (PMS 202 and PMS 116). Keep them as-is unless the
   # university updates its brand guide.
+  #
+  # "muted" is the grey used for body copy. It's deliberately dark
+  # (7.9:1 against paper) so small text stays readable — don't
+  # lighten it without checking contrast.
   # ----------------------------------------------------------------
   [params.colors]
     paper = "#F4F3F0"
     surface = "#FFFFFF"
     ink = "#14181C"
-    line = "#DEDCD5"
-    muted = "#5F6660"
+    line = "#D6D3CB"
+    muted = "#474D49"
+    faint = "#6B716C"
     maroon = "#7A0019"
     maroonDark = "#5B0013"
     gold = "#FFCC33"
-    signalGreen = "#2E7D4F"
-    signalAmber = "#C77D1D"
+    goldDeep = "#8A6400"
+    signalGreen = "#246B43"
+    signalAmber = "#9C5F0A"
     blueprint = "#1F4E8C"
+
+    # Sampled straight out of the club wafer logo. This is the
+    # secondary accent: maroon and gold tie the site to the
+    # University, violet ties it to our own mark. Used sparingly —
+    # Gen 2, subsystem numbers, text selection. Don't let it take
+    # over; maroon stays the primary. 11.5:1 on paper, so it's safe
+    # for small text.
+    violet = "#42245F"
+    violetSoft = "#F1ECF5"
 
 # ------------------------------------------------------------------
 # The top navigation. To add, remove, or reorder a nav link, edit a

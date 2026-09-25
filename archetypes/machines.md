@@ -9,29 +9,40 @@
 
 title: "{{ replace .File.ContentBaseName "-" " " | title }}"
 
-# MUST match a "name:" in data/categories.yaml exactly, or this
-# machine will silently not show up anywhere on the site.
-#   Wafer Preparation & Cleaning
-#   Lithography
-#   Etch & Pattern Transfer
-#   Thermal Processing & Doping
-#   Thin-Film Deposition
-#   Metrology & Test
+# MUST match a track name in data/categories.yaml exactly, or this
+# machine will silently not show up anywhere on the site:
+#
+#   Research
+#   Application
+#   Facility
+#   Gen 1 Patterning                      Gen 2 Patterning
+#   Gen 1 Doping                          Gen 2 Doping
+#   Gen 1 Thin Film Deposition            Gen 2 Thin Film Deposition
+#   Gen 1 Wafer Inspection & Metrology    Gen 2 Wafer Inspection & Metrology
+#
+# `hugo server` prints a warning in the terminal if you get it wrong.
 category: ""
 
 # The process step this machine performs, e.g. "Resist Coat".
+# Shows as the small label at the top of its box.
 step: ""
 
-# Order within its category. Lower comes first. Use 10, 20, 30...
+# Order within its track. Lower comes first. Use 10, 20, 30...
 weight: 50
 
 # operational (green) | building (amber) | planned (hollow)
 status: "planned"
 
-# One sentence. Shows on the homepage, the /machines/ page, and here.
+# ONE sentence, in plain language. This is what someone reads on the
+# homepage and on /machines/ before deciding to click. Say what the
+# machine does and why it matters — skip the jargon.
 summary: ""
 
-# The small boxes under the title. Add or remove as many as you like.
+# The small boxes under the title.
+#
+# NOTE: once this machine has rows on the "specs" tab of the
+# documentation Google Sheet, those take over and show target vs.
+# current instead. Keep these as the fallback until then.
 specs:
   - label: ""
     value: ""
@@ -40,6 +51,27 @@ specs:
   - label: ""
     value: ""
 
+# DOCUMENTATION — the write-up section on the page. Delete the
+# leading "#" and write in markdown.
+#
+# The "|" tells YAML "keep everything below as one block of text".
+# EVERYTHING inside has to stay indented two spaces further than
+# "documentation:". That indentation is the only fiddly part.
+#
+# Headings (##), numbered and bulleted lists, **bold**, `code`,
+# fenced code blocks, tables, and > callouts all render.
+#
+# documentationUpdated: "September 2026"
+# documentation: |
+#   ## Setup
+#   What to check before switching on.
+#
+#   ## Running it
+#   1. First step.
+#   2. Second step.
+#
+#   > A callout, for anything that can hurt someone or break the tool.
+
 # PHOTOS of this machine. Put the image files in
 # static/images/machines/, then delete the leading "#" below.
 # One photo renders large; two or more render as a grid.
@@ -47,6 +79,27 @@ specs:
 # photos:
 #   - src: "/images/machines/your-machine-1.jpg"
 #     caption: ""
+
+# DESIGN DIAGRAMS for the "Design architecture" section — circuit
+# diagrams, mechanical layouts, process flows. Upload the images to
+# static/images/machines/ (you can drag and drop them in on
+# github.com), then delete the leading "#" below.
+#
+# Add as many as you need: copy the "- src:" / "caption:" pair. They
+# stack down the page, each one clickable to open at full size.
+# Name files lowercase-with-hyphens and no spaces.
+#
+# architectureDiagrams:
+#   - src: "/images/machines/your-machine-circuit.png"
+#     caption: ""
+#   - src: "/images/machines/your-machine-layout.png"
+#     caption: ""
+
+# LINK to this machine's Google Drive folder, for anything too big
+# or too raw to put on the page — CAD, full datasheets, raw photos.
+# Shows as "Open the working folder" under the specs.
+#
+# driveFolder: ""
 
 # The parts the machine is built from. This is the heart of the page.
 subsystems:
@@ -59,4 +112,4 @@ subsystems:
 Everything below the closing `---` becomes the "How it works" section.
 
 Write it in plain paragraphs. Leave a blank line between paragraphs.
-**Bold** works, and so do [links](https://umn.edu).
+**Bold** works, bullet lists work, and so do [links](https://umn.edu).

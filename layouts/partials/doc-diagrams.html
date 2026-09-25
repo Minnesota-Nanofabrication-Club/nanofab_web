@@ -1,0 +1,56 @@
+{{/* DESIGN DIAGRAMS for a machine.
+
+     Accepts either shape in the machine's front matter:
+
+       A list (use this when there's more than one) —
+         architectureDiagrams:
+           - src: "/images/machines/spinner-circuit-diagram.jpg"
+             caption: "How the motor is driven."
+           - src: "/images/machines/spinner-layout.jpg"
+             caption: "Where everything physically sits."
+
+       Or the older single form, still supported —
+         architectureDiagram: "/images/machines/thing.png"
+         architectureCaption: "..."
+
+     Diagrams stack rather than sitting side by side: a schematic
+     shrunk to half width is unreadable. Each links to the original
+     file, because that's how the small labels actually get read. */}}
+
+{{ $list := slice }}
+{{ with .Params.architectureDiagrams }}
+  {{ $list = . }}
+{{ else }}
+  {{ with .Params.architectureDiagram }}
+    {{ $list = slice (dict "src" . "caption" $.Params.architectureCaption) }}
+  {{ end }}
+{{ end }}
+
+{{ with $list }}
+<div class="mb-10 space-y-8">
+  {{ range $i, $d := . }}
+  <figure class="max-w-4xl">
+    {{/* bg-paper backs transparent PNGs; no padding, so a diagram
+         with a dark background fills its frame rather than floating
+         in a pale ring. */}}
+    <a href="{{ $d.src | relURL }}" class="group block">
+      <img src="{{ $d.src | relURL }}"
+           alt="{{ $d.caption | default (printf "Design diagram %d for the %s" (add $i 1) $.Title) }}"
+           loading="lazy"
+           class="w-full rounded-xl border border-line bg-paper group-hover:border-maroon transition-colors" />
+    </a>
+    <figcaption class="flex flex-wrap items-start justify-between gap-x-6 gap-y-2 mt-3">
+      {{ with $d.caption }}
+      <span class="flex items-start gap-3 text-sm text-muted max-w-2xl">
+        <span class="h-px w-6 bg-gold shrink-0 mt-2.5"></span><span>{{ . }}</span>
+      </span>
+      {{ end }}
+      <a href="{{ $d.src | relURL }}"
+         class="text-sm font-medium text-maroon hover:underline underline-offset-4 shrink-0">
+        Full size &#8599;
+      </a>
+    </figcaption>
+  </figure>
+  {{ end }}
+</div>
+{{ end }}

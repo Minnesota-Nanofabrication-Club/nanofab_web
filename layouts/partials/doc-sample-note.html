@@ -1,0 +1,11 @@
+{{/* Shows only while a section still contains the seeded example
+     rows (they carry sample: "yes"). Delete those rows from the
+     Google Sheet and this vanishes by itself. */}}
+{{ $rows := . }}
+{{ if where $rows "sample" "yes" }}
+<p class="sample-note text-sm text-muted pl-4 py-2.5 mb-6 rounded-r">
+  <strong class="text-ink">Example data.</strong>
+  These rows were seeded so the layout could be built. Replace them in
+  the documentation Sheet — see README section 4.15.
+</p>
+{{ end }}

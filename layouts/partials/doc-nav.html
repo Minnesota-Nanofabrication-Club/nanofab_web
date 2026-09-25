@@ -1,0 +1,25 @@
+{{/* Sticky jump bar for the documentation sections on a machine
+     page. Sits directly under the site header (which is 4rem tall,
+     hence top-16).
+
+     It's handed a slice of (dict "id" … "label" …) built in
+     machines/single.html, containing ONLY the sections that
+     actually have content — so a machine with just a background
+     doesn't get a nav full of dead links. */}}
+{{ $items := . }}
+{{/* Needs more than two sections to be worth showing. With the
+     documentation Sheet switched off, most machines only have
+     Background and Architecture, and two pills is clutter rather
+     than navigation. */}}
+{{ if gt (len $items) 2 }}
+<nav class="doc-nav sticky top-16 z-30 border-b border-line bg-paper/95" aria-label="Sections on this page">
+  <div class="mx-auto max-w-6xl px-6 py-3 flex flex-wrap items-center gap-2">
+    {{ range $items }}
+    <a href="#{{ .id }}"
+       class="inline-flex items-center rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm font-medium hover:border-maroon hover:text-maroon transition-colors">
+      {{ .label }}
+    </a>
+    {{ end }}
+  </div>
+</nav>
+{{ end }}

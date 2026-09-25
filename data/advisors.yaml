@@ -1,27 +1,66 @@
 # ===================================================================
-# ADVISORS — shown under "Backed by the University" on the homepage.
+# ADVISORS — shown in the "Support" section on the homepage.
 #
 # TO ADD an advisor:    copy a whole "- name:" block and edit it.
 # TO REMOVE an advisor: delete their block (or put a # in front of
 #                       every one of its lines to hide them for now).
 # TO REORDER:           move blocks up or down. They appear in the
-#                       order they're listed here.
+#                       order they’re listed here.
 #
-# "photo" is optional. Leave it as "" and their card shows their
-# initials instead, so the page still looks intentional.
-# Photos go in static/images/advisors/ — see README section 4.11.
+# The section lays itself out automatically: 1-2 advisors get wide
+# cards, 3 or more wrap into a grid. Add as many as you need.
+#
+# FIELDS
+#   name   required — the person’s name
+#   role   required — title and department, one line
+#   bio    optional — two or three sentences on what they work on and
+#                     how they help the club. Keep it short; it’s a
+#                     bio, not a CV. Leave "" and the card just shows
+#                     their name and role.
+#   link   optional — their faculty page. Leave "" to hide it.
+#   photo  optional — leave "" and the card shows their initials,
+#                     which looks intentional rather than broken.
+#
+# PHOTOS go in static/images/advisors/. Any size works — they’re
+# cropped to a square automatically, centred on the middle of the
+# image. Roughly square headshots look best; a very wide photo will
+# lose its edges.
 # ===================================================================
 
-- name: Advisor Name
-  role: Faculty Advisor, Electrical Engineering
-  photo: ""
+- name: Joseph Talghader
+  role: Main Faculty Advisor — Electrical & Computer Engineering
+  bio: >-
+    Professor Talghader has been advising the club since its founding, 
+    helping us with our research and fabrication work. His research focuses on optical materials and devices, 
+    including micro- and nano-structured surfaces.
+  link: "https://cse.umn.edu/ece/joseph-talghader"
+  photo: "/images/advisors/joseph-talghader.jpg"
 
 # ---- TODO: replace the two placeholders below with real people ----
 
-- name: Second Advisor
-  role: Faculty Advisor, Materials Science
-  photo: ""
+- name: Ognjen Ilic
+  role: Faculty Advisor — Mechanical Engineering
+  bio: >-
+    Professor Ilic has been advising the club since its founding, his research focuses 
+    on heat transfer, nanoscale devices and materials and more information can be found on his website.
+    listed below
+  link: "https://cse.umn.edu/me/ognjen-ilic"
+  photo: "/images/advisors/Illic.jpg"
 
-- name: Third Advisor
-  role: Faculty Advisor, Physics
-  photo: ""
+- name: Jeong-Hyun Cho
+  role: Faculty Advisor — Electrical & Computer Engineering
+  bio: >-
+    Professor Cho has been advising the club since its founding, his research focuses 
+    on semiconductor devices including 3D micro- and nano-structures, and more information
+     can be found on his website listed below.
+  link: "https://cse.umn.edu/ece/jeong-hyun-cho"
+  photo: "/images/advisors/Cho.jpg"
+
+- name: Bethanie Stadler
+  role: Faculty Advisor — Electrical & Computer Engineering
+  bio: >-
+    Professor Stadler has been advising the club since its founding, her research focuses 
+    on magnetic electronics and optical  materials, and more information
+     can be found on her website listed below.
+  link: "https://cse.umn.edu/ece/bethanie-stadler"
+  photo: "/images/advisors/stadler.png"

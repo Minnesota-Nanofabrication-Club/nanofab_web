@@ -1,10 +1,10 @@
 ---
-title: "Scanning Electron Microscope"
-category: "Metrology & Test"
+title: "Electron Microscope"
+category: "Gen 2 Wafer Inspection & Metrology"
 step: "Imaging"
-weight: 10
+weight: 20
 status: "building"
-summary: "Scans a focused electron beam across the sample and builds an image from the electrons that come back — resolving features far below what any optical microscope can reach."
+summary: "Scans an electron beam across the wafer to image features far smaller than any light microscope can resolve."
 
 specs:
   - label: "Accelerating voltage"
@@ -14,8 +14,36 @@ specs:
   - label: "Chamber"
     value: "High vacuum"
 
+# DOCUMENTATION — the write-up section on this machine's page.
+#
+# Delete the leading "#" from the lines below and write in markdown.
+# The "|" means "keep everything below as one block of text", so
+# EVERY line inside has to stay indented two spaces further than
+# "documentation:". That indentation is the only fiddly part.
+#
+# Headings (##), numbered and bulleted lists, **bold**, `code`,
+# fenced code blocks, tables, and > callouts all render.
+# See README section 4.16.
+#
+# documentationUpdated: "Month Year"
+# documentation: |
+#   ## Setup
+#   What to check before switching on.
+#
+#   ## Running it
+#   1. First step.
+#   2. Second step.
+#
+#   ## Cleaning up
+#   What to do afterwards, and where things live.
+#
+#   ## When it goes wrong
+#   Symptoms and what they usually mean.
+#
+#   > A callout, for anything that can hurt someone or break the tool.
+
 # PHOTOS of this machine. Delete the leading "#" on the lines below
-# once you've put real image files in static/images/machines/.
+# once you’ve put real image files in static/images/machines/.
 # One photo renders large; two or more render as a grid.
 # "caption" is optional.
 #

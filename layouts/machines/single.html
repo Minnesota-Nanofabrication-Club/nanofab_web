@@ -1,6 +1,44 @@
 {{ define "main" }}
-{{ $cat := index (where hugo.Data.categories "name" .Params.category) 0 }}
+
+{{/* Which area and generation this machine belongs to. */}}
+{{ $area := false }}
+{{ $gen := "" }}
+{{ range hugo.Data.categories }}
+  {{ $a := . }}
+  {{ range .tracks }}
+    {{ if eq .name $.Params.category }}
+      {{ $area = $a }}
+      {{ $gen = .gen }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
 {{ $siblings := sort (where (where .Site.RegularPages "Section" "machines") ".Params.category" .Params.category) "Weight" }}
+
+{{/* ==================================================================
+     DOCUMENTATION DATA
+     Everything below the header comes from the club's Google Sheet,
+     cached into data/sheets/ by scripts/sync-sheets.py. Each tab is
+     filtered down to the rows whose "machine" column matches this
+     page's filename (e.g. wet-etch). See README section 4.15.
+     ================================================================== */}}
+{{ $slug := .File.ContentBaseName }}
+{{ $timeline     := where (default (slice) hugo.Data.sheets.timeline)     "machine" $slug }}
+{{ $bom          := where (default (slice) hugo.Data.sheets.bom)          "machine" $slug }}
+{{ $contributors := where (default (slice) hugo.Data.sheets.contributors) "machine" $slug }}
+{{ $references   := where (default (slice) hugo.Data.sheets.references)   "machine" $slug }}
+
+{{/* The jump bar lists only sections that exist, so an undocumented
+     machine reads as a short clean page rather than a broken one. */}}
+{{ $nav := slice }}
+{{ if .Content }}{{ $nav = $nav | append (dict "id" "background" "label" "Background") }}{{ end }}
+{{ if or .Params.architectureDiagram .Params.architectureDiagrams .Params.subsystems }}{{ $nav = $nav | append (dict "id" "architecture" "label" "Architecture") }}{{ end }}
+{{ $nav = $nav | append (dict "id" "documentation" "label" "Documentation") }}
+{{ if .Params.documentationPhotos }}{{ $nav = $nav | append (dict "id" "documentation-photos" "label" "Photos") }}{{ end }}
+{{ if $timeline }}{{ $nav = $nav | append (dict "id" "timeline" "label" "Timeline") }}{{ end }}
+{{ if $bom }}{{ $nav = $nav | append (dict "id" "bom" "label" "Bill of materials") }}{{ end }}
+{{ if $contributors }}{{ $nav = $nav | append (dict "id" "contributors" "label" "Who built it") }}{{ end }}
+{{ if $references }}{{ $nav = $nav | append (dict "id" "references" "label" "References") }}{{ end }}
 
 <article>
 
@@ -10,61 +48,68 @@
     <div class="relative mx-auto max-w-6xl px-6 pt-12 pb-14">
 
       <nav class="text-sm text-muted mb-8 flex flex-wrap items-center gap-x-2" aria-label="Breadcrumb">
-        <a href="{{ "/" | relURL }}" class="hover:text-ink transition-colors">Home</a>
+        <a href="{{ "/" | relURL }}" class="hover:text-maroon transition-colors">Home</a>
         <span class="text-line">/</span>
-        <a href="{{ "/machines/" | relURL }}" class="hover:text-ink transition-colors">The fab</a>
-        {{ with $cat }}
+        <a href="{{ "/machines/" | relURL }}" class="hover:text-maroon transition-colors">The fab</a>
+        {{ with $area }}
         <span class="text-line">/</span>
-        <a href="{{ printf "/machines/#%s" .slug | relURL }}" class="hover:text-ink transition-colors">{{ .name }}</a>
+        {{/* /machines/ is split into a shared part then one band per
+             generation, so a Gen 2 machine's area anchor is
+             #gen2-patterning rather than plain #patterning. */}}
+        {{ $anchor := .slug }}
+        {{ if $gen }}{{ $anchor = printf "%s-%s" (lower (replace $gen " " "")) .slug }}{{ end }}
+        <a href="{{ printf "/machines/#%s" $anchor | relURL }}" class="hover:text-maroon transition-colors">{{ .name }}</a>
         {{ end }}
       </nav>
 
       <div class="max-w-3xl">
         <div class="flex flex-wrap items-center gap-3">
-          {{ with $cat }}
-          <span class="inline-flex items-center gap-2 rounded-full bg-maroon/10 text-maroon px-3 py-1 text-xs font-medium">
-            <span class="font-mono text-[10px]">{{ printf "%02d" .order }}</span>{{ .name }}
+          {{ with $gen }}
+          <span class="gen-chip {{ if eq . "Gen 1" }}gen-1{{ else }}gen-2{{ end }}">{{ . }}</span>
+          {{ end }}
+          {{ with $area }}
+          <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium
+                       {{ if eq $gen "Gen 2" }}bg-violet/10 text-violet{{ else }}bg-maroon/10 text-maroon{{ end }}">
+            <span class="font-mono text-[11px]">{{ printf "%02d" .order }}</span>{{ .name }}
           </span>
           {{ end }}
           {{ with .Params.step }}
-          <span class="font-mono text-xs uppercase tracking-wider text-muted">{{ . }}</span>
+          <span class="font-mono text-xs uppercase tracking-wider text-faint">{{ . }}</span>
           {{ end }}
           {{ partial "status.html" .Params.status }}
         </div>
 
-        <h1 class="font-display font-700 text-4xl sm:text-5xl tracking-tight mt-5 leading-[1.08]">{{ .Title }}</h1>
+        <h1 class="font-display font-bold text-4xl sm:text-5xl tracking-tight mt-5 leading-[1.08]">{{ .Title }}</h1>
         <p class="mt-5 text-lg text-muted leading-relaxed">{{ .Params.summary }}</p>
       </div>
 
-      {{ with .Params.specs }}
-      <dl class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl">
-        {{ range . }}
-        <div class="bg-surface border border-line rounded-lg px-5 py-4">
-          <dt class="text-xs uppercase tracking-wider text-muted">{{ .label }}</dt>
-          <dd class="font-mono text-sm mt-1.5">{{ .value }}</dd>
-        </div>
-        {{ end }}
-      </dl>
+      {{ partial "doc-specs.html" . }}
+
+      {{/* Link out to this machine's folder, for anything too big or
+           too raw to put on the page (CAD, full datasheets, photos).
+           Set driveFolder in the machine's front matter. */}}
+      {{ with .Params.driveFolder }}
+      <a href="{{ . }}" class="inline-flex items-center gap-2 mt-7 text-sm font-semibold text-maroon hover:underline underline-offset-4">
+        Open the working folder <span aria-hidden="true">&#8599;</span>
+      </a>
       {{ end }}
     </div>
   </section>
 
-  {{/* ---------- Photos ----------
-       Comes from the "photos:" list in the machine's file. One photo
-       renders large; two or more render as a grid. If there's no
-       "photos:" block at all, this whole section is skipped.
-       ------------------------------------------------------------- */}}
+  {{ partial "doc-nav.html" $nav }}
+
+  {{/* ---------- Photos ---------- */}}
   {{ with .Params.photos }}
   <section class="border-b border-line">
     <div class="mx-auto max-w-6xl px-6 py-14">
       {{ $single := eq (len .) 1 }}
-      <div class="grid gap-6 {{ if not $single }}sm:grid-cols-2{{ end }}">
+      <div class="grid gap-6 items-start {{ if not $single }}sm:grid-cols-2{{ end }}">
         {{ range . }}
         <figure class="{{ if $single }}max-w-4xl{{ end }}">
           <img src="{{ .src | relURL }}"
                alt="{{ .caption | default (printf "%s in the lab" $.Title) }}"
                loading="lazy"
-               class="w-full {{ if $single }}max-h-[520px]{{ else }}h-72{{ end }} object-cover rounded-xl border border-line bg-surface" />
+               class="w-full {{ if $single }}max-h-[520px]{{ else }}h-72{{ end }} object-contain rounded-xl border border-line bg-surface" />
           {{ with .caption }}
           <figcaption class="flex items-start gap-3 text-sm text-muted mt-3">
             <span class="h-px w-6 bg-gold shrink-0 mt-2.5"></span>
@@ -78,66 +123,99 @@
   </section>
   {{ end }}
 
-  {{/* ---------- How it works (markdown body of the machine's file) ---------- */}}
+  {{/* ---------- Background (the markdown body of the machine's file) ---------- */}}
   {{ if .Content }}
-  <section class="border-b border-line">
-    <div class="mx-auto max-w-6xl px-6 py-16">
-      <div class="grid lg:grid-cols-[minmax(0,14rem)_minmax(0,42rem)] gap-6 lg:gap-12">
-        <h2 class="text-xs font-medium uppercase tracking-widest text-muted lg:pt-1.5">How it works</h2>
-        <div class="prose text-muted">{{ .Content }}</div>
+  <section id="background" class="border-b border-line scroll-mt-32">
+    <div class="mx-auto max-w-6xl px-6 py-14">
+      {{ partial "doc-section-head.html" (dict "title" "Background") }}
+      <div class="grid lg:grid-cols-[minmax(0,17rem)_minmax(0,42rem)] gap-8 lg:gap-12">
+        <p class="text-sm text-muted leading-relaxed lg:pt-1">
+          What this machine does and why the lab needs it.
+        </p>
+        <div class="prose text-muted text-[17px]">{{ .Content }}</div>
       </div>
     </div>
   </section>
   {{ end }}
 
-  {{/* ---------- Subsystems ---------- */}}
-  {{ with .Params.subsystems }}
-  <section class="border-b border-line bg-surface/70">
-    <div class="mx-auto max-w-6xl px-6 py-16">
-      <div class="flex flex-wrap items-baseline justify-between gap-3 mb-9">
-        <h2 class="text-xs font-medium uppercase tracking-widest text-muted">
-          Subsystems <span class="font-mono normal-case tracking-normal text-muted/70">({{ len . }})</span>
-        </h2>
-        <p class="text-sm text-muted">The parts we actually have to build, source, and keep working.</p>
-      </div>
+  {{/* ---------- Design architecture ---------- */}}
+  {{ if or .Params.architectureDiagram .Params.architectureDiagrams .Params.subsystems }}
+  <section id="architecture" class="border-b border-line bg-surface/60 scroll-mt-32">
+    <div class="mx-auto max-w-6xl px-6 py-14">
+      {{ partial "doc-section-head.html" (dict
+          "title" "Design architecture"
+          "meta" (cond (isset .Params "subsystems") (printf "%d subsystems" (len (.Params.subsystems | default slice))) "")) }}
 
+      {{/* Block diagram, if there is one. Put the image file in
+           static/images/machines/ and point architectureDiagram at
+           it in the machine's front matter. */}}
+      {{ partial "doc-diagrams.html" . }}
+
+      {{ with .Params.subsystems }}
+      <p class="text-sm text-muted mb-6 max-w-2xl">
+        The parts we actually have to build, source, and keep working.
+      </p>
       <ol class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {{ range $i, $s := . }}
-        <li class="bg-paper border border-line rounded-lg p-6">
+        <li class="bg-paper border border-line rounded-xl p-6">
           <div class="flex items-center gap-2.5">
-            <span class="font-mono text-xs text-gold">{{ printf "%02d" (add $i 1) }}</span>
-            <p class="font-display font-600">{{ $s.name }}</p>
+            <span class="font-mono text-xs text-violet">{{ printf "%02d" (add $i 1) }}</span>
+            <p class="font-display font-semibold text-lg">{{ $s.name }}</p>
           </div>
           <p class="text-sm text-muted mt-2.5 leading-relaxed">{{ $s.description }}</p>
         </li>
         {{ end }}
       </ol>
+      {{ end }}
     </div>
   </section>
   {{ end }}
 
-  {{/* ---------- Neighbours in the same process module ---------- */}}
-  {{ if gt (len $siblings) 1 }}
+  {{ partial "doc-writeup.html" . }}
+  {{ partial "doc-photos.html" . }}
+
+  {{ with $timeline }}{{ partial "doc-timeline.html" . }}{{ end }}
+  {{ with $bom }}{{ partial "doc-bom.html" . }}{{ end }}
+  {{ with $contributors }}{{ partial "doc-contributors.html" . }}{{ end }}
+  {{ with $references }}{{ partial "doc-references.html" . }}{{ end }}
+
+  {{/* OFF while the documentation Google Sheet isn&rsquo;t connected.
+       With no Sheet there is nothing to fill in, so this would show
+       on all 20 machines and point at something that does not exist.
+       Uncomment once docsSheetId is set in hugo.toml.
+
+  {{ if not (or $timeline $bom $contributors $references) }}
   <section class="border-b border-line">
     <div class="mx-auto max-w-6xl px-6 py-12">
-      <h2 class="text-xs font-medium uppercase tracking-widest text-muted mb-6">
+      <div class="rounded-xl border border-dashed border-line bg-surface/50 p-6 max-w-2xl">
+        <p class="font-display font-semibold text-lg">Documentation in progress</p>
+        <p class="text-sm text-muted mt-2 leading-relaxed">
+          The timeline, bill of materials, and reference list for this
+          machine haven&rsquo;t been filled in yet. If you&rsquo;re working on it,
+          add your rows to the documentation Sheet and they&rsquo;ll show up here.
+        </p>
+      </div>
+    </div>
+  </section>
+  {{ end }}
+  */}}
+
+  {{/* ---------- Neighbours in the same track ---------- */}}
+  {{ if gt (len $siblings) 1 }}
+  <section class="border-b border-line">
+    <div class="mx-auto max-w-6xl px-6 py-14">
+      <h2 class="text-xs uppercase tracking-widest text-muted mb-6">
         Also in {{ .Params.category }}
       </h2>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {{ range $siblings }}
         {{ if ne .RelPermalink $.RelPermalink }}
-        <a href="{{ .RelPermalink }}" class="machine-card group border border-line bg-surface rounded-lg p-4">
-          <div class="flex items-center justify-between gap-3">
-            {{ with .Params.step }}<span class="font-mono text-[11px] uppercase tracking-wider text-muted">{{ . }}</span>{{ end }}
-            <span class="machine-arrow text-maroon text-xs">&rarr;</span>
-          </div>
-          <p class="font-display font-600 mt-1.5 group-hover:text-maroon transition-colors">{{ .Title }}</p>
-        </a>
+          {{ partial "machine-card.html" . }}
         {{ end }}
         {{ end }}
       </div>
 
-      <a href="{{ "/machines/" | relURL }}" class="inline-flex items-center gap-2 mt-8 text-sm font-medium text-maroon hover:underline underline-offset-4">
+      <a href="{{ "/machines/" | relURL }}" class="inline-flex items-center gap-2 mt-8 text-sm font-semibold text-maroon hover:underline underline-offset-4">
         &larr; All machines
       </a>
     </div>

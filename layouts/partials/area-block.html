@@ -1,0 +1,64 @@
+{{/* One process area's machines.
+
+     Call with:
+       (dict "area" $a "items" $items "id" "gen1-patterning" "layout" "full")
+
+     TWO LAYOUTS, picked by the caller:
+
+     "full"    — heading across the page, then a three-up grid.
+                 Used inside a generation band, where areas have
+                 enough machines to fill the row.
+
+     "sidebar" — heading in a left-hand column, machines on the
+                 right. Used for the shared areas (Research,
+                 Application, Facility), which hold one or two
+                 machines each and would sit stranded in a wide
+                 empty row otherwise.
+     ============================================================== */}}
+{{ $area := .area }}
+{{ $items := .items }}
+{{ $sidebar := eq (.layout | default "full") "sidebar" }}
+
+<section id="{{ .id }}" class="border-b border-line scroll-mt-32">
+  <div class="mx-auto max-w-6xl px-6 py-12">
+
+    {{ if $sidebar }}
+    <div class="grid lg:grid-cols-[minmax(0,19rem)_1fr] gap-8 lg:gap-12">
+      <div class="lg:sticky lg:top-32 lg:self-start">
+        <div class="flex items-baseline gap-3">
+          <span class="font-mono text-sm text-gold-deep">{{ printf "%02d" $area.order }}</span>
+          <h3 class="font-display font-bold text-2xl tracking-tight">{{ $area.name }}</h3>
+        </div>
+        <div class="mt-4 h-1 w-14 bg-gold rounded-full"></div>
+        <p class="text-muted mt-4 leading-relaxed">{{ $area.description }}</p>
+        <p class="font-mono text-xs text-faint mt-5">
+          {{ len $items }} {{ cond (eq (len $items) 1) "machine" "machines" }}
+        </p>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2 items-start">
+        {{ range sort $items "Weight" }}{{ partial "machine-card.html" . }}{{ end }}
+      </div>
+    </div>
+
+    {{ else }}
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-8 pb-5 border-b-2 border-gold/60">
+      <div class="max-w-2xl">
+        <div class="flex items-baseline gap-3">
+          <span class="font-mono text-sm text-gold-deep">{{ printf "%02d" $area.order }}</span>
+          <h3 class="font-display font-bold text-2xl tracking-tight">{{ $area.name }}</h3>
+        </div>
+        <p class="text-muted mt-2.5 leading-relaxed">{{ $area.description }}</p>
+      </div>
+      <p class="font-mono text-xs text-faint shrink-0 lg:pb-1">
+        {{ len $items }} {{ cond (eq (len $items) 1) "machine" "machines" }}
+      </p>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-start">
+      {{ range sort $items "Weight" }}{{ partial "machine-card.html" . }}{{ end }}
+    </div>
+    {{ end }}
+
+  </div>
+</section>

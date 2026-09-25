@@ -2,7 +2,7 @@
   {{ partial "section-head.html" (dict
       "eyebrow" "05 — Partners"
       "title" "Partners & sponsors"
-      "lead" "Our work is made possible in part by the companies below, who supply the hardware a student budget can't reach on its own.") }}
+      "lead" "Our work is made possible in part by the companies below, who supply the hardware a student budget can’t reach on its own.") }}
 
   <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
     {{ range hugo.Data.sponsors }}
@@ -11,10 +11,10 @@
         {{ if .logo }}
         <img src="{{ .logo | relURL }}" alt="{{ .name }} logo" loading="lazy" class="max-h-10 max-w-full object-contain object-left" />
         {{ else }}
-        <span class="font-display font-600 text-xl">{{ .name }}</span>
+        <span class="font-display font-semibold text-xl">{{ .name }}</span>
         {{ end }}
       </div>
-      {{ if .logo }}<p class="font-display font-600">{{ .name }}</p>{{ end }}
+      {{ if .logo }}<p class="font-display font-semibold">{{ .name }}</p>{{ end }}
       <p class="text-sm text-muted {{ if .logo }}mt-2{{ end }} leading-relaxed">{{ .description }}</p>
     </div>
     {{ end }}

@@ -1,0 +1,16 @@
+{{/* Sourcing state of one BOM line. Uses the same dot-and-label
+     vocabulary as a machine's build status, so "have / ordered /
+     needed" reads the same way as "operational / in build /
+     planned" elsewhere on the site. */}}
+{{ $s := . | default "needed" }}
+{{ $label := "To source" }}
+{{ $dot := "border-2 border-faint" }}
+{{ $text := "text-muted" }}
+{{ if eq $s "have" }}
+  {{ $label = "Have" }}{{ $dot = "bg-signal-green" }}{{ $text = "text-signal-green" }}
+{{ else if eq $s "ordered" }}
+  {{ $label = "Ordered" }}{{ $dot = "bg-signal-amber" }}{{ $text = "text-signal-amber" }}
+{{ end }}
+<span class="inline-flex items-center gap-1.5 text-xs font-semibold {{ $text }} whitespace-nowrap">
+  <span class="w-2 h-2 rounded-full {{ $dot }} shrink-0"></span>{{ $label }}
+</span>

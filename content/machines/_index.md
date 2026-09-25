@@ -1,12 +1,11 @@
 ---
 title: "The Fab"
-subhead: "Every tool we're building, grouped the way a fab is actually organized — by process module, in the order a wafer moves through them."
+subhead: "Every tool we’re building, laid out the way the lab is actually organized: two build generations, plus the application and facility work that both depend on."
 ---
 
-A commercial fab is a cleanroom full of multi-million-dollar tools. Ours is a
-set of bench-top machines that a student team can build, break, fix, and
-understand end to end. The process steps are the same ones industry uses; the
-scale, the budget, and the people running them are not.
+A commercial fab is a cleanroom full of million-dollar tools. Ours is
+bench-top machines a student team can build, break, and fix. Same
+process steps as industry — different scale, budget, and people.
 
-Each tool below has its own page covering what it does, the subsystems it's
-built from, and where we are with it.
+Each tool has its own page: what it does, what it's built from, and
+where we are with it.

@@ -1,42 +1,81 @@
 <section id="backing" class="mx-auto max-w-6xl px-6 py-20 border-b border-line scroll-mt-24">
   {{ partial "section-head.html" (dict
       "eyebrow" "03 — Support"
-      "title" "Backed by the University"
-      "lead" "We operate as a registered student organization at the University of Minnesota, Twin Cities, with space, equipment access, and faculty guidance behind us.") }}
+      "title" "What backs us up"
+      "lead" "We run as a registered student organization at the University of Minnesota, with space, equipment access, and faculty guidance behind us.") }}
 
-  <div class="mt-12 grid md:grid-cols-2 gap-5">
+  {{/* The three support boxes. Content is in data/backing.yaml. */}}
+  <div class="mt-12 grid md:grid-cols-3 gap-5">
     {{ range hugo.Data.backing }}
-    <div class="border border-line bg-surface rounded-lg p-6">
+    <div class="border border-line bg-surface rounded-xl p-6 border-t-4 border-t-gold">
       <div class="flex items-start justify-between gap-4">
-        <h3 class="font-display font-600 text-lg">{{ .title }}</h3>
+        <h3 class="font-display font-semibold text-xl leading-snug">{{ .title }}</h3>
+        {{/* Only renders if that entry has a "url" set. */}}
         {{ with .url }}
-        <a href="{{ . }}" class="text-xs text-maroon hover:underline underline-offset-4 shrink-0 mt-1">Visit →</a>
+        <a href="{{ . }}" class="text-sm font-medium text-maroon hover:underline underline-offset-4 shrink-0 mt-1">Visit →</a>
         {{ end }}
       </div>
-      <p class="text-sm text-muted mt-2.5 leading-relaxed">{{ .description }}</p>
+      <p class="text-muted mt-3 leading-relaxed">{{ .description }}</p>
     </div>
     {{ end }}
   </div>
 
-  {{ if hugo.Data.advisors }}
-  <div class="mt-12 pt-10 border-t border-line">
-    <h3 class="text-xs font-medium uppercase tracking-widest text-muted mb-7">Our advisors</h3>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {{ range hugo.Data.advisors }}
-      <div class="flex items-center gap-4">
-        {{ if .photo }}
-        <img src="{{ .photo | relURL }}" alt="{{ .name }}" class="w-14 h-14 rounded-full object-cover border border-line shrink-0" />
-        {{ else }}
-        {{ $words := split .name " " }}
-        {{ $initials := substr (index $words 0) 0 1 }}
-        {{ if gt (len $words) 1 }}{{ $initials = printf "%s%s" $initials (substr (index $words 1) 0 1) }}{{ end }}
-        <div class="w-14 h-14 rounded-full bg-maroon/8 border border-maroon/20 flex items-center justify-center font-display font-600 text-sm text-maroon shrink-0">
-          {{ $initials }}
+  {{/* ---------- Advisors ----------
+       Each advisor gets a proper portrait next to a short bio, the
+       way a faculty directory does it. Content is in
+       data/advisors.yaml.
+
+       WHY A 3:4 BOX AND NOT A CIRCLE: a headshot puts the face in
+       the upper half of the frame, so a small circle cropped from
+       the centre cuts the top of the head off. A portrait-shaped
+       box at the photo's own proportions shows the whole face.
+       ------------------------------------------------------------ */}}
+  {{ with hugo.Data.advisors }}
+  <div class="mt-16 pt-12 border-t border-line">
+    <div class="flex flex-wrap items-baseline justify-between gap-3 mb-8">
+      <h3 class="text-xs uppercase tracking-widest text-muted">Our advisors</h3>
+      <p class="text-sm text-faint font-mono">{{ len . }} faculty</p>
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-2">
+      {{ range . }}
+      <div class="border border-line bg-surface rounded-xl p-6 flex gap-5">
+
+        {{/* Fixed-width portrait column, so every advisor is framed
+             identically however many there end up being. */}}
+        <div class="w-[140px] sm:w-[150px] shrink-0">
+          {{ if .photo }}
+          {{/* object-position defaults to slightly above centre, which
+               is where a face sits in a headshot. Override per person
+               with "photoPosition:" in data/advisors.yaml if a
+               particular photo needs different framing. */}}
+          <img src="{{ .photo | relURL }}" alt="{{ .name }}"
+               loading="lazy"
+               class="w-full aspect-[3/4] object-cover rounded-lg border border-line bg-paper"
+               style="object-position: {{ .photoPosition | default "center 15%" }}" />
+          {{ else }}
+          {{ $words := split .name " " }}
+          {{ $initials := substr (index $words 0) 0 1 }}
+          {{ if gt (len $words) 1 }}{{ $initials = printf "%s%s" $initials (substr (index $words 1) 0 1) }}{{ end }}
+          <div class="w-full aspect-[3/4] rounded-lg bg-maroon/8 border border-maroon/20 flex items-center justify-center font-display font-bold text-3xl text-maroon">
+            {{ $initials }}
+          </div>
+          {{ end }}
         </div>
-        {{ end }}
-        <div>
-          <p class="font-medium text-sm">{{ .name }}</p>
-          <p class="text-xs text-muted mt-0.5 leading-relaxed">{{ .role }}</p>
+
+        <div class="min-w-0 flex flex-col">
+          <p class="font-display font-semibold text-xl leading-snug">{{ .name }}</p>
+          <p class="text-sm text-muted mt-1.5 leading-snug">{{ .role }}</p>
+
+          {{ with .bio }}
+          <p class="text-sm text-muted mt-3 leading-relaxed flex-1">{{ . }}</p>
+          {{ end }}
+
+          {{ with .link }}
+          <a href="{{ . }}" class="text-sm font-medium text-maroon hover:underline underline-offset-4 mt-3 self-start">
+            Faculty page &rarr;
+          </a>
+          {{ end }}
         </div>
       </div>
       {{ end }}

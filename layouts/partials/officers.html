@@ -1,4 +1,4 @@
-{{/* The club's officers. Content comes from data/officers.yaml —
+{{/* The club’s officers. Content comes from data/officers.yaml —
      add, remove, or reorder people there, not here. The section
      hides itself entirely if that file is empty. */}}
 {{ with hugo.Data.officers }}
@@ -6,33 +6,38 @@
   {{ partial "section-head.html" (dict
       "eyebrow" "04 — Team"
       "title" "Who runs the club"
-      "lead" "Officers are elected by the membership each year. Any of us is a reasonable person to contact if you want to get involved.") }}
+      "lead" "Officers are elected each year. Any of us is a fine person to contact about getting involved.") }}
 
   <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
     {{ range . }}
-    <div class="border border-line bg-surface rounded-lg p-6 flex flex-col items-start">
+    <div class="border border-line bg-surface rounded-xl p-6 flex flex-col items-start">
 
       {{ if .photo }}
+      {{/* Framed above centre, not dead centre — a face sits in the
+           top half of a headshot, so centring cuts the head off.
+           Override per person with "photoPosition:" in
+           data/officers.yaml. */}}
       <img src="{{ .photo | relURL }}" alt="{{ .name }}"
            loading="lazy"
-           class="w-16 h-16 rounded-full object-cover border border-line" />
+           class="w-20 h-20 rounded-full object-cover border-2 border-line bg-paper"
+           style="object-position: {{ .photoPosition | default "center 25%" }}" />
       {{ else }}
       {{/* No photo yet — show their initials instead. */}}
       {{ $words := split .name " " }}
       {{ $initials := substr (index $words 0) 0 1 }}
       {{ if gt (len $words) 1 }}{{ $initials = printf "%s%s" $initials (substr (index $words 1) 0 1) }}{{ end }}
-      <div class="w-16 h-16 rounded-full bg-maroon/8 border border-maroon/20 flex items-center justify-center font-display font-600 text-maroon">
+      <div class="w-20 h-20 rounded-full bg-maroon/10 border-2 border-maroon/25 flex items-center justify-center font-display font-bold text-xl text-maroon">
         {{ $initials }}
       </div>
       {{ end }}
 
-      <p class="font-mono text-[11px] uppercase tracking-wider text-maroon mt-5">{{ .role }}</p>
-      <p class="font-display font-600 text-lg mt-1.5 leading-snug">{{ .name }}</p>
+      <p class="font-mono text-xs font-semibold uppercase tracking-wider text-maroon mt-5">{{ .role }}</p>
+      <p class="font-display font-semibold text-xl mt-1.5 leading-snug">{{ .name }}</p>
       {{ with .major }}<p class="text-sm text-muted mt-1">{{ . }}</p>{{ end }}
 
       {{ with .email }}
       <a href="mailto:{{ . }}"
-         class="text-xs text-maroon hover:underline underline-offset-4 mt-3 break-all">{{ . }}</a>
+         class="text-sm font-medium text-maroon hover:underline underline-offset-4 mt-3 break-all">{{ . }}</a>
       {{ end }}
     </div>
     {{ end }}

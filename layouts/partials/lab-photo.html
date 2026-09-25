@@ -1,22 +1,37 @@
-{{/* Only renders if labPhoto is set in content/_index.md front matter,
-     so the site still builds cleanly before you've added a real photo. */}}
-{{ if .Params.labPhoto }}
-<section class="border-b border-line">
-  <div class="mx-auto max-w-6xl px-6 py-14">
-    <figure>
-      <img
-        src="{{ .Params.labPhoto | relURL }}"
-        alt="{{ .Params.labPhotoCaption | default (printf "%s lab space" .Site.Title) }}"
-        loading="lazy"
-        class="w-full h-[360px] sm:h-[440px] object-cover rounded-xl border border-line"
-      />
-      {{ if .Params.labPhotoCaption }}
-      <figcaption class="flex items-center gap-3 text-sm text-muted mt-4">
-        <span class="h-px w-6 bg-gold shrink-0"></span>
-        {{ .Params.labPhotoCaption }}
-      </figcaption>
-      {{ end }}
-    </figure>
-  </div>
-</section>
+{{/* ==============================================================
+     THE LAB PHOTO, built into the hero.
+
+     This used to be its own band further down the page, floating in
+     a lot of empty space. It now sits in the right half of the hero
+     and runs off the right edge of the screen, so it reads as part
+     of the page rather than a picture dropped onto it.
+
+     Change the photo in content/_index.md:
+        labPhoto:        "/images/lab/lab-photo.jpg"
+        labPhotoCaption: "Our lab space on campus: Keller 5-194"
+     Put the file itself in static/images/lab/.
+     Nothing renders if labPhoto is empty, so the site still builds
+     before you have a real photo.
+     ============================================================== */}}
+{{ with .Params.labPhoto }}
+<div class="relative hero-bleed-right">
+  <figure class="relative">
+    <img
+      src="{{ . | relURL }}"
+      alt="{{ $.Params.labPhotoCaption | default (printf "%s lab space" $.Site.Params.shortTitle) }}"
+      class="w-full h-[280px] sm:h-[380px] lg:h-[540px] object-cover rounded-l-2xl lg:rounded-r-none rounded-r-2xl border border-line shadow-[0_24px_60px_-30px_rgba(20,24,28,0.45)]"
+    />
+
+    {{/* A soft dark wash at the bottom so the caption stays readable
+         no matter what the photo looks like. */}}
+    <div class="absolute inset-x-0 bottom-0 h-32 rounded-b-2xl lg:rounded-br-none bg-gradient-to-t from-ink/75 to-transparent pointer-events-none"></div>
+
+    {{ with $.Params.labPhotoCaption }}
+    <figcaption class="absolute left-5 right-5 bottom-5 flex items-center gap-3 text-white text-sm font-medium drop-shadow">
+      <span class="h-4 w-1 bg-gold rounded-full shrink-0"></span>
+      {{ . }}
+    </figcaption>
+    {{ end }}
+  </figure>
+</div>
 {{ end }}

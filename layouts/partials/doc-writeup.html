@@ -1,0 +1,57 @@
+{{/* DOCUMENTATION — the section students write themselves.
+
+     Content comes from a "documentation:" block in the machine's own
+     file in content/machines/, written in markdown:
+
+       documentation: |
+         ## Running a spin
+         1. Turn on the vacuum pump.
+         2. ...
+
+     The `|` matters: it tells YAML "everything indented below this is
+     one block of text, keep the line breaks". Everything inside has to
+     stay indented two spaces past `documentation:`.
+
+     Headings, numbered and bulleted lists, **bold**, `code`, code
+     blocks, tables, and > callouts all render — see the .prose rules
+     in static/css/styles.css.
+
+     The section disappears entirely when the block is absent, so a
+     machine nobody has written up yet just doesn't show it. */}}
+{{/* This section renders on EVERY machine, written up or not. When
+     it's empty it says so and points at the file to edit — an
+     explicit "nobody has done this yet" is more useful to a student
+     than the section quietly not existing. */}}
+<section id="documentation" class="border-b border-line scroll-mt-32">
+  <div class="mx-auto max-w-6xl px-6 py-14">
+    {{/* Title across the top, with the "Updated …" date on the right,
+         so the write-up below can start at the left edge of the page
+         and use the full reading width. */}}
+    {{ partial "doc-section-head.html" (dict
+        "title" "Documentation"
+        "meta" (cond (isset .Params "documentationupdated") (printf "Updated %s" .Params.documentationUpdated) "")) }}
+
+    <p class="-mt-4 mb-8 max-w-2xl text-sm text-muted leading-relaxed">
+      How to actually run and maintain this machine, written by the
+      people who built it.
+    </p>
+
+    {{ if .Params.documentation }}
+    <div class="prose text-muted text-[17px] max-w-3xl">
+      {{ .Params.documentation | markdownify }}
+    </div>
+    {{ else }}
+    <div class="rounded-xl border border-dashed border-line bg-surface/50 p-6 max-w-3xl">
+      <p class="font-display font-semibold text-lg">Not written up yet</p>
+      <p class="text-sm text-muted mt-2 leading-relaxed">
+        If you&rsquo;ve worked on this machine, write it up: setup, the
+        procedure, recipes that work, cleanup, and what to do when it
+        misbehaves. Add a <code class="font-mono text-[13px]">documentation:</code>
+        block to
+        <span class="font-mono text-[13px] text-ink">content/machines/{{ .File.ContentBaseName }}.md</span>
+        &mdash; the template is already in that file, commented out.
+      </p>
+    </div>
+    {{ end }}
+  </div>
+</section>

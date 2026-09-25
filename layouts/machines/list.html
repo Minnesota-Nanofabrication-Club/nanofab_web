@@ -1,21 +1,24 @@
 {{ define "main" }}
 {{ $machines := where .Site.RegularPages "Section" "machines" }}
-{{ $cats := sort hugo.Data.categories "order" }}
+{{ $areas := sort hugo.Data.categories "order" }}
+{{ $gens  := hugo.Data.generations }}
 
 {{/* ==================================================================
      BUILD-TIME SANITY CHECKS
      These don't render anything. They print a warning in the terminal
      running `hugo server` if a machine file is set up wrong — most
-     importantly, if its "category" doesn't match data/categories.yaml,
-     which would make the machine silently vanish from the site.
-     See README section 4.5.
+     importantly, if its "category" doesn't match a track name in
+     data/categories.yaml, which would make the machine silently
+     vanish from the site. See README section 4.5.
      ================================================================== */}}
 {{ $validCats := slice }}
-{{ range hugo.Data.categories }}{{ $validCats = $validCats | append .name }}{{ end }}
+{{ range $areas }}
+  {{ range .tracks }}{{ $validCats = $validCats | append .name }}{{ end }}
+{{ end }}
 {{ $validStatus := slice "operational" "building" "planned" }}
 {{ range $machines }}
   {{ if not (in $validCats .Params.category) }}
-    {{ warnf "MACHINE SETUP — content/%s: category %q is not in data/categories.yaml, so this machine will NOT appear anywhere on the site. Valid categories are: %s" .File.Path .Params.category (delimit $validCats " | ") }}
+    {{ warnf "MACHINE SETUP — content/%s: category %q is not a track name in data/categories.yaml, so this machine will NOT appear anywhere on the site. Valid values are: %s" .File.Path .Params.category (delimit $validCats " | ") }}
   {{ end }}
   {{ if not (in $validStatus .Params.status) }}
     {{ warnf "MACHINE SETUP — content/%s: status %q is not valid; it will show as \"Planned\". Use one of: operational, building, planned." .File.Path .Params.status }}
@@ -25,90 +28,141 @@
   {{ end }}
 {{ end }}
 
+{{/* ==================================================================
+     PAGE SHAPE
+     The fab is organised the way the building is: a few shared areas
+     that both lines depend on, then Gen 1, then Gen 2. So the page
+     scrolls in that order, with a full-width colour band marking the
+     start of each generation.
+
+     An area is "shared" if none of its tracks carry a gen.
+     ================================================================== */}}
+{{ $shared := slice }}
+{{ $genAreas := slice }}
+{{ range $areas }}
+  {{ $hasGen := false }}
+  {{ range .tracks }}{{ if .gen }}{{ $hasGen = true }}{{ end }}{{ end }}
+  {{ if $hasGen }}{{ $genAreas = $genAreas | append . }}{{ else }}{{ $shared = $shared | append . }}{{ end }}
+{{ end }}
+
+{{/* ---------- Page header ---------- */}}
 <section class="relative overflow-hidden border-b border-line">
   <div class="absolute inset-0 bg-grid-fine pointer-events-none"></div>
-  <div class="relative mx-auto max-w-6xl px-6 pt-16 pb-14">
+  <div class="relative mx-auto max-w-6xl px-6 pt-14 pb-12">
     <nav class="text-sm text-muted mb-8" aria-label="Breadcrumb">
-      <a href="{{ "/" | relURL }}" class="hover:text-ink transition-colors">Home</a>
+      <a href="{{ "/" | relURL }}" class="hover:text-maroon transition-colors">Home</a>
       <span class="mx-2 text-line">/</span>
-      <span class="text-ink">The fab</span>
+      <span class="text-ink font-medium">The fab</span>
     </nav>
 
-    <h1 class="font-display font-700 text-4xl sm:text-5xl tracking-tight">{{ .Title }}</h1>
+    <h1 class="font-display font-bold text-4xl sm:text-5xl tracking-tight">{{ .Title }}</h1>
     {{ with .Params.subhead }}
     <p class="mt-5 max-w-2xl text-lg text-muted leading-relaxed">{{ . }}</p>
     {{ end }}
 
     {{ with .Content }}
-    <div class="prose text-muted mt-8 max-w-2xl text-sm">{{ . }}</div>
+    <div class="prose text-muted mt-7 max-w-2xl">{{ . }}</div>
     {{ end }}
 
     <div class="mt-9 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-muted">
-      <span><span class="font-display font-600 text-ink text-lg">{{ len $machines }}</span> machines</span>
-      <span><span class="font-display font-600 text-ink text-lg">{{ len $cats }}</span> process modules</span>
+      <span><span class="font-display font-bold text-ink text-xl">{{ len $machines }}</span> machines</span>
+      <span><span class="font-display font-bold text-ink text-xl">{{ len $areas }}</span> areas</span>
+      <span><span class="font-display font-bold text-ink text-xl">{{ len $gens }}</span> generations</span>
     </div>
   </div>
 </section>
 
-{{/* Process-flow strip: the six modules in the order a wafer sees them. */}}
-<section class="border-b border-line bg-surface/70">
-  <div class="mx-auto max-w-6xl px-6 py-10">
-    <h2 class="text-xs font-medium uppercase tracking-widest text-muted mb-6">Process flow</h2>
-    <ol class="flex flex-wrap items-center gap-x-2 gap-y-3">
-      {{ range $i, $c := $cats }}
-      {{ if $i }}<span class="text-line select-none" aria-hidden="true">→</span>{{ end }}
+{{/* ---------- Top-level jump bar ---------- */}}
+<section class="border-b border-line bg-surface/70 sticky top-16 z-30 backdrop-blur-md">
+  <div class="mx-auto max-w-6xl px-6 py-3">
+    <ul class="flex flex-wrap items-center gap-2">
+      {{ range $shared }}
       <li>
-        <a href="#{{ $c.slug }}"
-           class="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-3.5 py-1.5 text-sm hover:border-maroon hover:text-maroon transition-colors">
-          <span class="font-mono text-[11px] text-muted">{{ printf "%02d" $c.order }}</span>
-          {{ $c.name }}
+        <a href="#{{ .slug }}"
+           class="inline-flex items-center gap-2 rounded-full border border-line bg-paper px-3.5 py-1.5 text-sm font-medium hover:border-maroon hover:text-maroon transition-colors">
+          <span class="font-mono text-[11px] text-faint">{{ printf "%02d" .order }}</span>{{ .name }}
         </a>
       </li>
       {{ end }}
-    </ol>
-  </div>
-</section>
-
-{{/* One block per process module, each holding its machines. */}}
-{{ range $cats }}
-{{ $items := where $machines ".Params.category" .name }}
-{{ if $items }}
-<section id="{{ .slug }}" class="border-b border-line scroll-mt-24">
-  <div class="mx-auto max-w-6xl px-6 py-16">
-    <div class="grid lg:grid-cols-[minmax(0,20rem)_1fr] gap-10 lg:gap-14">
-
-      <div class="lg:sticky lg:top-24 lg:self-start">
-        <div class="flex items-baseline gap-3">
-          <span class="font-mono text-sm text-gold">{{ printf "%02d" .order }}</span>
-          <h2 class="font-display font-600 text-2xl tracking-tight">{{ .name }}</h2>
-        </div>
-        <p class="text-sm text-muted mt-3 leading-relaxed">{{ .description }}</p>
-        <p class="text-xs text-muted mt-5 font-mono">{{ len $items }} {{ cond (eq (len $items) 1) "machine" "machines" }}</p>
-      </div>
-
-      <div class="grid sm:grid-cols-2 gap-4">
-        {{ range sort $items "Weight" }}
-        <a href="{{ .RelPermalink }}"
-           class="machine-card group flex flex-col border border-line bg-surface rounded-lg p-5">
-          <div class="flex items-start justify-between gap-3">
-            {{ with .Params.step }}
-            <span class="font-mono text-[11px] uppercase tracking-wider text-muted">{{ . }}</span>
-            {{ end }}
-            {{ partial "status.html" .Params.status }}
-          </div>
-          <h3 class="font-display font-600 text-lg mt-2.5 leading-snug group-hover:text-maroon transition-colors">{{ .Title }}</h3>
-          <p class="text-sm text-muted mt-2 leading-relaxed flex-1">{{ .Params.summary }}</p>
-          <div class="mt-4 pt-3 border-t border-line flex items-center justify-between text-xs text-muted">
-            <span>{{ len .Params.subsystems }} subsystems</span>
-            <span class="machine-arrow font-medium text-maroon">Details →</span>
-          </div>
+      {{ range $gens }}
+      <li>
+        <a href="#{{ .slug }}"
+           class="gen-chip {{ if eq .name "Gen 1" }}gen-1{{ else }}gen-2{{ end }} hover:opacity-85 transition-opacity">
+          {{ .name }}
         </a>
-        {{ end }}
-      </div>
-
-    </div>
+      </li>
+      {{ end }}
+    </ul>
   </div>
 </section>
+
+{{/* ---------- Shared areas: Application, Facility ---------- */}}
+{{ range $shared }}
+{{ $items := slice }}
+{{ range .tracks }}{{ $items = $items | append (where $machines ".Params.category" .name) }}{{ end }}
+{{ if $items }}
+  {{ partial "area-block.html" (dict "area" . "items" $items "id" .slug "layout" "sidebar") }}
+{{ end }}
+{{ end }}
+
+{{/* ---------- Then one band per generation ---------- */}}
+{{ range $gi, $g := $gens }}
+
+{{/* Everything in this generation, for the machine count. */}}
+{{ $genMachines := slice }}
+{{ range $genAreas }}
+  {{ range where .tracks "gen" $g.name }}
+    {{ $genMachines = $genMachines | append (where $machines ".Params.category" .name) }}
+  {{ end }}
+{{ end }}
+
+{{ if $genMachines }}
+<section id="{{ $g.slug }}" class="gen-band {{ if eq $g.name "Gen 1" }}gen-band-1{{ else }}gen-band-2{{ end }} scroll-mt-32 text-white">
+  <div class="mx-auto max-w-6xl px-6 py-14">
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+      <div class="max-w-2xl">
+        <p class="font-mono text-xs uppercase tracking-widest text-white/60">
+          Section {{ add $gi 1 }} of {{ len $gens }}
+        </p>
+        <h2 class="font-display font-bold text-4xl sm:text-5xl tracking-tight mt-3">{{ $g.name }}</h2>
+        <p class="font-display text-xl text-gold mt-2">{{ $g.tagline }}</p>
+        <div class="mt-5 h-1.5 w-24 bg-gold rounded-full"></div>
+        <p class="mt-6 text-lg text-white/85 leading-relaxed">{{ $g.description }}</p>
+      </div>
+      <p class="font-mono text-sm text-white/70 shrink-0 lg:pb-2">
+        {{ len $genMachines }} machines
+      </p>
+    </div>
+
+    {{/* Jump straight to a process area within this generation. */}}
+    <ul class="mt-9 flex flex-wrap gap-2">
+      {{ range $genAreas }}
+      {{ $track := "" }}
+      {{ range where .tracks "gen" $g.name }}{{ $track = .name }}{{ end }}
+      {{ $items := where $machines ".Params.category" $track }}
+      {{ if $items }}
+      <li>
+        <a href="#{{ $g.slug }}-{{ .slug }}"
+           class="inline-flex items-center gap-2 rounded-full border border-white/30 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-white hover:text-ink transition-colors">
+          <span class="font-mono text-[11px] opacity-70">{{ printf "%02d" .order }}</span>{{ .name }}
+        </a>
+      </li>
+      {{ end }}
+      {{ end }}
+    </ul>
+  </div>
+</section>
+
+{{/* The process areas belonging to this generation. */}}
+{{ range $genAreas }}
+{{ $track := "" }}
+{{ range where .tracks "gen" $g.name }}{{ $track = .name }}{{ end }}
+{{ $items := where $machines ".Params.category" $track }}
+{{ if $items }}
+  {{ partial "area-block.html" (dict "area" . "items" $items "id" (printf "%s-%s" $g.slug .slug) "layout" "full") }}
+{{ end }}
+{{ end }}
+
 {{ end }}
 {{ end }}
 

@@ -9,7 +9,7 @@
      ============================================================== */}}
 {{ $s := . | default "planned" }}
 {{ $label := "Planned" }}
-{{ $dot := "border border-muted/60" }}
+{{ $dot := "border-2 border-faint" }}
 {{ $text := "text-muted" }}
 {{ if eq $s "operational" }}
   {{ $label = "Operational" }}
@@ -20,6 +20,6 @@
   {{ $dot = "bg-signal-amber" }}
   {{ $text = "text-signal-amber" }}
 {{ end }}
-<span class="inline-flex items-center gap-1.5 text-xs {{ $text }} shrink-0">
-  <span class="w-1.5 h-1.5 rounded-full {{ $dot }}"></span>{{ $label }}
+<span class="inline-flex items-center gap-1.5 text-xs font-semibold {{ $text }} shrink-0">
+  <span class="w-2 h-2 rounded-full {{ $dot }}"></span>{{ $label }}
 </span>

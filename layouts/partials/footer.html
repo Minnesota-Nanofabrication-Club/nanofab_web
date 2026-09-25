@@ -1,53 +1,97 @@
 <footer class="border-t border-line bg-surface/60">
   <div class="mx-auto max-w-6xl px-6 py-14">
 
-    <div class="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+    <div class="grid gap-10 sm:grid-cols-2 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
       <div>
         <div class="flex items-center gap-3">
-          <span class="w-8 h-8 rounded bg-maroon text-white flex items-center justify-center font-display font-700 text-xs">nF</span>
-          <p class="font-display font-600">{{ .Site.Title }}</p>
+          {{ partial "logo.html" (dict "size" 36) }}
+          <p class="font-display font-bold text-lg">{{ .Site.Params.shortTitle }}</p>
         </div>
-        <p class="text-sm text-muted mt-4 max-w-sm leading-relaxed">
-          A registered student organization at the
-          <a href="{{ .Site.Params.umn.universityURL }}" class="text-ink underline decoration-gold decoration-2 underline-offset-4 hover:text-maroon transition-colors">University of Minnesota, Twin Cities</a>,
-          building a functional nanofabrication lab from the bench up.
+        <p class="text-muted mt-4 max-w-sm leading-relaxed">
+          A student organization at the
+          <a href="{{ .Site.Params.umn.universityURL }}" class="text-ink font-medium underline decoration-gold decoration-2 underline-offset-4 hover:text-maroon transition-colors">University of Minnesota, Twin Cities</a>,
+          building a nanofabrication lab from the bench up.
         </p>
       </div>
 
       <div>
-        <h3 class="text-xs font-medium uppercase tracking-widest text-muted">Club</h3>
-        <ul class="mt-4 space-y-2.5 text-sm">
-          <li><a href="{{ "/machines/" | relURL }}" class="text-muted hover:text-ink transition-colors">The fab</a></li>
-          <li><a href="{{ "/#mission" | relURL }}" class="text-muted hover:text-ink transition-colors">What we do</a></li>
-          <li><a href="{{ "/#sponsors" | relURL }}" class="text-muted hover:text-ink transition-colors">Sponsors</a></li>
-          <li><a href="{{ .Site.Params.docsURL }}" class="text-muted hover:text-ink transition-colors">Documentation</a></li>
-          <li><a href="mailto:{{ .Site.Params.contactEmail }}" class="text-muted hover:text-ink transition-colors">{{ .Site.Params.contactEmail }}</a></li>
+        <h3 class="text-xs uppercase tracking-widest text-muted">Club</h3>
+        <ul class="mt-4 space-y-2.5">
+          <li><a href="{{ "/machines/" | relURL }}" class="text-muted hover:text-maroon transition-colors">The fab</a></li>
+          <li><a href="{{ "/#mission" | relURL }}" class="text-muted hover:text-maroon transition-colors">What we do</a></li>
+          <li><a href="{{ "/#officers" | relURL }}" class="text-muted hover:text-maroon transition-colors">Team</a></li>
+          <li><a href="{{ "/#sponsors" | relURL }}" class="text-muted hover:text-maroon transition-colors">Sponsors</a></li>
+          <li><a href="{{ .Site.Params.docsURL }}" class="text-muted hover:text-maroon transition-colors">Documentation</a></li>
         </ul>
       </div>
 
       <div>
-        <h3 class="text-xs font-medium uppercase tracking-widest text-muted">University of Minnesota</h3>
-        <ul class="mt-4 space-y-2.5 text-sm">
-          <li><a href="{{ .Site.Params.umn.universityURL }}" class="text-muted hover:text-ink transition-colors">umn.edu</a></li>
-          <li><a href="{{ .Site.Params.umn.collegeURL }}" class="text-muted hover:text-ink transition-colors">{{ .Site.Params.umn.collegeName }}</a></li>
-          <li><a href="{{ .Site.Params.umn.gopherLinkURL }}" class="text-muted hover:text-ink transition-colors">Find us on Gopher Link</a></li>
+        <h3 class="text-xs uppercase tracking-widest text-muted">Get in touch</h3>
+        <ul class="mt-4 space-y-2.5">
+          {{/* The contact email lives here, not in the hero. */}}
+          <li><a href="mailto:{{ .Site.Params.contactEmail }}" class="text-ink font-medium underline decoration-line underline-offset-4 hover:text-maroon hover:decoration-maroon transition-colors break-words">{{ .Site.Params.contactEmail }}</a></li>
+          <li><a href="{{ .Site.Params.discordURL }}" class="text-muted hover:text-maroon transition-colors">Discord</a></li>
+          <li><a href="{{ .Site.Params.umn.gopherLinkURL }}" class="text-muted hover:text-maroon transition-colors">Find us on Gopher Link</a></li>
+        </ul>
+      </div>
+
+      {{/* These links used to live in a maroon bar above the site
+           header. That bar is gone, so they sit here now. Plain text
+           links to the University are fine; its trademarks are not.
+           See README section 9. */}}
+      <div>
+        <h3 class="text-xs uppercase tracking-widest text-muted">University of Minnesota</h3>
+        <ul class="mt-4 space-y-2.5">
+          <li><a href="{{ .Site.Params.umn.universityURL }}" class="text-muted hover:text-maroon transition-colors">umn.edu</a></li>
+          <li><a href="{{ .Site.Params.umn.collegeURL }}" class="text-muted hover:text-maroon transition-colors">{{ .Site.Params.umn.collegeName }}</a></li>
         </ul>
       </div>
     </div>
 
-    <div class="mt-12 pt-8 border-t border-line flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 text-xs text-muted">
-      <p>© {{ now.Year }} {{ .Site.Title }}. {{ .Site.Params.tagline }}.</p>
+    <div class="mt-12 pt-8 border-t border-line flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 text-sm text-muted">
+      <p>© {{ now.Year }} {{ .Site.Params.shortTitle }}. {{ .Site.Params.tagline }}.</p>
       <div class="flex items-center gap-5">
-        <a href="{{ .Site.Params.discordURL }}" class="hover:text-ink transition-colors">Discord</a>
-        <a href="{{ .Site.Params.linkedinURL }}" class="hover:text-ink transition-colors">LinkedIn</a>
-        <a href="{{ .Site.Params.instagramURL }}" class="hover:text-ink transition-colors">Instagram</a>
+        <a href="{{ .Site.Params.discordURL }}" class="hover:text-maroon transition-colors">Discord</a>
+        <a href="{{ .Site.Params.linkedinURL }}" class="hover:text-maroon transition-colors">LinkedIn</a>
+        <a href="{{ .Site.Params.instagramURL }}" class="hover:text-maroon transition-colors">Instagram</a>
       </div>
     </div>
 
-    <p class="mt-6 text-xs text-muted/80 leading-relaxed max-w-3xl">
-      The University of Minnesota is an equal opportunity educator and employer.
-      This site is maintained by a student organization and its content is not
-      an official statement of the University of Minnesota.
-    </p>
+    {{/* ==========================================================
+         THE RSO BLOCK — LAST THING ON THE PAGE.
+
+         THE DISCLAIMER IS MANDATORY. The University requires this
+         exact sentence on a registered student organization’s public
+         platforms. Do not reword it, shrink it into the copyright
+         line, or delete it. It is stored once, in hugo.toml under
+         [params.umn] as rsoDisclaimer.
+
+         This block is also the correct home for the Block M RSO or
+         Goldy RSO mark, if the club gets one: the rule is that the
+         mark goes at the BOTTOM of the piece, on its own, separate
+         from the student group’s logo and name, and accompanied by
+         the disclaimer. That is exactly this layout — below a rule,
+         far from the club logo at the top, disclaimer alongside.
+
+         Don’t move the mark up into the site header, and don’t lock
+         it up next to the club logo. Both break the rule. The mark
+         appears once params.umn.rsoMark is set; the disclaimer shows
+         either way. See README section 9.
+         ========================================================== */}}
+    <div class="mt-8 pt-6 border-t border-line">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+        {{ with .Site.Params.umn.rsoMark }}
+        <img src="{{ . | relURL }}"
+             alt="University of Minnesota Registered Student Organization"
+             class="h-10 w-auto shrink-0" />
+        {{ end }}
+        <p class="text-sm font-medium text-ink leading-relaxed max-w-3xl">
+          {{ .Site.Params.umn.rsoDisclaimer }}
+        </p>
+      </div>
+      <p class="text-xs text-muted leading-relaxed max-w-3xl mt-3">
+        The University of Minnesota is an equal opportunity educator and employer.
+      </p>
+    </div>
   </div>
 </footer>

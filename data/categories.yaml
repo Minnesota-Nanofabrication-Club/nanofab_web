@@ -1,63 +1,105 @@
 # ==================================================================
-# Process modules — the categories the machines are grouped into.
+# HOW THE FAB IS ORGANIZED
 #
-# These follow the standard way a semiconductor fab is organized: by
-# *process module*, in the order a wafer actually moves through them.
-# A wafer gets cleaned, patterned, etched, doped/annealed, has film
-# deposited on it, and gets measured — then the cycle repeats for the
-# next layer.
+# The building has two build generations running side by side:
+#   Gen 1 — the first working line, being built now
+#   Gen 2 — the follow-on line, more capable, built after Gen 1
 #
-# "order" controls the sequence the groups appear in on the site, and
-# is also the number shown next to the group heading. Each machine in
-# content/machines/ points at one of these by its exact "name".
+# Two areas sit outside that split because they serve both lines:
+# Application and Facility. (Research is commented out below.)
 #
-# To add a new process module: copy a block, give it an unused
-# "order", and set "category:" on the machine pages that belong to it.
+# STRUCTURE
+#   Each block below is an AREA (a section heading on the site).
+#   Inside it, "tracks" are the Gen 1 / Gen 2 columns. An area with
+#   one track renders as a single column; two tracks render side by
+#   side, Gen 1 on the left.
+#
+#   Every machine page in content/machines/ sets "category:" to a
+#   TRACK NAME below, spelled exactly.
+#
+# "order" controls the sequence areas appear in, and is the number
+# shown next to the heading. Areas appear in this order everywhere
+# on the site.
+#
+# TO ADD AN AREA:    copy a block, give it an unused "order".
+# TO ADD A MACHINE:  run `hugo new machines/name.md` and set its
+#                    "category:" to one of the track names below.
 # ==================================================================
 
-- name: Wafer Preparation & Cleaning
+# - name: Research
+#   order: 1
+#   slug: research
+#   description: >-
+#     The open question the lab exists to chase. Everything else is
+#     infrastructure for running this experiment.
+#   tracks:
+#     - name: Research
+#       gen: ""
+
+- name: Application
   order: 1
-  slug: prep
+  slug: application
   description: >-
-    Getting a substrate ready to build on. Every process step downstream
-    assumes a surface with no particles, no organics, and no leftover
-    residue from the previous layer.
+    The device we’re building toward — what all the process steps add
+    up to once the line is running.
+  tracks:
+    - name: Application
+      gen: ""
 
-- name: Lithography
+- name: Facility
   order: 2
-  slug: lithography
+  slug: facility
   description: >-
-    Printing the pattern. A light-sensitive polymer is coated onto the
-    wafer, exposed with the shape we want, and developed — leaving a
-    stencil that the next step transfers into the material underneath.
+    Shared infrastructure both generations run on: how wafers move and
+    how clean the air around them stays.
+  tracks:
+    - name: Facility
+      gen: ""
 
-- name: Etch & Pattern Transfer
+- name: Patterning
   order: 3
-  slug: etch
+  slug: patterning
   description: >-
-    Turning the resist stencil into real structure by removing material
-    everywhere the resist isn't, then stripping the resist back off.
+    Printing the shape onto the wafer and cutting it into the material
+    underneath. This is the step that sets how small we can build.
+  tracks:
+    - name: Gen 1 Patterning
+      gen: "Gen 1"
+    - name: Gen 2 Patterning
+      gen: "Gen 2"
 
-- name: Thermal Processing & Doping
+- name: Doping
   order: 4
-  slug: thermal
+  slug: doping
   description: >-
-    High-temperature steps. Heat grows oxide, drives dopant atoms into
-    the silicon to set its electrical behavior, and repairs damage from
-    earlier processing.
+    Driving impurity atoms into the silicon to set its electrical
+    behavior — the step that turns plain wafer into a device.
+  tracks:
+    - name: Gen 1 Doping
+      gen: "Gen 1"
+    - name: Gen 2 Doping
+      gen: "Gen 2"
 
-- name: Thin-Film Deposition
+- name: Thin Film Deposition
   order: 5
   slug: deposition
   description: >-
-    Adding material rather than removing it — the metal contacts,
-    interconnects, and dielectric layers that turn patterned silicon
-    into a working device.
+    Adding material instead of removing it: the metal contacts and
+    insulating layers stacked on top of the patterned wafer.
+  tracks:
+    - name: Gen 1 Thin Film Deposition
+      gen: "Gen 1"
+    - name: Gen 2 Thin Film Deposition
+      gen: "Gen 2"
 
-- name: Metrology & Test
+- name: Wafer Inspection & Metrology
   order: 6
   slug: metrology
   description: >-
-    Measuring what we actually made. Imaging features down to the
-    nanometer scale and probing finished devices electrically to find
-    out whether the process worked.
+    Measuring what we actually made. Nothing upstream counts until we
+    can see it and probe it.
+  tracks:
+    - name: Gen 1 Wafer Inspection & Metrology
+      gen: "Gen 1"
+    - name: Gen 2 Wafer Inspection & Metrology
+      gen: "Gen 2"

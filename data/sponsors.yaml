@@ -8,7 +8,7 @@
 #                       deleting the #s puts them straight back).
 #
 # "logo" is optional:
-#   logo: ""                              -> shows the sponsor's name as text
+#   logo: ""                              -> shows the sponsor’s name as text
 #   logo: "/images/sponsors/name.png"     -> shows their logo instead
 #
 # Logo files go in static/images/sponsors/. Keep them small — the site
@@ -21,11 +21,10 @@
 
 - name: Ideal Vac
   description: Vacuum systems and components supporting our fabrication work.
-  logo: ""
-
+  logo: "/images/sponsors/ideal-vac.png"
 # ---- Not a sponsor yet. Delete the leading "#" on the three lines
 # ---- below to put them back on the site.
 #
-# - name: Basler
-#   description: Machine vision cameras used for imaging and inspection in the lab.
-#   logo: ""
+-  name: Basler
+   description: Machine vision cameras used for imaging and inspection in the lab.
+   logo: "/images/sponsors/basler.png"

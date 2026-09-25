@@ -1,0 +1,67 @@
+{{/* TIMELINE — what's done and what's left, for one machine.
+
+     Rows come from the "timeline" tab of the documentation Sheet and
+     render IN SHEET ORDER, so the sequence is controlled by dragging
+     rows around rather than by getting date formats right. "date" is
+     optional and only shows if filled in.
+
+     status: done | active | planned  (anything else reads as planned) */}}
+{{ $rows := . }}
+{{ $done := len (where $rows "status" "done") }}
+{{ $active := where $rows "status" "active" }}
+
+<section id="timeline" class="border-b border-line scroll-mt-32">
+  <div class="mx-auto max-w-6xl px-6 py-14">
+    {{ partial "doc-section-head.html" (dict
+        "title" "Timeline"
+        "meta" (printf "%d of %d complete" $done (len $rows))) }}
+
+    {{ partial "doc-sample-note.html" $rows }}
+
+    <div class="grid lg:grid-cols-[minmax(0,17rem)_1fr] gap-8 lg:gap-12">
+
+      {{/* Progress summary — the bit most people actually want. */}}
+      <div class="lg:sticky lg:top-36 lg:self-start">
+        <div class="rounded-xl border border-line bg-surface p-5">
+          <p class="font-display font-bold text-3xl">
+            {{ $done }}<span class="text-faint text-xl"> / {{ len $rows }}</span>
+          </p>
+          <p class="text-sm text-muted mt-1">milestones complete</p>
+
+          <div class="mt-4 h-2 rounded-full bg-line overflow-hidden">
+            <div class="h-full bg-maroon rounded-full"
+                 style="width: {{ if $rows }}{{ math.Round (mul (div (float $done) (len $rows)) 100) }}{{ else }}0{{ end }}%"></div>
+          </div>
+
+          {{ with $active }}
+          <p class="text-xs uppercase tracking-widest text-muted mt-6 mb-2">In progress</p>
+          <ul class="space-y-1.5">
+            {{ range . }}
+            <li class="text-sm text-ink leading-snug">{{ .milestone }}</li>
+            {{ end }}
+          </ul>
+          {{ end }}
+        </div>
+      </div>
+
+      <ol class="timeline space-y-6">
+        {{ range $rows }}
+        {{ $dot := "dot-planned" }}
+        {{ if eq .status "done" }}{{ $dot = "dot-done" }}{{ else if eq .status "active" }}{{ $dot = "dot-active" }}{{ end }}
+        <li class="timeline-item">
+          <span class="timeline-dot {{ $dot }}" aria-hidden="true"></span>
+          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <p class="font-semibold {{ if eq .status "planned" }}text-muted{{ else }}text-ink{{ end }}">{{ .milestone }}</p>
+            {{ with .date }}<span class="font-mono text-xs text-faint">{{ . }}</span>{{ end }}
+            {{ if eq .status "active" }}
+            <span class="font-mono text-[11px] uppercase tracking-wider text-signal-amber">in progress</span>
+            {{ end }}
+          </div>
+          {{ with .note }}<p class="text-sm text-muted mt-1 leading-relaxed">{{ . }}</p>{{ end }}
+        </li>
+        {{ end }}
+      </ol>
+
+    </div>
+  </div>
+</section>

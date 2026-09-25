@@ -1,0 +1,17 @@
+{{/* The links inside one reference group. Split out so the "Other"
+     bucket renders identically to the named ones. */}}
+<ul class="space-y-3">
+  {{ range . }}
+  <li>
+    {{ if .url }}
+    <a href="{{ .url }}" class="group flex items-baseline gap-2 font-medium text-ink hover:text-maroon transition-colors">
+      <span class="underline decoration-line underline-offset-4 group-hover:decoration-maroon">{{ .title }}</span>
+      <span class="text-faint text-xs shrink-0 group-hover:text-maroon" aria-hidden="true">&#8599;</span>
+    </a>
+    {{ else }}
+    <span class="font-medium text-ink">{{ .title }}</span>
+    {{ end }}
+    {{ with .note }}<p class="text-sm text-muted mt-0.5 leading-snug">{{ . }}</p>{{ end }}
+  </li>
+  {{ end }}
+</ul>

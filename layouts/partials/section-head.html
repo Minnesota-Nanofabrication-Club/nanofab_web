@@ -5,19 +5,21 @@
 
      Call it like:
        {{ partial "section-head.html" (dict
-            "eyebrow" "02"
+            "eyebrow" "02 — The fab"
             "title" "Building the fab"
             "lead" "Some sentence.") }}
      ============================================================== */}}
 <div class="max-w-2xl">
   {{ with .eyebrow }}
   <div class="flex items-center gap-3 mb-5">
-    <span class="h-px w-8 bg-gold"></span>
-    <span class="font-mono text-xs tracking-widest uppercase text-muted">{{ . }}</span>
+    <span class="h-1 w-10 bg-gold rounded-full"></span>
+    {{/* Was 12px light grey, which was hard to read. Now 13px,
+         semibold, in the dark body colour. */}}
+    <span class="font-mono text-xs font-semibold tracking-widest uppercase text-muted">{{ . }}</span>
   </div>
   {{ end }}
-  <h2 class="font-display font-600 text-3xl sm:text-[2.1rem] leading-tight tracking-tight">{{ .title }}</h2>
+  <h2 class="font-display font-bold text-3xl sm:text-[2.35rem] leading-tight tracking-tight">{{ .title }}</h2>
   {{ with .lead }}
-  <p class="text-muted mt-4 leading-relaxed">{{ . }}</p>
+  <p class="text-muted mt-4 text-lg leading-relaxed">{{ . }}</p>
   {{ end }}
 </div>

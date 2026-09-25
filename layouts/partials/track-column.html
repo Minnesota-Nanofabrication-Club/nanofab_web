@@ -1,0 +1,31 @@
+{{/* ==============================================================
+     ONE GENERATION COLUMN inside a process area.
+
+     Call with:
+       {{ partial "track-column.html" (dict "track" $t "machines" $items) }}
+
+     "track" is a block from the "tracks:" list in
+     data/categories.yaml; "machines" is the pages in it.
+     If the track has no "gen", the Gen header is skipped and the
+     machines just render in a grid.
+     ============================================================== */}}
+{{ $gen := .track.gen }}
+{{ $machines := .machines }}
+
+<div>
+  {{ with $gen }}
+  <div class="flex items-center gap-3 mb-5">
+    <span class="gen-chip {{ if eq . "Gen 1" }}gen-1{{ else }}gen-2{{ end }}">{{ . }}</span>
+    <span class="h-px flex-1 {{ if eq $gen "Gen 2" }}bg-violet/30{{ else }}bg-maroon/25{{ end }}"></span>
+    <span class="font-mono text-xs text-faint shrink-0">
+      {{ len $machines }}
+    </span>
+  </div>
+  {{ end }}
+
+  <div class="grid gap-4 {{ if not $gen }}sm:grid-cols-2 lg:grid-cols-3{{ end }}">
+    {{ range sort $machines "Weight" }}
+      {{ partial "machine-card.html" . }}
+    {{ end }}
+  </div>
+</div>

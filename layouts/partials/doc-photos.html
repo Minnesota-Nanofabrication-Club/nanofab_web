@@ -1,0 +1,55 @@
+{{/* DOCUMENTATION PHOTOS — figures that go with the write-up, shown
+     directly below the Documentation section.
+
+     Listed in the machine's own file in content/machines/:
+
+       documentationPhotos:
+         - src: "/images/machines/microplotter.jpg"
+           caption: "Figure 1: What this shows."
+         - src: "/images/machines/microplotter2.jpg"
+           caption: "Figure 2: …"
+
+     Images are never cropped: each one keeps its own shape and is
+     scaled down to fit, so figures with labels or edges that matter
+     show in full. One photo renders on its own; two or more sit in a
+     two-column grid. Each links to the full-size file.
+
+     The section disappears when the list is absent. */}}
+{{ with .Params.documentationPhotos }}
+{{ $single := eq (len .) 1 }}
+<section id="documentation-photos" class="border-b border-line scroll-mt-32">
+  <div class="mx-auto max-w-6xl px-6 py-14">
+    {{ partial "doc-section-head.html" (dict
+        "title" "Documentation photos"
+        "meta" (printf "%d %s" (len .) (cond $single "photo" "photos"))) }}
+
+    <div class="grid gap-8 items-start {{ if $single }}max-w-3xl{{ else }}sm:grid-cols-2{{ end }}">
+      {{ range $i, $p := . }}
+      <figure>
+        {{/* Fixed-height frame, image scaled to fit inside it
+             (object-contain), so photos in the same row line up
+             without any of them being cut off. */}}
+        <a href="{{ $p.src | relURL }}"
+           class="group flex items-center justify-center h-80 sm:h-96 rounded-xl border border-line bg-white p-3 group-hover:border-maroon hover:border-maroon transition-colors">
+          <img src="{{ $p.src | relURL }}"
+               alt="{{ $p.caption | default (printf "Documentation photo %d for the %s" (add $i 1) $.Title) }}"
+               loading="lazy"
+               class="max-w-full max-h-full object-contain" />
+        </a>
+        <figcaption class="flex flex-wrap items-start justify-between gap-x-6 gap-y-2 mt-3">
+          {{ with $p.caption }}
+          <span class="flex items-start gap-3 text-sm text-muted max-w-xl">
+            <span class="h-px w-6 bg-gold shrink-0 mt-2.5"></span><span>{{ . }}</span>
+          </span>
+          {{ end }}
+          <a href="{{ $p.src | relURL }}"
+             class="text-sm font-medium text-maroon hover:underline underline-offset-4 shrink-0">
+            Full size &#8599;
+          </a>
+        </figcaption>
+      </figure>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

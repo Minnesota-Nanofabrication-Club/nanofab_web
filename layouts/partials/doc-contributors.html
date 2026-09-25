@@ -1,0 +1,26 @@
+{{/* WHO BUILT IT — credit for the members who worked on this
+     machine. Rows come from the "contributors" tab of the
+     documentation Sheet: name, workedOn, year. */}}
+{{ $rows := . }}
+
+<section id="contributors" class="border-b border-line scroll-mt-32">
+  <div class="mx-auto max-w-6xl px-6 py-14">
+    {{ partial "doc-section-head.html" (dict
+        "title" "Who built it"
+        "meta" (printf "%d %s" (len $rows) (cond (eq (len $rows) 1) "contributor" "contributors"))) }}
+
+    {{ partial "doc-sample-note.html" $rows }}
+
+    <ul class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {{ range $rows }}
+      <li class="border border-line bg-surface rounded-xl p-5">
+        <div class="flex items-baseline justify-between gap-3">
+          <p class="font-display font-semibold text-lg leading-snug">{{ .name }}</p>
+          {{ with .year }}<span class="font-mono text-xs text-faint shrink-0">{{ . }}</span>{{ end }}
+        </div>
+        {{ with .workedOn }}<p class="text-sm text-muted mt-1.5 leading-relaxed">{{ . }}</p>{{ end }}
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+</section>

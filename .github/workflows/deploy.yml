@@ -17,9 +17,17 @@ on:
     branches: [main]
   # Also lets you trigger it by hand from the Actions tab.
   workflow_dispatch:
+  # Scheduled rebuilds are OFF. They only exist to pick up edits to
+  # the machine documentation Google Sheet, which isn't connected.
+  # Uncomment this together with the two sync steps below.
+  # schedule:
+  #   - cron: "0 */6 * * *"
 
 # Permissions the job needs in order to publish to Pages.
 permissions:
+  # Only needs "read" while the documentation Sheet is switched off.
+  # Change to "write" when you enable the sync steps below — they
+  # commit the pulled data back into the repo.
   contents: read
   pages: write
   id-token: write
@@ -47,6 +55,36 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      # ----------------------------------------------------------------
+      # MACHINE DOCUMENTATION SYNC — OFF
+      #
+      # These two steps pull the club's documentation Google Sheet into
+      # data/sheets/ and commit it, so machine pages can show a
+      # timeline, bill of materials, contributors, and references.
+      #
+      # To turn the whole thing on:
+      #   1. Set up the Sheet — scripts/sheet-template/HOW-TO-SET-UP-THE-SHEET.txt
+      #   2. Uncomment docsSheetId in hugo.toml and paste in the ID
+      #   3. Uncomment the two steps below
+      #   4. Uncomment the "schedule:" block near the top of this file
+      #   5. Change "contents: read" above to "contents: write"
+      # See README section 4.15.
+      # ----------------------------------------------------------------
+      # - name: Pull the machine documentation Sheet
+      #   run: python3 scripts/sync-sheets.py
+      #
+      # - name: Commit any documentation changes
+      #   run: |
+      #     if [ -n "$(git status --porcelain data/sheets)" ]; then
+      #       git config user.name  "github-actions[bot]"
+      #       git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      #       git add data/sheets
+      #       git commit -m "Update machine documentation from the Google Sheet"
+      #       git push
+      #     else
+      #       echo "Documentation unchanged."
+      #     fi
 
       - name: Configure GitHub Pages
         id: pages

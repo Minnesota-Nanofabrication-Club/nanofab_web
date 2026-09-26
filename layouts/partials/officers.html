@@ -54,7 +54,10 @@
   </div>
   {{ end }}
 
-  <p class="font-mono text-xs font-semibold uppercase tracking-wider text-maroon mt-5">{{ .role }}</p>
+  {{/* Two lines of height are reserved for the role (leading-5 = 1.25rem per line, so sm:min-h-[2.5rem])
+       so names line up across a row even when one role wraps, like
+       "Outreach and Events Director". */}}
+  <p class="font-mono text-xs font-semibold uppercase tracking-wider text-maroon mt-5 leading-5 sm:min-h-[2.5rem]">{{ .role }}</p>
   <p class="font-display font-semibold text-xl mt-1.5 leading-snug">{{ .name }}</p>
   {{ with .major }}<p class="text-sm text-muted mt-1">{{ . }}</p>{{ end }}
 

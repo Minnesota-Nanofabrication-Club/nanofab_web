@@ -30,36 +30,36 @@
 
 - name: Leonard Jin
   role: President
-  major: "Computer Engineering"
+  major: 
   email: ""
   photo: "images/officers/leonard.jpeg"
 
 - name: Andrew Choi
   role: Vice President
-  major: "Electrical Engineering"
+  major: 
   email: ""
   photo: "images/officers/Andrew.jpeg"
 
 - name: Bear BlinSchauer
   role: Secretary-Treasurer
-  major: "Electrical Engineering"
+  major: 
   email: ""
   photo: "images/officers/bear.jpeg"
 
-- name: Rhys
+- name: Rhys Peene
   role: Outreach and Events Director
-  major: ""
+  major: 
   email: ""
   photo: "/images/officers/Rhys.jpg"
 
 - name: Nathan Van Berkom
   role: Finance Director
-  major: "Finance & Accounting"
+  major: 
   email: ""
   photo: "/images/officers/Nathan Van Berk.jpeg"
 
 - name: Avi Raghuvanshi
   role: Marketing Director
-  major: "Electrical Engineering"
+  major: 
   email: ""
   photo: "/images/officers/Avi Raghu.jpeg"

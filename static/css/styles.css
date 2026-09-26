@@ -234,9 +234,10 @@ label:focus-visible,
 
    These are designed to read as buttons before you touch them:
    a solid 1.5px outline, a soft inner face, a pointer cursor, and
-   a small "chip" in the corner. On hover the whole box lifts, the
-   outline goes maroon, and a gold rule sweeps across the top edge
-   so the click target is unmistakable.
+   a small "chip" in the corner. On hover the whole box lifts and
+   the outline goes maroon, so the click target is unmistakable.
+   (There used to be a gold line sweeping across the top edge too;
+   it was removed.)
 ----------------------------------------------------------- */
 .machine-card {
   position: relative;
@@ -249,29 +250,12 @@ label:focus-visible,
               border-color 0.18s ease, background-color 0.18s ease;
 }
 
-/* The gold sweep along the top edge. */
-.machine-card::before {
-  content: "";
-  position: absolute;
-  left: -1.5px;
-  right: -1.5px;
-  top: -1.5px;
-  height: 3px;
-  background: var(--gold);
-  border-radius: 12px 12px 0 0;  /* matches the card's rounded-xl */
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.22s ease;
-}
-
 .machine-card:hover,
 .machine-card:focus-visible {
   transform: translateY(-3px);
   border-color: var(--maroon);
   box-shadow: 0 12px 28px -12px rgba(20, 24, 28, 0.28);
 }
-.machine-card:hover::before,
-.machine-card:focus-visible::before { transform: scaleX(1); }
 
 /* Pressed state — a real button gives way under the cursor. */
 .machine-card:active {
@@ -297,8 +281,8 @@ label:focus-visible,
               transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-/* Gold bar down the left edge, the row-sized version of the sweep
-   across the top of a card. */
+/* Gold bar down the left edge of a homepage row on hover. (The
+   machine cards on /machines/ no longer have a gold line.) */
 .machine-row::before {
   content: "";
   position: absolute;

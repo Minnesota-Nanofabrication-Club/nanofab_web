@@ -87,17 +87,17 @@
   email: ""
   photo: "/images/officers/Hadi.jpeg"
 
-- name: Isynack
+- name: Issac Holmdahl
   role: "Electron Microscope"
   major: ""
   email: ""
   photo: ""
 
-- name: Misha
+- name: Misha Mickevicius
   role: "Alignment Firmware"
   major: ""
   email: ""
-  photo: ""
+  photo: "/images/officers/Misha.jpg"
 
 - name: Shreyans Tibrawalla
   role: "Polymer Synthesis"

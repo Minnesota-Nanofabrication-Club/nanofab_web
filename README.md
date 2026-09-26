@@ -871,9 +871,31 @@ The section hides itself entirely if the file is empty, so you can delete
 everything in it without leaving a blank gap on the page.
 
 > **Update this file at the start of each school year.** It's the part of
-> the site that goes stale fastest. The file currently holds four
-> placeholders (President / Vice President / Treasurer / Secretary) — the
-> roles are probably right, the names definitely aren't.
+> the site that goes stale fastest.
+
+#### Why the names line up
+
+Every card reserves **two lines** for the role, whether it needs them or
+not. So in a row where one role wraps onto a second line ("Outreach and
+Events Director") and the others don't ("President"), every name still
+sits at the same height. The leads cards below work the same way.
+
+It's one line in `layouts/partials/officers.html`, the role's `<p>`:
+
+```html
+<p class="font-mono text-xs … mt-5 leading-5 sm:min-h-[2.5rem]">{{ .role }}</p>
+```
+
+- `leading-5` makes each line of the role 1.25rem tall.
+- `sm:min-h-[2.5rem]` reserves room for two of those lines (2 × 1.25rem).
+  The `sm:` means it only applies when cards sit side by side. On phones
+  they stack one per row, so there's nothing to line up and no gap is
+  added.
+- **If a role ever needs three lines**, change `2.5rem` to `3.75rem`
+  (3 × 1.25rem). Every card then gets three lines of room.
+- **Shorter is better, though.** A role that fits on one or two lines
+  reads better than a card with extra space in it. "Outreach & Events"
+  fits more easily than "Outreach and Events Director".
 
 #### System & Subsystem Leads
 
@@ -2078,10 +2100,62 @@ To see what you changed before committing, `git status` lists the files and
 | `failed to unmarshal YAML` error | Indentation. You used a tab instead of spaces, or a list item isn't lined up with its siblings. The error names the file and line. |
 | Text after a colon breaks the build | Wrap the whole value in quotes: `summary: "Etching: the basics"`. |
 | An image doesn't show up | The path must start with `/images/…`, the filename is case-sensitive, and it can't contain spaces. |
-| Browser shows old content | Hard refresh: `Cmd+Shift+R` (Mac) or `Ctrl+Shift+R` (Windows). |
+| Browser shows old content, or a CSS change doesn't show up | Your browser is using a saved copy. Hard refresh: `Cmd+Shift+R` (Mac) or `Ctrl+Shift+R` (Windows). Details and a permanent fix below this table. |
 | Works locally but links break once published | `baseURL` doesn't match the real address. On GitHub Pages the workflow handles this — check you set **Source: GitHub Actions**, not "Deploy from a branch". |
 | The deploy fails on GitHub | Open the **Actions** tab and click the red run. The error is usually in the last few lines of the log. A mismatched `HUGO_VERSION` is a common cause. |
 | You broke something and want to undo it | If you haven't committed: `git checkout -- path/to/file`. If you have: `git revert HEAD`. With Git, nothing is ever permanently lost. |
+
+#### A style change doesn't show up in the browser
+
+You edited `static/css/styles.css`, but the page still looks the same.
+Nearly always, the change **is** there and the browser is showing an old
+copy. Browsers save a site's stylesheet so pages load faster, and they
+often keep using that saved copy even after an ordinary reload. (This is
+what happened when the gold line was removed from the machine cards:
+the file was correct, but the browser kept showing the line.)
+
+Work through these in order:
+
+1. **Hard refresh** the page: `Cmd+Shift+R` (Mac) or `Ctrl+Shift+R`
+   (Windows).
+2. **Open the page in a private window** (`Cmd+Shift+N` in Chrome,
+   `Cmd+Shift+P` in Safari or Firefox). A private window never uses
+   saved files, so it shows exactly what the site is serving now. If the
+   change shows there, the site is fine and it's only your browser.
+3. **Check which site you're looking at.** `localhost:1313` is your
+   preview and shows changes as soon as you save. The **live site only
+   changes after you commit and push** (section 5.6). Until then it keeps
+   the old look.
+4. **Check the preview is running from the right folder.** There may be
+   older copies of the site elsewhere on the computer (for example in
+   Downloads). The terminal running `hugo server` should be in the folder
+   you're editing.
+
+**The permanent fix: make the stylesheet's address change when the file
+does.** In `layouts/partials/head.html`, the stylesheet line (around line
+90) looks like this by default:
+
+```html
+<link rel="stylesheet" href="{{ strings.TrimPrefix "/" ("css/styles.css") | relURL }}" />
+```
+
+Replace it with:
+
+```html
+<link rel="stylesheet" href="{{ strings.TrimPrefix "/" ("css/styles.css") | relURL }}?v={{ readFile "static/css/styles.css" | md5 | truncate 8 "" }}" />
+```
+
+That adds a short code made from the file's contents, so the address
+becomes something like `/css/styles.css?v=338ef379`. The code changes
+every time `styles.css` changes. A new address means every browser,
+yours and every visitor's, downloads the new file instead of reusing the
+old one. You keep editing `static/css/styles.css` exactly as before.
+
+- **Is it already done?** Look at that line in `head.html`. If it ends
+  with `?v={{ readFile …`, yes. If it ends with `relURL }}" />`, no.
+- **To check it's working**, open any page, choose View → Developer →
+  View Source, and search for `styles.css`. You should see `?v=`
+  followed by eight letters and numbers.
 
 ---
 
@@ -2223,8 +2297,29 @@ hovers it:
    on `/machines/` stay white; they have the room to carry the message
    with an outline and a hover lift instead.
 
-On hover the outline goes full maroon, a gold bar wipes in, the box
-lifts, and — on the rows — the fill deepens to `--tile-hover`.
+What happens on hover depends on which kind of box it is:
+
+| Box | Where | On hover |
+|---|---|---|
+| **Machine cards** (`.machine-card`) | `/machines/`, and "Also in …" at the bottom of each machine page | The card **lifts** 3 px, gets a shadow, and the outline and machine name turn **maroon**. No gold line |
+| **Homepage rows** (`.machine-row`) | "The fab, machine by machine" on the homepage | The outline turns maroon, the fill deepens to `--tile-hover`, and a **gold bar** slides down the **left** edge |
+
+Both are in `static/css/styles.css`:
+
+- **Card lift and maroon outline:** the `.machine-card:hover` rule. To
+  change how far it lifts, edit `translateY(-3px)`.
+- **Row gold bar:** the `.machine-row::before` rule. Delete that rule and
+  the `.machine-row:hover::before` line to remove it.
+
+The machine cards used to have a gold line sweeping across their **top**
+edge on hover too. That was removed. If you ever want it back, it was a
+`.machine-card::before` rule modelled on `.machine-row::before`, but
+running across the top (`top`, `left`, `right`, `height: 3px`) instead
+of down the side.
+
+**Changed the hover and still see the old one?** Your browser is using a
+saved copy of the stylesheet. See "Browser shows old content" in
+section 6.
 
 There are deliberately **no arrow glyphs** on these. If you add a new
 kind of clickable box, reuse `.machine-card` or `.machine-row` rather

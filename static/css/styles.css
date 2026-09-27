@@ -281,22 +281,9 @@ label:focus-visible,
               transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-/* Gold bar down the left edge of a homepage row on hover. (The
-   machine cards on /machines/ no longer have a gold line.) */
-.machine-row::before {
-  content: "";
-  position: absolute;
-  top: -1.5px;
-  bottom: -1.5px;
-  left: -1.5px;
-  width: 3px;
-  background: var(--gold);
-  border-radius: 8px 0 0 8px;
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.2s ease;
-}
-
+/* On hover: maroon outline, deeper fill, a small nudge right, and a
+   shadow. (There used to be a gold bar down the left edge too; it
+   was removed, like the gold line on the machine cards.) */
 .machine-row:hover,
 .machine-row:focus-visible {
   border-color: var(--maroon);
@@ -304,8 +291,6 @@ label:focus-visible,
   transform: translateX(3px);
   box-shadow: 0 8px 18px -12px rgba(20, 24, 28, 0.3);
 }
-.machine-row:hover::before,
-.machine-row:focus-visible::before { transform: scaleY(1); }
 
 .machine-row:active {
   transform: translateX(1px);

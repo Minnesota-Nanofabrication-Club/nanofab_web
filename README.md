@@ -2302,20 +2302,24 @@ What happens on hover depends on which kind of box it is:
 | Box | Where | On hover |
 |---|---|---|
 | **Machine cards** (`.machine-card`) | `/machines/`, and "Also in …" at the bottom of each machine page | The card **lifts** 3 px, gets a shadow, and the outline and machine name turn **maroon**. No gold line |
-| **Homepage rows** (`.machine-row`) | "The fab, machine by machine" on the homepage | The outline turns maroon, the fill deepens to `--tile-hover`, and a **gold bar** slides down the **left** edge |
+| **Homepage rows** (`.machine-row`) | "The fab, machine by machine" on the homepage | The row nudges 3 px **right**, gets a shadow, the outline turns **maroon**, and the fill deepens to `--tile-hover`. No gold line |
 
 Both are in `static/css/styles.css`:
 
 - **Card lift and maroon outline:** the `.machine-card:hover` rule. To
   change how far it lifts, edit `translateY(-3px)`.
-- **Row gold bar:** the `.machine-row::before` rule. Delete that rule and
-  the `.machine-row:hover::before` line to remove it.
+- **Row nudge, maroon outline, and darker fill:** the `.machine-row:hover`
+  rule. To change how far it moves, edit `translateX(3px)`. The darker
+  fill is `--tile-hover`, near the top of the file.
 
-The machine cards used to have a gold line sweeping across their **top**
-edge on hover too. That was removed. If you ever want it back, it was a
-`.machine-card::before` rule modelled on `.machine-row::before`, but
-running across the top (`top`, `left`, `right`, `height: 3px`) instead
-of down the side.
+**Neither has a gold line anymore.** The cards used to have one sweeping
+across their **top** edge on hover, and the homepage rows one sliding
+down their **left** edge. Both were removed. If you ever want one back,
+it's a `::before` rule on `.machine-card` or `.machine-row`: a 3 px strip
+with `position: absolute`, `background: var(--gold)`, hidden with
+`transform: scaleX(0)` (top edge) or `scaleY(0)` (left edge), plus a
+`:hover::before` rule that sets the scale to `1`. The old versions are in
+the git history of `static/css/styles.css`.
 
 **Changed the hover and still see the old one?** Your browser is using a
 saved copy of the stylesheet. See "Browser shows old content" in

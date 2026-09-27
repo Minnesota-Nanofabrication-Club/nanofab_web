@@ -31,13 +31,13 @@
   role: "Tube Furnace"
   major: ""
   email: ""
-  photo: ""
+  photo: "/images/officers/IMG_1516.jpeg"
 
 - name: Wenteng Li
   role: "Spin Coater"
   major: ""
   email: ""
-  photo: ""
+  photo: "images/officers/Wenteng.jpg"
 
 - name: Bear BlinSchauer
   role: "DC Magnetron Sputterer"
@@ -49,7 +49,7 @@
   role: "Reactive-Ion Etcher"
   major: ""
   email: ""
-  photo: ""
+  photo: "/images/officers/David.jpg"
 
 - name: Matt Reed
   role: "Dopant Synthesis"
@@ -73,7 +73,7 @@
   role: "Laser Interferometry"
   major: ""
   email: ""
-  photo: ""
+  photo: "/images/officers/HenryGoldbergHeadshot.png"
 
 - name: Harshit Mehendiratta
   role: "Computer Vision Metrology"
@@ -91,7 +91,7 @@
   role: "Electron Microscope"
   major: ""
   email: ""
-  photo: ""
+  photo: "images/officers/issac.jpg"
 
 - name: Misha Mickevicius
   role: "Alignment Firmware"

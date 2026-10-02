@@ -39,6 +39,7 @@ generator before. Follow it top to bottom the first time.
    - [4.16 The Documentation section](#416-the-documentation-section) — *where students write things up*
    - [4.17 Overview pages](#417-overview-pages-the-illustrated-write-up) — *the illustrated write-up at the top of every machine page*
    - [4.18 Moving an image on a machine page](#418-moving-an-image-on-a-machine-page)
+   - [4.19 Search engines (SEO)](#419-search-engines-seo) — *Google results, link previews, Search Console*
 5. [Publishing the site](#5-publishing-the-site)
 6. [Troubleshooting](#6-troubleshooting)
 7. [Changing the design itself](#7-changing-the-design-itself)
@@ -111,7 +112,14 @@ Open a terminal inside VS Code (**Terminal → New Terminal**) and run:
 hugo server
 ```
 
-Then open **http://localhost:1313/** in your browser.
+Then open **http://localhost:1313/nanofab_web/** in your browser.
+
+The `/nanofab_web/` part is there because the live site lives in that
+sub-folder (`https://minnesota-nanofabrication-club.github.io/nanofab_web/`),
+and the preview copies the live address exactly. Plain
+`localhost:1313/` shows "page not found"; that's expected. The terminal
+prints the right address when `hugo server` starts ("Web Server is
+available at …").
 
 Leave that terminal running while you work. Every time you save any file,
 the site rebuilds and your browser refreshes by itself — you never have to
@@ -1084,17 +1092,33 @@ Two rules:
 
 - **File names can't have spaces and are case-sensitive.** Use
   `lab-photo.jpg`, not `Lab Photo.JPG`.
-- **Shrink photos before adding them** — under about 1–2 MB each. Phones
-  produce files far larger than a website needs.
-  [Squoosh](https://squoosh.app) does it for free with no visible quality
-  loss.
+- **Shrink photos before adding them.** Phones produce files far larger
+  than a website needs, and every visitor downloads every photo on the
+  page. Big images make the site slow, and slow sites rank lower on
+  Google (section 4.19). [Squoosh](https://squoosh.app) does it for free
+  with no visible quality loss.
+
+| Image | Shown at | Make the file about | Aim for |
+|---|---|---|---|
+| Officer / lead photo | 80 px circle | **400 × 400 px** | under 50 KB |
+| Advisor photo | 150 px wide | **600 px** on the long side | under 80 KB |
+| Lab photo (homepage) | about half the page | **1800 px** wide | under 300 KB |
+| Machine diagrams and photos | up to the page width | **1800 px** on the long side | under 250 KB |
+
+**Example:** one officer headshot was 2686 × 2686 px and 8.3 MB, shown
+as an 80 px circle. Every homepage visitor downloaded all 8 MB of it.
+The homepage's images added up to about 15 MB. They were resized into
+copies ending in `-web.jpg` (for example `henry-goldberg-web.jpg`, 15 KB),
+which brought the homepage down to about 1.6 MB. The originals are still
+in the same folders. Nothing uses them now, so they can be deleted, but
+keeping them does no harm (unused files aren't downloaded by visitors).
 
 **Machine photos** have their own guidance in section 4.5 — short version:
 about 1600 px on the long edge, under 500 KB, landscape.
 
-**Person photos** (advisors and officers) are cropped to a circle, so
-square images work best — around 400 × 400 px is plenty, under about
-500 KB each.
+**Person photos:** officers and leads are cropped to a circle, advisors
+to a tall rectangle. Square or portrait photos work best (sizes in the
+table above).
 
 **Sponsor logos** have their own guidance in section 4.11 — short version:
 SVG or PNG, transparent background, at least 600 px wide, under 100 KB.
@@ -1916,6 +1940,154 @@ Tips:
 - A YAML error naming a line usually means the pasted lines are
   indented differently from their neighbours.
 
+### 4.19 Search engines (SEO)
+
+SEO ("search engine optimization") is everything that helps Google find
+the site, understand it, and show it well in results. Most of it is
+automatic. This section explains what's set up, where each piece lives,
+and the one-time Google Search Console setup that only a person can do.
+
+**The live site:** `https://minnesota-nanofabrication-club.github.io/nanofab_web/`
+
+#### What's set up
+
+| Piece | What it does | Where it lives |
+|---|---|---|
+| **Site address** | Every link Google sees (sitemap, canonical tags, previews) is built from it | `baseURL` in `hugo.toml` |
+| **Page titles** | The blue link in Google results. Kept under ~60 characters so they aren't cut off | `layouts/partials/head.html` |
+| **Descriptions** | The grey text under the title | `head.html`, plus the settings below |
+| **Canonical tag** | Tells Google the one official address of each page | `head.html` (automatic) |
+| **Sitemap** | A list of every page, for Google to crawl | Built automatically at `/nanofab_web/sitemap.xml` |
+| **Link previews** | The title, text, and picture shown when a page is shared on LinkedIn, Discord, iMessage, Slack… | `head.html`, `ogImage` in `hugo.toml` |
+| **Structured data** | Hidden facts that let Google show the club's name, logo and social links, and a "Home › The Fab › Tube Furnace" breadcrumb | `head.html` (automatic) |
+| **404 page** | A friendly "page not found" page instead of GitHub's generic one. Hidden from Google | `layouts/404.html` |
+| **Fast images** | Smaller images load faster, and speed affects ranking | Section 4.12 |
+| **Search Console** | Google's dashboard for the site: what's indexed, what people search for, errors | Set up once, below |
+
+#### Titles
+
+Built automatically:
+
+- **Homepage:** `Nanofabrication Club — University of Minnesota`
+- **Every other page:** `Tube Furnace — Nanofabrication Club, UMN`
+
+To give one page a different title, add `seoTitle:` to its front matter
+(between the `---` lines in its file):
+
+```yaml
+seoTitle: "DIY Tube Furnace Build — Nanofabrication Club, UMN"
+```
+
+Keep it under about 60 characters, with the most important words first.
+
+#### Descriptions
+
+Google often shows these under the title. The site picks the **first
+one it finds**:
+
+1. `description:` in the page's front matter, if there is one.
+2. **Machine pages:** the start of the machine's Overview intro
+   (`intro:` in `data/overviews/<machine>.yaml`). This is why a good
+   intro matters: its first two sentences are also the Google snippet.
+3. The page's `summary:` or `subhead:`.
+4. The site-wide `description` in `hugo.toml` (the homepage uses this).
+
+Anything over ~160 characters is cut at a word boundary and ends in "…".
+To write one by hand:
+
+```yaml
+description: "How we built a 1100 °C tube furnace for thermal oxidation and dopant drive-in, with a PID-controlled Kanthal coil."
+```
+
+Good descriptions are 120–155 characters, say plainly what's on the
+page, and include the words someone would actually search for (for
+example "tube furnace", "maskless lithography", "University of
+Minnesota").
+
+#### Link previews (the picture when a page is shared)
+
+- **Machine pages** use their Overview's hero diagram. If there's no
+  hero, the first Overview section image, then the first design diagram,
+  then the first photo.
+- **Everything else** uses `ogImage` in `hugo.toml`, currently the lab
+  photo (`/images/lab/nf-lab-web.jpg`).
+
+The best preview pictures are landscape, about 1200 × 630 px or larger,
+with nothing important near the edges (some apps crop to a square).
+
+Sites cache previews. After changing one, a service like LinkedIn can
+keep showing the old picture for days. LinkedIn's
+[Post Inspector](https://www.linkedin.com/post-inspector/) refreshes it.
+
+#### Google Search Console: one-time setup
+
+Search Console shows whether Google has indexed each page, which searches
+the site appears for, and any problems Google found. Setting it up also
+gets the site indexed faster. It needs a Google account, ideally one the
+club controls, so access survives officers graduating.
+
+**1. Add the site**
+
+1. Go to [search.google.com/search-console](https://search.google.com/search-console)
+   and sign in.
+2. Click **Add property**, choose **URL prefix** (not "Domain"), and
+   enter exactly:
+   `https://minnesota-nanofabrication-club.github.io/nanofab_web/`
+   ("Domain" needs access to the domain's DNS settings, which GitHub owns.)
+
+**2. Prove the club owns it**
+
+1. Under verification methods, pick **HTML tag**. Google shows something
+   like:
+   `<meta name="google-site-verification" content="AbC123xYz…" />`
+2. Copy **only the code inside `content="…"`** (`AbC123xYz…`).
+3. Paste it into `hugo.toml`:
+   ```toml
+   googleSiteVerification = "AbC123xYz…"
+   ```
+4. Commit and push, and wait for the GitHub Actions build to finish
+   (a minute or two).
+5. Back in Search Console, click **Verify**.
+
+Leave the code in `hugo.toml` afterwards. Google re-checks it now and
+then, and removing it un-verifies the site.
+
+**3. Submit the sitemap**
+
+1. In Search Console's left menu, open **Sitemaps**.
+2. Enter `sitemap.xml` (the box already shows the start of the address)
+   and click **Submit**.
+
+Google usually starts showing pages within a few days to a few weeks.
+
+**4. Check on it now and then**
+
+- **Pages** lists what's indexed and why anything isn't.
+- **Performance** shows the searches people used to find the site.
+- After a big change to a page, paste its address into the search bar
+  at the top and click **Request indexing**.
+
+#### Why there's no robots.txt
+
+A `robots.txt` file tells search engines what they may crawl, but they
+only read it from the very top of a domain
+(`minnesota-nanofabrication-club.github.io/robots.txt`). This site lives
+in a sub-folder, so a `robots.txt` here would be ignored. That's fine:
+with no `robots.txt`, everything may be crawled, and the sitemap goes to
+Google through Search Console instead.
+
+#### Keeping SEO healthy
+
+- **Write real Overview intros.** They double as the Google description
+  for each machine.
+- **Shrink images before adding them** (section 4.12).
+- **Give every image alt text**, which the site does from captions and
+  names. Fill in `caption:` fields rather than leaving them `""`.
+- **Don't rename machine files once the site is public.** The file name
+  is the page address (`tube-furnace.md` → `/machines/tube-furnace/`).
+  Renaming breaks links people and Google already have.
+- **Hidden (draft) machines are kept out of Google** automatically.
+
 ---
 
 ## 5. Publishing the site
@@ -2122,7 +2294,7 @@ Work through these in order:
    `Cmd+Shift+P` in Safari or Firefox). A private window never uses
    saved files, so it shows exactly what the site is serving now. If the
    change shows there, the site is fine and it's only your browser.
-3. **Check which site you're looking at.** `localhost:1313` is your
+3. **Check which site you're looking at.** `localhost:1313/nanofab_web/` is your
    preview and shows changes as soon as you save. The **live site only
    changes after you commit and push** (section 5.6). Until then it keeps
    the old look.

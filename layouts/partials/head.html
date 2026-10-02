@@ -1,20 +1,98 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-{{/* Page title: "Tube Furnace — Nanofabrication Club…" on inner pages,
-     just the site name + tagline on the homepage. */}}
-{{ if .IsHome }}
-  <title>{{ .Site.Title }} — {{ .Site.Params.tagline }}</title>
+{{/* ==============================================================
+     SEO: page title, description, link previews, structured data.
+     The site-wide settings are in hugo.toml under [params]
+     (description, ogImage, googleSiteVerification).
+     How it all works: README section 4.19.
+     ============================================================== */}}
+{{ $site := .Site }}
+{{ $slug := "" }}{{ with .File }}{{ $slug = .ContentBaseName }}{{ end }}
+{{ $isMachine := and .IsPage (eq .Section "machines") }}
+{{ $overview := dict }}
+{{ if and $isMachine $slug }}{{ $overview = index (default dict hugo.Data.overviews) $slug | default dict }}{{ end }}
+
+{{/* ---------- Title (what Google shows as the blue link) ----------
+     Kept under ~60 characters so Google doesn't cut it off.
+       Homepage:  Nanofabrication Club — University of Minnesota
+       Others:    Tube Furnace — Nanofabrication Club, UMN
+     A page can override it with seoTitle: "…" in its front matter. */}}
+{{ $title := printf "%s — %s, UMN" .Title $site.Params.shortTitle }}
+{{ if .IsHome }}{{ $title = printf "%s — University of Minnesota" $site.Params.shortTitle }}{{ end }}
+{{ if eq .Kind "404" }}{{ $title = printf "Page not found — %s, UMN" $site.Params.shortTitle }}{{ end }}
+{{ with .Params.seoTitle }}{{ $title = . }}{{ end }}
+<title>{{ $title }}</title>
+
+{{/* ---------- Description (the grey text under the link) ----------
+     First match wins:
+       1. description: "…" in the page's front matter
+       2. machine pages: the start of their Overview intro
+       3. the page's summary or subhead
+       4. the site-wide description in hugo.toml
+     Cut to ~155 characters at a word boundary. */}}
+{{ $desc := "" }}
+{{ with .Params.description }}{{ $desc = . }}{{ end }}
+{{ if and (not $desc) $overview.intro }}{{ $desc = $overview.intro | markdownify | plainify | htmlUnescape }}{{ end }}
+{{ if and (not $desc) (not .IsHome) }}{{ $desc = .Params.summary | default .Params.subhead | default "" }}{{ end }}
+{{ if not $desc }}{{ $desc = $site.Params.description }}{{ end }}
+{{ $desc = replaceRE `\s+` " " $desc | strings.TrimSpace }}
+{{ if gt (len $desc) 160 }}{{ $desc = truncate 155 $desc | plainify | htmlUnescape }}{{ end }}
+<meta name="description" content="{{ $desc }}" />
+
+{{ if eq .Kind "404" }}
+<meta name="robots" content="noindex" />
 {{ else }}
-  <title>{{ .Title }} — {{ .Site.Title }}</title>
+<link rel="canonical" href="{{ .Permalink }}" />
 {{ end }}
 
-{{ $desc := .Params.summary | default .Params.subhead | default (printf "%s is a student-led group at the University of Minnesota building a functional nanofabrication lab, machine by machine." .Site.Title) }}
-<meta name="description" content="{{ $desc }}" />
-<meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}" />
+{{/* ---------- Link previews (LinkedIn, Discord, iMessage, Slack…) ----------
+     Picture: a machine's Overview hero diagram, else its first Overview
+     section image, else its first design diagram or photo, else the
+     site-wide ogImage from hugo.toml. */}}
+{{ $img := "" }}{{ $imgAlt := "" }}
+{{ with $overview.hero }}{{ $img = .src }}{{ $imgAlt = .caption }}{{ end }}
+{{ if not $img }}{{ range $overview.sections }}{{ if and (not $img) .image }}{{ $img = .image }}{{ $imgAlt = .caption }}{{ end }}{{ end }}{{ end }}
+{{ if not $img }}{{ with .Params.architectureDiagrams }}{{ $img = (index . 0).src }}{{ $imgAlt = (index . 0).caption }}{{ end }}{{ end }}
+{{ if not $img }}{{ with .Params.photos }}{{ $img = (index . 0).src }}{{ $imgAlt = (index . 0).caption }}{{ end }}{{ end }}
+{{ if not $img }}{{ $img = $site.Params.ogImage }}{{ $imgAlt = printf "The %s lab" $site.Params.shortTitle }}{{ end }}
+{{ $imgAlt = $imgAlt | default .Title | plainify }}
+{{ $imgURL := replace (strings.TrimPrefix "/" $img | absURL) " " "%20" }}
+
+<meta property="og:site_name" content="{{ $site.Title }}" />
+<meta property="og:title" content="{{ if .IsHome }}{{ $site.Title }}{{ else }}{{ .Title }}{{ end }}" />
 <meta property="og:description" content="{{ $desc }}" />
 <meta property="og:type" content="website" />
-<link rel="canonical" href="{{ .Permalink }}" />
+<meta property="og:url" content="{{ .Permalink }}" />
+<meta property="og:locale" content="en_US" />
+{{ with $img }}
+<meta property="og:image" content="{{ $imgURL }}" />
+<meta property="og:image:alt" content="{{ $imgAlt }}" />
+<meta name="twitter:card" content="summary_large_image" />
+{{ end }}
+
+{{/* Google Search Console ownership check (README 4.19). */}}
+{{ with $site.Params.googleSiteVerification }}<meta name="google-site-verification" content="{{ . }}" />{{ end }}
+
+{{/* ---------- Structured data ----------
+     Hidden facts Google reads to show the club's name, logo and
+     social links, and a "Home › The Fab › Tube Furnace" breadcrumb
+     in search results. */}}
+{{ if .IsHome }}
+  {{ $sameAs := slice }}
+  {{ with $site.Params.linkedinURL }}{{ $sameAs = $sameAs | append . }}{{ end }}
+  {{ with $site.Params.instagramURL }}{{ $sameAs = $sameAs | append . }}{{ end }}
+  {{ $org := dict "@context" "https://schema.org" "@type" "Organization" "name" $site.Title "alternateName" $site.Params.shortTitle "url" .Permalink "description" $desc }}
+  {{ with $sameAs }}{{ $org = merge $org (dict "sameAs" .) }}{{ end }}
+  {{ with $site.Params.logo }}{{ $org = merge $org (dict "logo" (strings.TrimPrefix "/" . | absURL)) }}{{ end }}
+  {{ with $site.Params.contactEmail }}{{ $org = merge $org (dict "email" .) }}{{ end }}
+<script type="application/ld+json">{{ $org | jsonify | safeJS }}</script>
+{{ else if and (eq .Section "machines") (ne .Kind "404") }}
+  {{ $crumbs := slice (dict "@type" "ListItem" "position" 1 "name" "Home" "item" $site.Home.Permalink) }}
+  {{ with $site.GetPage "/machines" }}{{ $crumbs = $crumbs | append (dict "@type" "ListItem" "position" 2 "name" .Title "item" .Permalink) }}{{ end }}
+  {{ if .IsPage }}{{ $crumbs = $crumbs | append (dict "@type" "ListItem" "position" 3 "name" .Title "item" .Permalink) }}{{ end }}
+<script type="application/ld+json">{{ dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $crumbs | jsonify | safeJS }}</script>
+{{ end }}
 
 {{/* Favicon — uses the club logo once params.logo is set in hugo.toml. */}}
 {{ with .Site.Params.logo }}<link rel="icon" href="{{ strings.TrimPrefix "/" (.) | relURL }}" />{{ end }}

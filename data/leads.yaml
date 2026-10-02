@@ -31,13 +31,13 @@
   role: "Tube Furnace"
   major: ""
   email: ""
-  photo: "/images/officers/IMG_1516.jpeg"
+  photo: "/images/officers/img-1516-web.jpg"
 
 - name: Wenteng Li
   role: "Spin Coater"
   major: ""
   email: ""
-  photo: "images/officers/Wenteng.jpg"
+  photo: "images/officers/wenteng-web.jpg"
 
 - name: Bear BlinSchauer
   role: "DC Magnetron Sputterer"
@@ -55,7 +55,7 @@
   role: "Dopant Synthesis"
   major: ""
   email: ""
-  photo: "/images/officers/Matt. R.jpg"
+  photo: "/images/officers/matt-r-web.jpg"
 
 - name: Andrew Choi
   role: "Inkjet Microplotter"
@@ -73,7 +73,7 @@
   role: "Laser Interferometry"
   major: ""
   email: ""
-  photo: "/images/officers/HenryGoldbergHeadshot.png"
+  photo: "/images/officers/henry-goldberg-web.jpg"
 
 - name: Harshit Mehendiratta
   role: "Computer Vision Metrology"
@@ -91,7 +91,7 @@
   role: "Electron Microscope"
   major: ""
   email: ""
-  photo: "images/officers/issac.jpg"
+  photo: "images/officers/issac-web.jpg"
 
 - name: Misha Mickevicius
   role: "Alignment Firmware"
@@ -103,7 +103,7 @@
   role: "Polymer Synthesis"
   major: ""
   email: ""
-  photo: "/images/officers/1731523359195.jpeg"
+  photo: "/images/officers/1731523359195-web.jpg"
 
 - name: Vikram Narra
   role: "Web Development Lead"

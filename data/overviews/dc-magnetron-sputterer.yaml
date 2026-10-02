@@ -14,7 +14,7 @@ intro: |
   Start with this [video playlist on sputtering](https://www.youtube.com/playlist?list=PLa3ICAr3RGVUk5borkggWceW8nxZpXyIc).
 
 hero:
-  src: "/images/machines/DCMagnetron.jpg"
+  src: "/images/machines/dc-magnetron-web.jpg"
   caption: "Figure 1: Sputtering architecture: substrate holder, magnetron, gas intake, vacuum pump stages, power supply and RF network, and interface panel, on a frame that houses the electronics and vacuum system."
 
 highlights:
@@ -53,7 +53,7 @@ sections:
 
       The power subsystem covers both the DC and the RF power supply,
       plus the matching network that delivers power to the magnetron.
-    image: "/images/machines/DCMagnSub.jpg"
+    image: "/images/machines/dc-magnetron-subsystems-web.jpg"
     caption: "Figure 2: Early subsystem sketches: sputter head and ground shield, argon tank with turbo and roughing pumps, AC step-up and rectifier stage, and Peltier cooling."
 
   - title: "The magnetron"
@@ -65,7 +65,7 @@ sections:
       It includes **dark space shields**. The "dark space" is an area in
       the vicinity of the target edge where no plasma exists during the
       deposition process.
-    image: "/images/machines/MagnetonMain.jpg"
+    image: "/images/machines/magnetron-web.jpg"
     caption: "Figure 3: Magnetron cross-section, with the water channel, insulator, ground shield, and chamber seals."
 
   - title: "Team and tools"

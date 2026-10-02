@@ -17,7 +17,7 @@ summary: "Heats wafers to ~1000 °C to grow oxide and drive in dopants."
 # DESIGN DIAGRAMS, shown at the top of "Design architecture".
 # Add as many as you like — copy a "- src:" pair for each one.
 architectureDiagrams:
-  - src: "/images/machines/tube-furnace-layout.jpg"
+  - src: "/images/machines/tube-furnace-layout-web.jpg"
     caption: "Resistive coil wound around the quartz process tube inside an insulated shell, driven through a solid-state relay from a PID controller running off a thermocouple."
 
 # DOCUMENTATION — the write-up section on this machine's page.

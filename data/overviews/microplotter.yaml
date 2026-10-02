@@ -13,7 +13,7 @@ intro: |
   wafer one line at a time, with no mask, no resist, and no etch.
 
 hero:
-  src: "/images/machines/microplotter.jpg"
+  src: "/images/machines/microplotter-web.jpg"
   caption: "Figure 1: SonoPlot Microplotter [SonoPlot's patent US 7,849,738 B]."
 
 highlights:

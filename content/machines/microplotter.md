@@ -105,7 +105,7 @@ documentation: |
 # files in static/images/machines/. "caption" is optional.
 # See README section 4.16.
 documentationPhotos:
-  - src: "/images/machines/microplotter.jpg"
+  - src: "/images/machines/microplotter-web.jpg"
     caption: "Figure 1: SonoPlot Microplotter [SonoPlot's patent US 7,849,738 B]."
   - src: "/images/machines/microplotter2.jpg"
     caption: "Figure 2: Fluid deposition via ultrasonic pumping [SonoPlot Microplotter Manual]."

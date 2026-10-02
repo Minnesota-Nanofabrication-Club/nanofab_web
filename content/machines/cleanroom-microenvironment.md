@@ -15,7 +15,7 @@ specs:
     value: "Vertical laminar"
 
 photos:
-  - src: "/images/machines/microenvironment.jpg"
+  - src: "/images/machines/microenvironment-web.jpg"
     caption: ""
 
 # DOCUMENTATION — the write-up section on this machine's page.

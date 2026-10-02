@@ -1,4 +1,7 @@
-baseURL = "https://example.com/"
+# The live address. GitHub Pages also sets this when it builds, but
+# keeping it right here means local builds, the sitemap, and link
+# previews all match the real site. Keep the trailing slash.
+baseURL = "https://minnesota-nanofabrication-club.github.io/nanofab_web/"
 locale = "en-us"
 title = "Nanofabrication Club at the University of Minnesota"
 
@@ -14,6 +17,18 @@ disableKinds = ["taxonomy", "term"]
 [params]
   tagline = "University of Minnesota, Twin Cities"
   shortTitle = "Nanofabrication Club"
+
+  # ---------------- SEO (README section 4.19) ----------------
+  # What Google shows under the homepage's title. Aim for 120–155
+  # characters; anything longer gets cut off with "…".
+  description = "Student club at the University of Minnesota building a working nanofabrication lab, machine by machine: lithography, thin films, doping, and metrology."
+  # Picture shown when a page is shared on LinkedIn, Discord, iMessage,
+  # etc. Machine pages use their own Overview diagram instead.
+  # Best at about 1200 x 630 or larger.
+  ogImage = "/images/lab/nf-lab-web.jpg"
+  # Google Search Console verification code: just the code inside
+  # content="…" from the tag Google gives you. Leave "" until then.
+  googleSiteVerification = ""
   discordURL = "https://discord.gg/G9T6bk84w"
   linkedinURL =  "https://www.linkedin.com/company/minnesota-nanofabrication-club/"
   instagramURL = "https://www.instagram.com/minnesota_nanofab_club/?hl=en"

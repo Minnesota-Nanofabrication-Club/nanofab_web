@@ -15,11 +15,11 @@ summary: "Deposits thin metal films using an argon plasma."
 #     value: "Al, Ti, Cu, Cr"
 
 architectureDiagrams:
-  - src: "/images/machines/DCMagnetron.jpg"
+  - src: "/images/machines/dc-magnetron-web.jpg"
  #   caption: "Resistive coil wound around the quartz process tube inside an insulated shell, driven through a solid-state relay from a PID controller running off a thermocouple."
-  - src: "/images/machines/DCMagnSub.jpg"
+  - src: "/images/machines/dc-magnetron-subsystems-web.jpg"
 
-  - src: "/images/machines/MagnetonMain.jpg"
+  - src: "/images/machines/magnetron-web.jpg"
 
 # DOCUMENTATION — the write-up section on this machine's page.
 #

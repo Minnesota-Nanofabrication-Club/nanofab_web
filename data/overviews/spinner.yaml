@@ -40,7 +40,7 @@ sections:
       An **ESP32** drives the brushless spindle motor through a **35 A
       electronic speed controller**. A rotary encoder and an LCD on the
       front panel are used to set the spin recipe.
-    image: "/images/machines/spinner-circuit-diagram.jpg"
+    image: "/images/machines/spinner-circuit-diagram-web.jpg"
     caption: "Figure 2: Motor control: an ESP32 drives the brushless spindle through a 35 A ESC, with a rotary encoder and LCD for setting the spin recipe."
 
 process:

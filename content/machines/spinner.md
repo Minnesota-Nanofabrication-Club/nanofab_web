@@ -17,7 +17,7 @@ summary: "Spins photoresist into an even thin film."
 # DESIGN DIAGRAMS, shown at the top of "Design architecture".
 # Add as many as you like — copy a "- src:" pair for each one.
 architectureDiagrams:
-  - src: "/images/machines/spinner-circuit-diagram.jpg"
+  - src: "/images/machines/spinner-circuit-diagram-web.jpg"
     caption: "Motor control: an ESP32 drives the brushless spindle through a 35 A ESC, with a rotary encoder and LCD for setting the spin recipe."
   - src: "/images/machines/spinner-layout.jpg"
     caption: "Physical layout: chuck and motor under a hinged lid, with the display, encoder, and switch on the front panel and the electronics inside the housing."

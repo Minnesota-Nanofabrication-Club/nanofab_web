@@ -13,7 +13,7 @@ intro: |
   **1100 °C** for annealing and oxidation of doped silicon wafers.
 
 hero:
-  src: "/images/machines/tube-furnace-layout.jpg"
+  src: "/images/machines/tube-furnace-layout-web.jpg"
   caption: "Figure 1: Resistive coil wound around the quartz process tube inside an insulated shell, driven through a solid-state relay from a PID controller running off a thermocouple."
 
 highlights:

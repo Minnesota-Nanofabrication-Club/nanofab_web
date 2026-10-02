@@ -48,7 +48,7 @@ specs:
 # "caption" is optional.
 #
 photos:
-  - src: "/images/machines/probe-station-concept.png"
+  - src: "/images/machines/probe-station-concept-web.jpg"
     caption: ""
   # - src: "/images/machines/probe-station-2.jpg"
   #   caption: ""

@@ -1,7 +1,8 @@
 ---
 title: "Computer Vision Metrology"
 band: "gen1"
-process: "metrology"
+partOf: "maskless-stepper"
+process: "patterning"
 step: "Optical Inspection"
 weight: 10
 status: "building"

@@ -1,7 +1,7 @@
 ---
 title: "Electron Microscope"
 band: "gen2"
-process: "metrology"
+process: "inspection"
 step: "Imaging"
 weight: 20
 status: "building"

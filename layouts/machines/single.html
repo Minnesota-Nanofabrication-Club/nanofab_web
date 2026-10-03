@@ -126,7 +126,16 @@
         {{ end }}
         {{ with $group }}
         <span aria-hidden="true">/</span>
-        <span class="text-ink">{{ .name }}</span>
+        <span>{{ .name }}</span>
+        {{ end }}
+        {{/* A subsystem names the machine it belongs to, so the trail
+             reads band / process / machine / this page. */}}
+        {{ with .Params.partOf }}
+        {{ $parent := index (where (where site.RegularPages "Section" "machines") "File.ContentBaseName" .) 0 }}
+        {{ with $parent }}
+        <span aria-hidden="true">/</span>
+        <a href="{{ .RelPermalink }}" class="hover:text-maroon transition-colors">{{ .Title }}</a>
+        {{ end }}
         {{ end }}
       </nav>
 
@@ -277,6 +286,16 @@
         {{ else }}
         <span class="hidden sm:block border-b border-line" aria-hidden="true"></span>
         {{ end }}
+      </div>
+      {{ end }}
+
+      {{/* Subsystems of THIS machine, listed before the band siblings:
+           they are part of it rather than beside it. */}}
+      {{ $children := where (where site.RegularPages "Section" "machines") "Params.partOf" .File.ContentBaseName }}
+      {{ with $children }}
+      <h2 class="font-display font-semibold text-[1.75rem] tracking-tight mt-20 mb-8">Subsystems</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {{ range . }}{{ partial "machine-card.html" . }}{{ end }}
       </div>
       {{ end }}
 

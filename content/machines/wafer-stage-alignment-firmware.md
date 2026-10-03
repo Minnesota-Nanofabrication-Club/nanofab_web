@@ -1,6 +1,7 @@
 ---
 title: "Wafer Stage Alignment Firmware"
 band: "gen1"
+partOf: "maskless-stepper"
 process: "patterning"
 step: "Alignment"
 weight: 30

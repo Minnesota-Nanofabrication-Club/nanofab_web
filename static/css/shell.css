@@ -376,3 +376,13 @@ html:has(.nav-open-state:checked) #topbar {
     padding-bottom: 0.75rem;
   }
 }
+
+/* Subsystems in the menu, indented under the machine they belong to. */
+.nav-subs {
+  list-style: none;
+  margin: 0 0 0.25rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--line);
+}
+
+.nav-leaf--sub { color: var(--muted, #474D49); }

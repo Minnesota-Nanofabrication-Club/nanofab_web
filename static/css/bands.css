@@ -86,3 +86,33 @@
     padding-bottom: 0.5rem;
   }
 }
+
+
+/* ---------------------------------------------------------------------
+   SUBSYSTEMS
+
+   A machine that declares `partOf:` belongs to another machine and is
+   listed under it rather than beside it — computer vision and the
+   alignment firmware under the stepper, PVD and vacuum under the
+   sputterer.
+
+   Indented and set smaller than the machine above them, so the
+   hierarchy reads without needing a rule or a bullet.
+   --------------------------------------------------------------------- */
+.band-subs {
+  list-style: none;
+  margin: 0.125rem 0 0.375rem;
+  padding-left: 1.125rem;
+  border-left: 1px solid var(--line);
+}
+
+.band-leaf--sub {
+  font-size: 1.0625rem;      /* 17px, against the machine's 22px */
+  font-weight: 400;
+  color: var(--muted, #474D49);
+}
+
+.band-leaf--sub:hover,
+.band-leaf--sub:focus-visible {
+  color: var(--maroon);
+}

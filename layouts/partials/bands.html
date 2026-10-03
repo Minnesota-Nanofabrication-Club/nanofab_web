@@ -86,9 +86,27 @@
             {{ with where $inBand "Params.process" $group.slug }}
             <div>
               <h4 class="band-group text-muted">{{ $group.name }}</h4>
+              {{/* Only machines that are not subsystems appear at this
+                   level; a subsystem is nested under its parent below.
+                   `partOf` names the parent page's filename slug. */}}
+              {{ $inGroup := . }}
               <ul class="mt-3">
-                {{ range . }}
-                <li><a href="{{ .RelPermalink }}" class="band-leaf">{{ .Title }}</a></li>
+                {{ range $inGroup }}
+                {{ if not .Params.partOf }}
+                {{ $parentSlug := .File.ContentBaseName }}
+                <li>
+                  <a href="{{ .RelPermalink }}" class="band-leaf">{{ .Title }}</a>
+                  {{/* Subsystems can sit in a different process group
+                       from their parent, so search the whole band. */}}
+                  {{ with where $inBand "Params.partOf" $parentSlug }}
+                  <ul class="band-subs">
+                    {{ range . }}
+                    <li><a href="{{ .RelPermalink }}" class="band-leaf band-leaf--sub">{{ .Title }}</a></li>
+                    {{ end }}
+                  </ul>
+                  {{ end }}
+                </li>
+                {{ end }}
                 {{ end }}
               </ul>
             </div>
@@ -101,7 +119,19 @@
           {{/* ChemE R&D / Logistics — flat, so the machines list directly. */}}
           <ul>
             {{ range $inBand }}
-            <li><a href="{{ .RelPermalink }}" class="band-leaf">{{ .Title }}</a></li>
+            {{ if not .Params.partOf }}
+            {{ $parentSlug := .File.ContentBaseName }}
+            <li>
+              <a href="{{ .RelPermalink }}" class="band-leaf">{{ .Title }}</a>
+              {{ with where $inBand "Params.partOf" $parentSlug }}
+              <ul class="band-subs">
+                {{ range . }}
+                <li><a href="{{ .RelPermalink }}" class="band-leaf band-leaf--sub">{{ .Title }}</a></li>
+                {{ end }}
+              </ul>
+              {{ end }}
+            </li>
+            {{ end }}
             {{ end }}
           </ul>
           {{ end }}

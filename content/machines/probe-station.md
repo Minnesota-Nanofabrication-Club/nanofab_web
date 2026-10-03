@@ -1,7 +1,7 @@
 ---
 title: "Probe Station"
 band: "gen1"
-process: "metrology"
+process: "characterization"
 step: "Electrical Test"
 weight: 20
 status: "building"

@@ -122,11 +122,7 @@
   photo: "/images/officers/Big V.jpeg"
 
 - name: Brendan Chen
-  role:
-    - Sputtering & Vacuum Systems
-    # The machine is what places him in Gen One Fab alongside the
-    # sputterer; the line above says what he actually owns.
-    - DC Magnetron Sputterer
+  role: "PVD & Vacuum System"
   major: ""
   email: ""
   photo: ""

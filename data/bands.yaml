@@ -32,8 +32,8 @@
       slug: doping
     - name: Thin Film Deposition
       slug: deposition
-    - name: Metrology
-      slug: metrology
+    - name: Wafer Characterization
+      slug: characterization
 
 - name: Gen Two Fab
   slug: gen2
@@ -45,8 +45,8 @@
       slug: patterning
     - name: Thin Film Deposition
       slug: deposition
-    - name: Metrology
-      slug: metrology
+    - name: Wafer Inspection
+      slug: inspection
     - name: Application
       slug: application
     - name: Facility

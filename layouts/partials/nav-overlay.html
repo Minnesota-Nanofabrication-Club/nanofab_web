@@ -67,7 +67,19 @@
             <h3 class="text-[0.9375rem] font-semibold text-muted">{{ $group.name }}</h3>
             <ul class="mt-2">
               {{ range . }}
-              <li><a href="{{ .RelPermalink }}" class="nav-leaf block py-1.5 text-[1.0625rem] leading-snug">{{ .Title }}</a></li>
+              {{ if not .Params.partOf }}
+              {{ $parentSlug := .File.ContentBaseName }}
+              <li>
+                <a href="{{ .RelPermalink }}" class="nav-leaf block py-1.5 text-[1.0625rem] leading-snug">{{ .Title }}</a>
+                {{ with where $inBand "Params.partOf" $parentSlug }}
+                <ul class="nav-subs">
+                  {{ range . }}
+                  <li><a href="{{ .RelPermalink }}" class="nav-leaf nav-leaf--sub block py-1 text-[1rem] leading-snug">{{ .Title }}</a></li>
+                  {{ end }}
+                </ul>
+                {{ end }}
+              </li>
+              {{ end }}
               {{ end }}
             </ul>
           </div>
@@ -78,7 +90,19 @@
         {{ else }}
         <ul class="mt-6">
           {{ range $inBand }}
-          <li><a href="{{ .RelPermalink }}" class="nav-leaf block py-1.5 text-[1.0625rem] leading-snug">{{ .Title }}</a></li>
+          {{ if not .Params.partOf }}
+          {{ $parentSlug := .File.ContentBaseName }}
+          <li>
+            <a href="{{ .RelPermalink }}" class="nav-leaf block py-1.5 text-[1.0625rem] leading-snug">{{ .Title }}</a>
+            {{ with where $inBand "Params.partOf" $parentSlug }}
+            <ul class="nav-subs">
+              {{ range . }}
+              <li><a href="{{ .RelPermalink }}" class="nav-leaf nav-leaf--sub block py-1 text-[1rem] leading-snug">{{ .Title }}</a></li>
+              {{ end }}
+            </ul>
+            {{ end }}
+          </li>
+          {{ end }}
           {{ end }}
         </ul>
         {{ end }}

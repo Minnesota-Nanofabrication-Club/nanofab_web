@@ -1,7 +1,8 @@
 ---
 title: "Laser Interferometry"
 band: "gen2"
-process: "metrology"
+partOf: "gen-two-stepper"
+process: "patterning"
 step: "Film & Surface Metrology"
 weight: 10
 status: "planned"

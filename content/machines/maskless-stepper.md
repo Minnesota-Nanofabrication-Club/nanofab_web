@@ -1,6 +1,7 @@
 ---
 title: "Maskless Litho Stepper"
-category: "Gen 1 Patterning"
+band: "gen1"
+process: "patterning"
 step: "Exposure"
 weight: 10
 status: "building"

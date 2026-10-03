@@ -1,6 +1,7 @@
 ---
 title: "Tube Furnace"
-category: "Gen 1 Thin Film Deposition"
+band: "gen1"
+process: "deposition"
 step: "Oxide & Anneal"
 weight: 20
 status: "building"

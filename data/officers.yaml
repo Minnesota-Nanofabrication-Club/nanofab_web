@@ -29,13 +29,17 @@
 # ===================================================================
 
 - name: Leonard Jin
-  role: President
+  role:
+    - President
+    - Gen One Chief Engineer
   major: 
   email: ""
   photo: "images/officers/leonard.jpeg"
 
 - name: Andrew Choi
-  role: Vice President
+  role:
+    - Vice President
+    - Gen Two Chief Engineer
   major: 
   email: ""
   photo: "images/officers/Andrew.jpeg"

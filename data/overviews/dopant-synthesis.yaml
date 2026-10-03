@@ -7,8 +7,8 @@
 title: "Dopant Synthesis"
 
 intro: |
-  Gen 1 dopes wafers with commercial spin-on dopant: reliable, but only
-  at whatever concentration the vendor sells. Gen 2 makes its own, so
+  Gen One dopes wafers with commercial spin-on dopant: reliable, but only
+  at whatever concentration the vendor sells. Gen Two makes its own, so
   **doping concentration becomes a design parameter** instead of a
   catalogue choice.
 

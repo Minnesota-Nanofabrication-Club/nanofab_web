@@ -1,0 +1,151 @@
+{{/* ==================================================================
+     ADVISORS — faculty who advise the club.
+
+     Content comes from data/advisors.yaml. Add, remove or reorder
+     people there; nothing in this file needs editing.
+
+     Not a grid. Advisors are few and senior, so each gets a full-width
+     row: a large portrait registered to the same left margin as every
+     other section, name and substance beside it, separated by space
+     rather than by a rule (§2 — a rule only earns its place when two
+     things would otherwise be confused).
+
+     Deleted in revision 2: the section lead, the hairlines between
+     entries, the "FACULTY PAGE ——" mono label with its extending
+     measure (a plain link is enough), and the legacy sr-only #backing
+     anchor — nothing links to it any more.
+
+     GRADUATE STUDENT MENTORS are not committed yet, so they are not
+     shown. The subsection below renders itself as soon as a
+     data/mentors.yaml exists and has at least one entry — see the
+     comment above it for the fields it expects.
+
+     Stylesheet: static/css/people.css (design-language §9).
+     ================================================================== */}}
+
+{{ $advisors := default slice hugo.Data.advisors }}
+{{ $mentors  := default slice hugo.Data.mentors }}
+
+{{ if or $advisors $mentors }}
+<section id="advisors" class="bg-paper">
+  <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
+
+    {{ partial "section-head.html" (dict "title" "Faculty Advisors") }}
+
+    {{ with $advisors }}
+    <ul class="advisor-list mt-14 sm:mt-20 list-none p-0">
+      {{ range . }}
+      {{ $a := . }}
+
+      {{/* Normalise the photo path: drop any leading slash, run it
+           through relURL so it resolves under the /nanofab_web/
+           baseURL, then escape spaces in filenames. */}}
+      {{ $src := "" }}
+      {{ with $a.photo }}
+        {{ $src = replace (strings.TrimPrefix "/" . | relURL) " " "%20" }}
+      {{ end }}
+
+      <li class="advisor">
+        <div class="advisor-portrait">
+          {{ if $src }}
+          <img src="{{ $src }}"
+               alt="{{ $a.name }}{{ with $a.role }}, {{ . }}{{ end }}"
+               loading="lazy" decoding="async"
+               class="advisor-img"
+               style="object-position: {{ $a.photoPosition | default "center 15%" }}" />
+          {{ else }}
+          {{ $words := split ($a.name | strings.TrimSpace) " " }}
+          {{ $initials := substr (index $words 0) 0 1 }}
+          {{ if gt (len $words) 1 }}
+            {{ $initials = printf "%s%s" $initials (substr (index $words (sub (len $words) 1)) 0 1) }}
+          {{ end }}
+          <div class="advisor-img advisor-img--blank border border-line bg-surface">
+            <span class="person-initials font-display" aria-hidden="true">{{ upper $initials }}</span>
+          </div>
+          {{ end }}
+        </div>
+
+        <div class="advisor-body min-w-0">
+          <h3 class="font-display font-semibold text-[1.75rem] sm:text-[2rem] leading-[1.1] tracking-tight">
+            {{ $a.name }}
+          </h3>
+
+          {{ with $a.role }}
+          <p class="text-[1.0625rem] leading-snug text-muted mt-3 max-w-md">{{ . }}</p>
+          {{ end }}
+
+          {{/* The bio is a fragment naming the research, nothing more.
+               Rewritten in data/advisors.yaml — see §2. */}}
+          {{ with $a.bio }}
+          <p class="text-[1.1875rem] leading-relaxed mt-5 max-w-2xl">{{ . }}</p>
+          {{ end }}
+
+          {{ with $a.link }}
+          {{/* "LinkedIn" for linkedin.com links, "Faculty page"
+               otherwise; linkLabel in data/advisors.yaml overrides. */}}
+          {{ $label := cond (in (lower .) "linkedin.com") "LinkedIn" "Faculty page" }}
+          {{ with $a.linkLabel }}{{ $label = . }}{{ end }}
+          <a href="{{ . }}" rel="noopener"
+             class="advisor-link text-[1.0625rem] text-maroon mt-5 inline-block">{{ $label }}</a>
+          {{ end }}
+        </div>
+      </li>
+      {{ end }}
+    </ul>
+    {{ end }}
+
+    {{/* ---------- GRADUATE STUDENT MENTORS ------------------------------
+         Dormant. TO TURN ON: create data/mentors.yaml with one block
+         per person —
+
+           - name: Jane Doe
+             role: "PhD candidate — Electrical & Computer Engineering"
+             focus: "Thin-film deposition"     # optional, one line
+             photo: "images/advisors/jane.jpg" # optional, initials if blank
+             photoPosition: "center 15%"       # optional
+
+         That is the whole switch: this block renders as soon as the
+         file exists and has at least one entry, and disappears again
+         if it is emptied. Mentor photos go in static/images/advisors/.
+         ---------------------------------------------------------------- */}}
+    {{ with $mentors }}
+    <div class="mt-28 lg:mt-40">
+      <h3 class="font-display font-semibold text-[1.5rem] sm:text-[2rem] leading-[1.1] tracking-tight">Graduate mentors</h3>
+
+      <ul class="mentor-grid mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-14 list-none p-0">
+        {{ range . }}
+        {{ $m := . }}
+        {{ $src := "" }}
+        {{ with $m.photo }}
+          {{ $src = replace (strings.TrimPrefix "/" . | relURL) " " "%20" }}
+        {{ end }}
+        <li class="mentor">
+          {{ if $src }}
+          <img src="{{ $src }}"
+               alt="{{ $m.name }}{{ with $m.role }}, {{ . }}{{ end }}"
+               loading="lazy" decoding="async"
+               class="mentor-img"
+               style="object-position: {{ $m.photoPosition | default "center 15%" }}" />
+          {{ else }}
+          {{ $words := split ($m.name | strings.TrimSpace) " " }}
+          {{ $initials := substr (index $words 0) 0 1 }}
+          {{ if gt (len $words) 1 }}
+            {{ $initials = printf "%s%s" $initials (substr (index $words (sub (len $words) 1)) 0 1) }}
+          {{ end }}
+          <div class="mentor-img mentor-img--blank border border-line bg-surface">
+            <span class="person-initials font-display" aria-hidden="true">{{ upper $initials }}</span>
+          </div>
+          {{ end }}
+
+          <h4 class="font-display font-semibold text-[1.375rem] leading-[1.1] tracking-tight mt-5">{{ $m.name }}</h4>
+          {{ with $m.role }}<p class="text-[1.0625rem] leading-snug mt-2">{{ . }}</p>{{ end }}
+          {{ with $m.focus }}<p class="text-[1.0625rem] leading-snug text-muted mt-1">{{ . }}</p>{{ end }}
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+
+  </div>
+</section>
+{{ end }}

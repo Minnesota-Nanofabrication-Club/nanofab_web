@@ -1,6 +1,7 @@
 ---
 title: "Reactive Ion Etcher"
-category: "Gen 2 Patterning"
+band: "gen2"
+process: "patterning"
 step: "Dry Etch"
 weight: 10
 status: "building"

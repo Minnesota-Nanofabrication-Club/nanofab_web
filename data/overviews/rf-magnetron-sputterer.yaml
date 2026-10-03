@@ -34,7 +34,7 @@ sections:
       plasma so the power actually reaches the target.
 
       That one change opens up the whole insulating half of the materials
-      list. Gen 1 can build a device with metal and thermal oxide; Gen 2
+      list. Gen One can build a device with metal and thermal oxide; Gen Two
       needs this tool to build a good one.
 
   - title: "Film quality"

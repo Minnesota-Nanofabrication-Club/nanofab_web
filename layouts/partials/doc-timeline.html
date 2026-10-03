@@ -5,59 +5,53 @@
      rows around rather than by getting date formats right. "date" is
      optional and only shows if filled in.
 
-     status: done | active | planned  (anything else reads as planned) */}}
+     status: done | active | planned  (anything else reads as planned)
+
+     The count is stated once, as the big reading beside the rail. It
+     used to appear three times — in the section heading, as the big
+     number, and again as a percentage under the meter — and the
+     in-progress milestones were listed twice (§2). */}}
 {{ $rows := . }}
 {{ $done := len (where $rows "status" "done") }}
-{{ $active := where $rows "status" "active" }}
+{{ $pct := 0 }}
+{{ if $rows }}{{ $pct = math.Round (mul (div (float $done) (len $rows)) 100) }}{{ end }}
 
-<section id="timeline" class="border-b border-line scroll-mt-32">
-  <div class="mx-auto max-w-6xl px-6 py-14">
-    {{ partial "doc-section-head.html" (dict
-        "title" "Timeline"
-        "meta" (printf "%d of %d complete" $done (len $rows))) }}
+<section>
+  <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
+    {{ partial "doc-section-head.html" (dict "id" "timeline" "title" "Timeline") }}
 
     {{ partial "doc-sample-note.html" $rows }}
 
-    <div class="grid lg:grid-cols-[minmax(0,17rem)_1fr] gap-8 lg:gap-12">
+    <div class="grid lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] gap-12 lg:gap-16">
 
-      {{/* Progress summary — the bit most people actually want. */}}
-      <div class="lg:sticky lg:top-36 lg:self-start">
-        <div class="rounded-xl border border-line bg-surface p-5">
-          <p class="font-display font-bold text-3xl">
-            {{ $done }}<span class="text-faint text-xl"> / {{ len $rows }}</span>
-          </p>
-          <p class="text-sm text-muted mt-1">milestones complete</p>
+      {{/* Progress reading — the bit most people actually want. */}}
+      <div class="lg:sticky lg:self-start" style="top: calc(var(--bar-h) + 5.5rem)">
+        <p class="font-mono text-[3rem] leading-none tracking-tight text-ink tabular-nums">
+          {{ $done }}<span class="text-muted">/{{ len $rows }}</span>
+        </p>
 
-          <div class="mt-4 h-2 rounded-full bg-line overflow-hidden">
-            <div class="h-full bg-maroon rounded-full"
-                 style="width: {{ if $rows }}{{ math.Round (mul (div (float $done) (len $rows)) 100) }}{{ else }}0{{ end }}%"></div>
-          </div>
-
-          {{ with $active }}
-          <p class="text-xs uppercase tracking-widest text-muted mt-6 mb-2">In progress</p>
-          <ul class="space-y-1.5">
-            {{ range . }}
-            <li class="text-sm text-ink leading-snug">{{ .milestone }}</li>
-            {{ end }}
-          </ul>
-          {{ end }}
+        <div class="doc-meter mt-5" role="img"
+             aria-label="{{ printf "%d of %d milestones complete" $done (len $rows) }}">
+          <span style="width: {{ $pct }}%"></span>
         </div>
+
+        <p class="text-[1.0625rem] text-muted mt-4">Milestones complete</p>
       </div>
 
-      <ol class="timeline space-y-6">
+      <ol class="doc-rail space-y-9">
         {{ range $rows }}
-        {{ $dot := "dot-planned" }}
-        {{ if eq .status "done" }}{{ $dot = "dot-done" }}{{ else if eq .status "active" }}{{ $dot = "dot-active" }}{{ end }}
-        <li class="timeline-item">
-          <span class="timeline-dot {{ $dot }}" aria-hidden="true"></span>
-          <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <p class="font-semibold {{ if eq .status "planned" }}text-muted{{ else }}text-ink{{ end }}">{{ .milestone }}</p>
-            {{ with .date }}<span class="font-mono text-xs text-faint">{{ . }}</span>{{ end }}
+        {{ $tick := "" }}
+        {{ if eq .status "done" }}{{ $tick = "is-done" }}{{ else if eq .status "active" }}{{ $tick = "is-active" }}{{ end }}
+        <li class="doc-rail-item">
+          <span class="doc-rail-tick {{ $tick }}" aria-hidden="true"></span>
+          <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <p class="text-[1.1875rem] font-semibold {{ if eq .status "planned" }}text-muted{{ else }}text-ink{{ end }}">{{ .milestone }}</p>
+            {{ with .date }}<span class="font-mono text-[0.9375rem] tracking-wide text-muted">{{ . }}</span>{{ end }}
             {{ if eq .status "active" }}
-            <span class="font-mono text-[0.6875rem] uppercase tracking-wider text-signal-amber">in progress</span>
+            <span class="font-mono text-[0.9375rem] tracking-wide text-signal-amber">In progress</span>
             {{ end }}
           </div>
-          {{ with .note }}<p class="text-sm text-muted mt-1 leading-relaxed">{{ . }}</p>{{ end }}
+          {{ with .note }}<p class="text-[1.0625rem] text-muted mt-2 leading-relaxed max-w-2xl">{{ . }}</p>{{ end }}
         </li>
         {{ end }}
       </ol>

@@ -1,8 +1,19 @@
 {{ define "main" }}
+  {{/* ------------------------------------------------------------
+       Homepage order, and the reasoning for it:
+
+       1. hero      the fab itself, full screen, with the goal on it
+       2. bands     the four boxes — one click to any machine's docs
+       3. team      the people building it
+       4. advisors  faculty, and grad mentors once they commit
+       5. sponsors  kept short; the hero already runs the logo ticker
+
+       Mission/pillars were removed: "Custom / Design / Build" said
+       one idea three times and pushed the machines below the fold.
+       ------------------------------------------------------------ */}}
   {{ partial "hero.html" . }}
-  {{ partial "mission.html" . }}
-  {{ partial "machines.html" . }}
-  {{ partial "backing.html" . }}
-  {{ partial "officers.html" . }}
+  {{ partial "bands.html" . }}
+  {{ partial "team.html" . }}
+  {{ partial "advisors.html" . }}
   {{ partial "sponsors.html" . }}
 {{ end }}

@@ -1,6 +1,7 @@
 ---
 title: "Electron Microscope"
-category: "Gen 2 Wafer Inspection & Metrology"
+band: "gen2"
+process: "metrology"
 step: "Imaging"
 weight: 20
 status: "building"

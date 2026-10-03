@@ -1,0 +1,72 @@
+/* =====================================================================
+   BANDS — the four bands on the homepage, and /machines/.
+
+   Owns: layouts/partials/bands.html, layouts/machines/list.html.
+
+   Revision 2. Everything that drew the old instrument panel is gone:
+   the cell outline, the gold tick that grew along the cell edge, the
+   hover ticks on every link, the contents-row gold bar, and the
+   segmented build meter (.claude/design-language.md §2, §6). What is
+   left is type on paper, and one hover state: the thing you are
+   pointing at turns maroon.
+   ===================================================================== */
+
+:root {
+  /* Matched to the shell's --t so the whole site moves as one. */
+  --band-t: 220ms;
+  --band-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.band-name {
+  transition: color var(--band-t) var(--band-ease);
+}
+
+/* The process category above a run of machines. Not mono — mono is for
+   machine data now, not for labels (design-language §3). */
+.band-group {
+  font-size: 0.9375rem;      /* 15px — the floor (§3) */
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* A machine. Body size, because these are the links that matter. */
+.band-leaf {
+  display: inline-block;
+  padding: 0.25rem 0;
+  /* Fraunces, semibold, larger than the body. These are the only
+     links in the section and the whole point of the page, so they
+     carry more weight than the process label above them. */
+  font-family: Ampersand, Fraunces, Georgia, serif;
+  font-size: 1.375rem;       /* 22px */
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color var(--band-t) var(--band-ease);
+}
+
+.band-leaf:hover,
+.band-leaf:focus-visible {
+  color: var(--maroon);
+}
+
+
+/* ---------------------------------------------------------------------
+   THE LEAD
+
+   The paragraph directly under the landing frame. It is the first
+   thing read after "Build the Fab", so it is set as a lead — display
+   face, large, tight — rather than as body copy, which at 22px looked
+   like a stray paragraph floating above the bands.
+   --------------------------------------------------------------------- */
+.hero-lead {
+  font-family: Ampersand, Fraunces, Georgia, serif;
+  font-size: clamp(1.75rem, 3.4vw, 2.875rem);
+  font-weight: 400;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}

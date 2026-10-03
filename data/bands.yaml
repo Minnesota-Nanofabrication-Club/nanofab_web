@@ -1,0 +1,68 @@
+# ==================================================================
+# THE FOUR BANDS — the top level of the whole site.
+#
+# Drives the homepage, the full-screen menu, /machines/ and search.
+#
+#   name     heading shown everywhere
+#   slug     used for #anchors and for `band:` in machine front
+#            matter — lowercase, no spaces
+#   index    sort order only. DO NOT render it as a 01/02 marking;
+#            that was decoration and has been removed (see
+#            .claude/design-language.md §2).
+#   tagline  ONE short line. There is deliberately no `description`
+#            field — two lines of prose per band was redundant.
+#
+# Groups are the second level for Gen One / Gen Two. They carry a name
+# and nothing else: the name says what it is, so the explanatory
+# sentence that used to sit here is gone.
+#
+# A machine joins a band with `band:` in its front matter, plus
+# `process:` for Gen One / Gen Two.
+# ==================================================================
+
+- name: Gen One Fab
+  slug: gen1
+  fab: true
+  index: 1
+  tagline: Integrated circuit by Spring 2027.
+  groups:
+    - name: Patterning
+      slug: patterning
+    - name: Doping
+      slug: doping
+    - name: Thin Film Deposition
+      slug: deposition
+    - name: Metrology
+      slug: metrology
+
+- name: Gen Two Fab
+  slug: gen2
+  fab: true
+  index: 2
+  tagline: Smaller features. Built, not bought.
+  groups:
+    - name: Patterning
+      slug: patterning
+    - name: Thin Film Deposition
+      slug: deposition
+    - name: Metrology
+      slug: metrology
+    - name: Application
+      slug: application
+    - name: Facility
+      slug: facility
+
+- name: ChemE R&D
+  slug: cheme
+  fab: true
+  index: 3
+  tagline: Resists and dopants, made here.
+
+- name: Operations & Logistics
+  slug: logistics
+  index: 4
+  tagline: Finance, outreach, design, and the website.
+  # Logistics runs the club, not the line. fab: false keeps it out
+  # of the machine listings (homepage, /machines/, menu, footer,
+  # search) while it still groups people in the Team section.
+  fab: false

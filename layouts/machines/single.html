@@ -1,19 +1,52 @@
 {{ define "main" }}
 
-{{/* Which area and generation this machine belongs to. */}}
-{{ $area := false }}
-{{ $gen := "" }}
-{{ range hugo.Data.categories }}
-  {{ $a := . }}
-  {{ range .tracks }}
-    {{ if eq .name $.Params.category }}
-      {{ $area = $a }}
-      {{ $gen = .gen }}
-    {{ end }}
+{{/* ==================================================================
+     ONE MACHINE'S DOCUMENTATION PAGE.
+
+     WHERE A MACHINE SITS IN THE CLUB
+     The top level is the four bands in data/bands.yaml. A machine
+     declares "band:" in its front matter; Gen One and Gen Two machines
+     also declare "process:", which matches a group slug inside their
+     band. Nothing here hard-codes a band or a process name — this
+     block resolves both out of hugo.Data.bands, so adding a band or
+     renaming one is a data edit (design-language §8).
+
+     bands.yaml carries name / slug / index / tagline only. `index` is
+     sort order; it is NOT rendered. The band tagline belongs to the
+     band, not to every machine inside it, so it is not rendered here
+     either (§2).
+     ================================================================== */}}
+{{ $band := false }}
+{{ $group := false }}
+{{ range hugo.Data.bands }}
+  {{ if eq .slug $.Params.band }}{{ $band = . }}{{ end }}
+{{ end }}
+{{ with $band }}
+  {{ range .groups }}
+    {{ if eq .slug $.Params.process }}{{ $group = . }}{{ end }}
   {{ end }}
 {{ end }}
 
-{{ $siblings := sort (where (where .Site.RegularPages "Section" "machines") ".Params.category" .Params.category) "Weight" }}
+{{/* A machine whose band doesn't exist would render a breadcrumb with
+     a hole in it, so say so loudly at build time instead. */}}
+{{ if not $band }}
+  {{ $slugs := slice }}{{ range hugo.Data.bands }}{{ $slugs = $slugs | append .slug }}{{ end }}
+  {{ warnf "MACHINE SETUP — content/%s: band %q is not a slug in data/bands.yaml, so this page has no breadcrumb and the machine is missing from /machines/. Valid values: %s" .File.Path (.Params.band | default "") (delimit $slugs " | ") }}
+{{ end }}
+
+{{/* Neighbours for the foot of the page: every machine in this band,
+     in weight order. Prev/next move within the band and stop at its
+     ends rather than wandering into another one. */}}
+{{ $machines := where (where site.RegularPages "Section" "machines") ".Params.band" .Params.band }}
+{{ $siblings := sort $machines "Weight" }}
+{{ $here := -1 }}
+{{ range $i, $p := $siblings }}
+  {{ if eq $p.RelPermalink $.RelPermalink }}{{ $here = $i }}{{ end }}
+{{ end }}
+{{ $prev := false }}
+{{ $next := false }}
+{{ if gt $here 0 }}{{ $prev = index $siblings (sub $here 1) }}{{ end }}
+{{ if and (ge $here 0) (lt $here (sub (len $siblings) 1)) }}{{ $next = index $siblings (add $here 1) }}{{ end }}
 
 {{/* ==================================================================
      DOCUMENTATION DATA
@@ -31,9 +64,9 @@
 {{/* The jump bar lists only sections that exist, so an undocumented
      machine reads as a short clean page rather than a broken one. */}}
 {{/* With an overview (data/overviews/<slug>.yaml) the Background
-     text lives inside it, so the separate Background section and
-     its pill are dropped. */}}
-{{ $hasOverview := index (default dict hugo.Data.overviews) .File.ContentBaseName }}
+     text lives inside it, so the separate Background section is
+     dropped. */}}
+{{ $hasOverview := index (default dict hugo.Data.overviews) $slug }}
 {{ $showBackground := and .Content (not $hasOverview) }}
 {{ $nav := slice }}
 {{ if $hasOverview }}{{ $nav = $nav | append (dict "id" "overview" "label" "Overview") }}{{ end }}
@@ -47,93 +80,113 @@
 {{ range $diagrams }}{{ if not (in $used (strings.TrimPrefix "/" .src)) }}{{ $diagramsLeft = add $diagramsLeft 1 }}{{ end }}{{ end }}
 {{ $showArchitecture := or .Params.subsystems (gt $diagramsLeft 0) }}
 {{ if $showArchitecture }}{{ $nav = $nav | append (dict "id" "architecture" "label" "Architecture") }}{{ end }}
-{{ $nav = $nav | append (dict "id" "documentation" "label" "Documentation") }}
+{{/* "Documentation" said nothing on a page that is entirely
+     documentation. This section carries the write-up and the build
+     timeline, so it is Progress; Assembly follows it as the fourth
+     section and renders on every machine, filled in or not. */}}
+{{ $nav = $nav | append (dict "id" "progress" "label" "Progress") }}
+{{ $nav = $nav | append (dict "id" "assembly" "label" "Assembly") }}
 {{ $photosLeft := 0 }}
 {{ range .Params.documentationPhotos }}{{ if not (in $used (strings.TrimPrefix "/" .src)) }}{{ $photosLeft = add $photosLeft 1 }}{{ end }}{{ end }}
-{{ if gt $photosLeft 0 }}{{ $nav = $nav | append (dict "id" "documentation-photos" "label" "Photos") }}{{ end }}
+{{ if gt $photosLeft 0 }}{{ $nav = $nav | append (dict "id" "documentation-photos" "label" "Figures") }}{{ end }}
 {{ if $timeline }}{{ $nav = $nav | append (dict "id" "timeline" "label" "Timeline") }}{{ end }}
-{{ if $bom }}{{ $nav = $nav | append (dict "id" "bom" "label" "Bill of materials") }}{{ end }}
-{{ if $contributors }}{{ $nav = $nav | append (dict "id" "contributors" "label" "Who built it") }}{{ end }}
+{{ if $bom }}{{ $nav = $nav | append (dict "id" "bom" "label" "Parts") }}{{ end }}
+{{ if $contributors }}{{ $nav = $nav | append (dict "id" "contributors" "label" "Builders") }}{{ end }}
 {{ if $references }}{{ $nav = $nav | append (dict "id" "references" "label" "References") }}{{ end }}
 
-<article>
+{{/* Must match the threshold inside doc-nav.html: the class adds the
+     bar's height to every anchor's scroll offset, so it can only be
+     set when the bar is actually on the page. */}}
+{{ $showJump := gt (len $nav) 2 }}
 
-  {{/* ---------- Header ---------- */}}
-  <section class="relative overflow-hidden border-b border-line">
-    <div class="absolute inset-0 bg-grid-fine pointer-events-none"></div>
-    <div class="relative mx-auto max-w-6xl px-6 pt-12 pb-14">
+{{ $subsystems := .Params.subsystems | default slice }}
 
-      <nav class="text-sm text-muted mb-8 flex flex-wrap items-center gap-x-2" aria-label="Breadcrumb">
-        <a href="{{ strings.TrimPrefix "/" ("/") | relURL }}" class="hover:text-maroon transition-colors">Home</a>
-        <span class="text-line">/</span>
-        <a href="{{ strings.TrimPrefix "/" ("/machines/") | relURL }}" class="hover:text-maroon transition-colors">The fab</a>
-        {{ with $area }}
-        <span class="text-line">/</span>
-        {{/* /machines/ is split into a shared part then one band per
-             generation, so a Gen 2 machine's area anchor is
-             #gen2-patterning rather than plain #patterning. */}}
-        {{ $anchor := .slug }}
-        {{ if $gen }}{{ $anchor = printf "%s-%s" (lower (replace $gen " " "")) .slug }}{{ end }}
-        <a href="{{ strings.TrimPrefix "/" (printf "/machines/#%s" $anchor) | relURL }}" class="hover:text-maroon transition-colors">{{ .name }}</a>
+<article class="doc-page{{ if $showJump }} has-jump{{ end }}">
+
+  {{/* ================= PAGE HEADER =================
+       Breadcrumb, name, one line of summary, build state. The
+       breadcrumb is the only place the band and the process group are
+       named — the data plate used to repeat both, and the plate is
+       gone (§2). */}}
+  <header>
+    {{/* With a jump bar below, the header needs a gap before it. With
+         no jump bar the first section's own top padding is the gap,
+         and adding one here would double it. */}}
+    <div class="mx-auto max-w-6xl px-6 pt-10 lg:pt-14 {{ if $showJump }}pb-14 lg:pb-16{{ end }}">
+
+      {{/* ---------- Breadcrumb: the fab / band / process ---------- */}}
+      <nav class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[1.0625rem] text-muted"
+           aria-label="Breadcrumb">
+        {{/* The /machines/ index page is gone — the homepage lists
+             every machine under its band, so the crumbs land there. */}}
+        <a href="{{ "" | relURL }}#fab" class="hover:text-maroon transition-colors">The fab</a>
+        {{ with $band }}
+        <span aria-hidden="true">/</span>
+        <a href="{{ "" | relURL }}#{{ .slug }}" class="hover:text-maroon transition-colors">{{ .name }}</a>
+        {{ end }}
+        {{ with $group }}
+        <span aria-hidden="true">/</span>
+        <span class="text-ink">{{ .name }}</span>
         {{ end }}
       </nav>
 
-      <div class="max-w-3xl">
-        <div class="flex flex-wrap items-center gap-3">
-          {{ with $gen }}
-          <span class="gen-chip {{ if eq . "Gen 1" }}gen-1{{ else }}gen-2{{ end }}">{{ . }}</span>
-          {{ end }}
-          {{ with $area }}
-          <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-medium
-                       {{ if eq $gen "Gen 2" }}bg-violet/10 text-violet{{ else }}bg-maroon/10 text-maroon{{ end }}">
-            <span class="font-mono text-[0.6875rem]">{{ printf "%02d" .order }}</span>{{ .name }}
-          </span>
-          {{ end }}
-          {{ with .Params.step }}
-          <span class="font-mono text-xs uppercase tracking-wider text-faint">{{ . }}</span>
-          {{ end }}
-          {{ partial "status.html" .Params.status }}
-        </div>
+      <h1 class="font-display font-semibold tracking-tight leading-[1.02] mt-6
+                 text-[clamp(2.5rem,7vw,4.5rem)]">{{ .Title }}</h1>
 
-        <h1 class="font-display font-bold text-4xl sm:text-5xl tracking-tight mt-5 leading-[1.08]">{{ .Title }}</h1>
-        <p class="mt-5 text-lg text-muted leading-relaxed">{{ .Params.summary }}</p>
+      {{ with .Params.summary }}
+      <p class="max-w-2xl text-[1.1875rem] sm:text-[1.3125rem] leading-relaxed text-muted mt-7">{{ . }}</p>
+      {{ end }}
+
+      {{/* Build state and the process step this machine performs —
+           the two readings the old plate carried that are not already
+           in the breadcrumb. */}}
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-9 text-[1.0625rem]">
+        {{ partial "status.html" .Params.status }}
+        {{/* Hide the step when it is just the process group's name
+             again — the breadcrumb above already says it. The Inkjet
+             Microplotter is the case: its process IS "Application",
+             with no finer step inside it. */}}
+        {{ $groupName := "" }}{{ with $group }}{{ $groupName = .name }}{{ end }}
+        {{ with .Params.step }}
+        {{ if ne (lower .) (lower $groupName) }}
+        <span class="text-line" aria-hidden="true">/</span>
+        <span class="font-mono tracking-wide text-ink">{{ . }}</span>
+        {{ end }}
+        {{ end }}
       </div>
 
-      {{ partial "doc-specs.html" . }}
-
-      {{/* Link out to this machine's folder, for anything too big or
-           too raw to put on the page (CAD, full datasheets, photos).
-           Set driveFolder in the machine's front matter. */}}
       {{ with .Params.driveFolder }}
-      <a href="{{ . }}" class="inline-flex items-center gap-2 mt-7 text-sm font-semibold text-maroon hover:underline underline-offset-4">
-        Open the working folder <span aria-hidden="true">&#8599;</span>
-      </a>
+      <a href="{{ . }}"
+         class="inline-block mt-9 text-[1.0625rem] text-maroon border-b border-maroon/40 pb-1
+                hover:border-maroon transition-colors">Working folder &#8599;</a>
       {{ end }}
+
+      {{/* ---------- Target numbers ---------- */}}
+      {{ partial "doc-specs.html" . }}
     </div>
-  </section>
+  </header>
 
   {{ partial "doc-nav.html" $nav }}
 
   {{/* ---------- Overview (data/overviews/<slug>.yaml) ---------- */}}
   {{ partial "doc-overview.html" . }}
 
-  {{/* ---------- Photos ---------- */}}
+  {{/* ---------- Photos of the machine itself ---------- */}}
   {{ with .Params.photos }}
-  <section class="border-b border-line">
-    <div class="mx-auto max-w-6xl px-6 py-14">
+  <section>
+    <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
       {{ $single := eq (len .) 1 }}
-      <div class="grid gap-6 items-start {{ if not $single }}sm:grid-cols-2{{ end }}">
+      <div class="grid gap-12 items-start {{ if not $single }}sm:grid-cols-2{{ end }}">
         {{ range . }}
         <figure class="{{ if $single }}max-w-4xl{{ end }}">
-          <img src="{{ strings.TrimPrefix "/" (.src) | relURL }}"
-               alt="{{ .caption | default (printf "%s in the lab" $.Title) }}"
-               loading="lazy"
-               class="w-full {{ if $single }}max-h-[32.5rem]{{ else }}h-72{{ end }} object-contain rounded-xl border border-line bg-surface" />
+          <div class="doc-frame p-3">
+            <img src="{{ strings.TrimPrefix "/" (.src) | relURL }}"
+                 alt="{{ .caption | default (printf "%s in the lab" $.Title) }}"
+                 loading="lazy"
+                 class="w-full {{ if $single }}max-h-[32.5rem]{{ else }}h-72{{ end }} object-contain" />
+          </div>
           {{ with .caption }}
-          <figcaption class="flex items-start gap-3 text-sm text-muted mt-3">
-            <span class="h-px w-6 bg-gold shrink-0 mt-2.5"></span>
-            <span>{{ . }}</span>
-          </figcaption>
+          <figcaption class="doc-cap mt-4">{{ partial "doc-caption-text" . }}</figcaption>
           {{ end }}
         </figure>
         {{ end }}
@@ -144,48 +197,45 @@
 
   {{/* ---------- Background (the markdown body of the machine's file) ---------- */}}
   {{ if $showBackground }}
-  <section id="background" class="border-b border-line scroll-mt-32">
-    <div class="mx-auto max-w-6xl px-6 py-14">
-      {{ partial "doc-section-head.html" (dict "title" "Background") }}
-      <div class="prose text-muted text-[1.0625rem] max-w-3xl">{{ .Content }}</div>
+  <section>
+    <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
+      {{ partial "doc-section-head.html" (dict "id" "background" "title" "Background") }}
+      <div class="doc-prose max-w-2xl">{{ .Content }}</div>
     </div>
   </section>
   {{ end }}
 
   {{/* ---------- Design architecture ---------- */}}
   {{ if $showArchitecture }}
-  <section id="architecture" class="border-b border-line bg-surface/60 scroll-mt-32">
-    <div class="mx-auto max-w-6xl px-6 py-14">
-      {{ partial "doc-section-head.html" (dict
-          "title" "Design architecture"
-          "meta" (cond (isset .Params "subsystems") (printf "%d subsystems" (len (.Params.subsystems | default slice))) "")) }}
+  <section>
+    <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
+      {{ partial "doc-section-head.html" (dict "id" "architecture" "title" "Architecture") }}
 
-      {{/* Block diagram, if there is one. Put the image file in
-           static/images/machines/ and point architectureDiagram at
+      {{/* Block diagrams, if there are any. Put the image file in
+           static/images/machines/ and point architectureDiagrams at
            it in the machine's front matter. */}}
       {{ partial "doc-diagrams.html" . }}
 
-      {{ with .Params.subsystems }}
-      <p class="text-sm text-muted mb-6 max-w-2xl">
-        The parts we actually have to build, source, and keep working.
-      </p>
-      <ol class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {{ range $i, $s := . }}
-        <li class="bg-paper border border-line rounded-xl p-6">
-          <div class="flex items-center gap-2.5">
-            <span class="font-mono text-xs text-violet">{{ printf "%02d" (add $i 1) }}</span>
-            <p class="font-display font-semibold text-lg">{{ $s.name }}</p>
-          </div>
-          <p class="text-sm text-muted mt-2.5 leading-relaxed">{{ $s.description }}</p>
+      {{ with $subsystems }}
+      {{/* The parts list: name and what it does, divided by
+           hairlines. No index numerals — they were decoration (§2). */}}
+      <ul class="grid sm:grid-cols-2 gap-x-16 border-t border-line">
+        {{ range . }}
+        <li class="py-7 border-b border-line">
+          <p class="font-display font-semibold text-[1.375rem] leading-snug">{{ .name }}</p>
+          {{ with .description }}
+          <p class="text-[1.0625rem] leading-relaxed text-muted mt-2.5">{{ . }}</p>
+          {{ end }}
         </li>
         {{ end }}
-      </ol>
+      </ul>
       {{ end }}
     </div>
   </section>
   {{ end }}
 
   {{ partial "doc-writeup.html" . }}
+  {{ partial "doc-assembly.html" . }}
   {{ partial "doc-photos.html" . }}
 
   {{ with $timeline }}{{ partial "doc-timeline.html" . }}{{ end }}
@@ -193,47 +243,57 @@
   {{ with $contributors }}{{ partial "doc-contributors.html" . }}{{ end }}
   {{ with $references }}{{ partial "doc-references.html" . }}{{ end }}
 
-  {{/* OFF while the documentation Google Sheet isn&rsquo;t connected.
-       With no Sheet there is nothing to fill in, so this would show
-       on all 20 machines and point at something that does not exist.
-       Uncomment once docsSheetId is set in hugo.toml.
+  {{/* ================= FOOT: MOVE WITHIN THE BAND =================
+       Prev/next are the neighbouring machines in this machine's own
+       band, in weight order. Below them, the rest of the band. The
+       "all machines" link that used to sit here is gone — the
+       breadcrumb at the top of the page already is one (§2). */}}
+  {{ if or $prev $next (gt (len $siblings) 1) }}
+  <nav aria-label="More in this band">
+    <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
 
-  {{ if not (or $timeline $bom $contributors $references) }}
-  <section class="border-b border-line">
-    <div class="mx-auto max-w-6xl px-6 py-12">
-      <div class="rounded-xl border border-dashed border-line bg-surface/50 p-6 max-w-2xl">
-        <p class="font-display font-semibold text-lg">Documentation in progress</p>
-        <p class="text-sm text-muted mt-2 leading-relaxed">
-          The timeline, bill of materials, and reference list for this
-          machine haven&rsquo;t been filled in yet. If you&rsquo;re working on it,
-          add your rows to the documentation Sheet and they&rsquo;ll show up here.
-        </p>
+      {{ if or $prev $next }}
+      <div class="grid sm:grid-cols-2 border-t border-line">
+        {{/* An empty cell keeps "next" on the right when there is no
+             previous machine, so the pair stays in register. */}}
+        {{ if $prev }}
+        <a href="{{ $prev.RelPermalink }}"
+           class="group py-8 pr-6 border-b border-line sm:border-r hover:bg-surface transition-colors">
+          <span class="text-[1.0625rem] text-muted">&larr; Previous</span>
+          <span class="block font-display font-semibold text-[1.5rem] leading-snug mt-3
+                       group-hover:text-maroon transition-colors">{{ $prev.Title }}</span>
+        </a>
+        {{ else }}
+        <span class="hidden sm:block border-b border-line sm:border-r" aria-hidden="true"></span>
+        {{ end }}
+
+        {{ if $next }}
+        <a href="{{ $next.RelPermalink }}"
+           class="group py-8 border-b border-line sm:text-right sm:pl-6 hover:bg-surface transition-colors">
+          <span class="text-[1.0625rem] text-muted">Next &rarr;</span>
+          <span class="block font-display font-semibold text-[1.5rem] leading-snug mt-3
+                       group-hover:text-maroon transition-colors">{{ $next.Title }}</span>
+        </a>
+        {{ else }}
+        <span class="hidden sm:block border-b border-line" aria-hidden="true"></span>
+        {{ end }}
       </div>
-    </div>
-  </section>
-  {{ end }}
-  */}}
+      {{ end }}
 
-  {{/* ---------- Neighbours in the same track ---------- */}}
-  {{ if gt (len $siblings) 1 }}
-  <section class="border-b border-line">
-    <div class="mx-auto max-w-6xl px-6 py-14">
-      <h2 class="text-xs uppercase tracking-widest text-muted mb-6">
-        Also in {{ .Params.category }}
+      {{ if gt (len $siblings) 1 }}
+      <h2 class="font-display font-semibold text-[1.75rem] tracking-tight mt-20 mb-8">
+        {{ with $band }}Also in {{ .name }}{{ else }}Also in the fab{{ end }}
       </h2>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {{ range $siblings }}
         {{ if ne .RelPermalink $.RelPermalink }}
           {{ partial "machine-card.html" . }}
         {{ end }}
         {{ end }}
       </div>
-
-      <a href="{{ strings.TrimPrefix "/" ("/machines/") | relURL }}" class="inline-flex items-center gap-2 mt-8 text-sm font-semibold text-maroon hover:underline underline-offset-4">
-        &larr; All machines
-      </a>
+      {{ end }}
     </div>
-  </section>
+  </nav>
   {{ end }}
 
 </article>

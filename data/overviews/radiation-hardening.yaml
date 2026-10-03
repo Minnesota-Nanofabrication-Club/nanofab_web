@@ -17,7 +17,7 @@ highlights:
     label: "Plus latch-up: the failure modes"
   - value: "Ring osc. + SRAM"
     label: "Test circuits"
-  - value: "Full Gen 1"
+  - value: "Full Gen One"
     label: "Line needed first"
 
 sections:

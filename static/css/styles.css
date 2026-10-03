@@ -48,11 +48,11 @@
 
 html {
   scroll-behavior: smooth;
-  /* Stop the sticky header from covering a section you just jumped to.
-     The header is 4rem tall; the rest is breathing room. (This used to
-     be 6.5rem to clear a maroon University bar that sat above it —
-     that bar has been removed.) */
-  scroll-padding-top: 5.5rem;
+  /* scroll-padding-top used to live here to stop the sticky header
+     covering a section you had just jumped to. It is gone: system.css
+     now sets `scroll-margin-top` on every [id] from the --bar-h token.
+     Keeping both made the two offsets ADD, landing every anchor jump
+     about 5.5rem below its heading. */
   -webkit-text-size-adjust: 100%;
 }
 
@@ -465,7 +465,8 @@ label:focus-visible,
    hanging off a timeline rail.
 ----------------------------------------------------------- */
 .doc-rich { counter-reset: docpart; }
-.doc-rich h2, .doc-rich h3 { scroll-margin-top: 8.5rem; }
+/* Offset comes from doc.css via the --bar-h/--doc-jump-h tokens;
+   the old hard-coded 8.5rem disagreed with it. */
 
 /* The layout already separates sections, so "---" lines between
    them would just double up. */

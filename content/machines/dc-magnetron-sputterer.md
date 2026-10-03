@@ -1,6 +1,7 @@
 ---
 title: "DC Magnetron Sputterer"
-category: "Gen 1 Thin Film Deposition"
+band: "gen1"
+process: "deposition"
 step: "Metal Films"
 weight: 10
 status: "building"

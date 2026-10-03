@@ -30,7 +30,7 @@ sections:
   - title: "Shared infrastructure"
     text: |
       Both generations of the line use it, which is why it sits under
-      Facility rather than inside Gen 1 or Gen 2. Its motion control
+      Facility rather than inside Gen One or Gen Two. Its motion control
       stores tool positions and shares a codebase with the stage alignment
       firmware. Repeatability matters far more than raw speed.
 

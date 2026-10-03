@@ -1,6 +1,7 @@
 ---
 title: "Wafer Arm"
-category: "Facility"
+band: "gen2"
+process: "facility"
 step: "Wafer Handling"
 weight: 10
 status: "planned"
@@ -67,4 +68,4 @@ by its back side, carry it, and set it down in the same place every
 time.**
 
 It's shared infrastructure. Both generations of the line use it, which
-is why it sits under Facility rather than inside Gen 1 or Gen 2.
+is why it sits under Facility rather than inside Gen One or Gen Two.

@@ -1,6 +1,7 @@
 ---
 title: "Spin-On Doping"
-category: "Gen 1 Doping"
+band: "gen1"
+process: "doping"
 step: "Dopant Source"
 weight: 10
 status: "building"

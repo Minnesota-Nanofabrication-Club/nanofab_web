@@ -1,80 +1,69 @@
-{{/* The first thing anyone sees. Headline text comes from
-     content/_index.md (title + heroSubhead); the photo on the right
-     comes from labPhoto in the same file. */}}
-<section id="top" class="relative overflow-hidden border-b border-line">
-  <div class="absolute inset-0 bg-grid pointer-events-none"></div>
+{{/* ==================================================================
+     THE HERO.
 
-  {{/* Circuit line-drawing, tucked into the bottom-left corner so it
-       never runs across the headline. Decorative only. Its width is
-       the empty margin left of the content column (.hero-circuit in
-       styles.css), and it's hidden below 1280px where there's no
-       margin to put it in. */}}
-  <div class="hero-circuit absolute bottom-0 left-0 pointer-events-none hidden xl:block opacity-[0.18]">
-    <svg viewBox="0 0 600 400" class="w-full" aria-hidden="true">
-      <g fill="none" stroke="{{ .Site.Params.colors.maroon }}" stroke-width="1.5" stroke-linecap="round">
-        <path class="circuit-path" d="M20 340 H180 V220 H320" />
-        <path class="circuit-path" d="M60 60 V160 H240 V260 H420" style="animation-delay:.3s" />
-        <path class="circuit-path" d="M480 40 V140 H340" style="animation-delay:.6s" />
-        <path class="circuit-path" d="M540 300 H400 V180" style="animation-delay:.9s" />
-      </g>
-      <g fill="{{ .Site.Params.colors.gold }}" stroke="{{ .Site.Params.colors.maroon }}" stroke-width="1.5">
-        <circle cx="320" cy="220" r="4.5" class="circuit-node" style="animation-delay:.5s" />
-        <circle cx="420" cy="260" r="4.5" class="circuit-node" style="animation-delay:.8s" />
-        <circle cx="340" cy="140" r="4.5" class="circuit-node" style="animation-delay:1.1s" />
-        <circle cx="400" cy="180" r="4.5" class="circuit-node" style="animation-delay:1.4s" />
-      </g>
-    </svg>
-  </div>
+     A bright, full-bleed photograph of the actual lab, and under it —
+     on the same paper the rest of the page is printed on — the one
+     thing the site has to say: Build the Fab.
 
-  <div class="relative mx-auto max-w-6xl px-6 py-14 lg:py-20 grid lg:grid-cols-[1.08fr_1fr] gap-12 lg:gap-14 items-center">
+     Revision 2 (see .claude/design-language.md):
 
-    {{/* ---------- Left: the words ---------- */}}
-    <div>
-      <h1 class="font-display font-bold text-[2.75rem] sm:text-6xl lg:text-[4rem] leading-[1.02] tracking-tight">
-        {{ .Title }}
-      </h1>
+       §5  The photograph is shown BRIGHT. Revision 1 held it down to
+           half brightness and the homepage read as a dark theme. The
+           only correction left is a slight desaturation. Because this
+           particular room is cluttered with bright patches — white
+           paper on the bench, a lit fume hood, beige walls — there is
+           no region large enough to carry a 9rem headline in white.
+           So the statement takes the third option in §5: it is set in
+           ink on the paper ground directly below the photograph.
 
-      {{/* Gold rule under the headline — a small, deliberate UMN cue. */}}
-      <div class="mt-7 h-1.5 w-24 bg-gold rounded-full"></div>
+       §2  Deleted outright: the "University of Minnesota, Twin Cities"
+           locator rail (the wordmark and the footer both say it), the
+           registration grid, the corner ticks, the quarter-column
+           hairlines, the plate caption, the progress measure rule and
+           the supporting sentence. None of them carried information
+           that is not somewhere else on the page.
 
-      <p class="mt-7 max-w-xl text-xl text-muted leading-relaxed">
-        {{ .Params.heroSubhead }}
-      </p>
+       §6  The photograph stops partway down the viewport and the
+           statement sits on paper, so the hero's bottom half IS the
+           document. There is no seam to cross on scroll.
 
-      {{/* Discord with the LinkedIn / Instagram icons tucked under it,
-           and "Explore the fab" beside it. */}}
-      <div class="mt-9 flex flex-wrap items-start gap-3">
-        <div class="flex flex-col items-start gap-3">
-          <a href="{{ .Site.Params.discordURL }}"
-             class="inline-flex items-center gap-2 rounded-md bg-maroon text-white font-semibold px-6 py-3.5 hover:bg-maroon-dark transition-colors">
-            Join our Discord
-          </a>
-          <div class="flex items-center gap-2">
-            <a href="{{ .Site.Params.linkedinURL }}"
-               aria-label="{{ .Site.Params.shortTitle }} on LinkedIn"
-               class="inline-flex items-center justify-center w-12 h-12 rounded-md border border-line bg-surface text-muted hover:border-ink hover:text-ink transition-colors">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
-            </a>
-            <a href="{{ .Site.Params.instagramURL }}"
-               aria-label="{{ .Site.Params.shortTitle }} on Instagram"
-               class="inline-flex items-center justify-center w-12 h-12 rounded-md border border-line bg-surface text-muted hover:border-ink hover:text-ink transition-colors">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85s.02-3.58.07-4.85c.15-3.23 1.67-4.77 4.92-4.92 1.27-.06 1.65-.07 4.85-.07zM12 0C8.74 0 8.33.01 7.05.07c-4.35.2-6.78 2.62-6.98 6.98C0 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 24 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.41-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg>
-            </a>
-          </div>
-        </div>
+     Two rules worth knowing before editing:
 
-        <a href="{{ strings.TrimPrefix "/" ("/machines/") | relURL }}"
-           class="inline-flex items-center gap-2 rounded-md border-2 border-ink/30 bg-surface px-6 py-3.5 font-semibold hover:border-ink hover:bg-paper transition-colors">
-          Explore the fab
-          <span aria-hidden="true">→</span>
-        </a>
-      </div>
-      {{/* NOTE: the contact email deliberately isn’t here — it lives in
-           the footer and in the Sponsors section instead. */}}
-    </div>
+       1. The id MUST stay "hero". static/js/site.js watches it with an
+          IntersectionObserver to flip the top bar from transparent to
+          solid. Rename it and the bar breaks.
+       2. Nothing here is hard-coded. The photograph comes from
+          hugo.toml (heroImage).
 
-    {{/* ---------- Right: the lab photo ---------- */}}
-    {{ partial "lab-photo.html" . }}
+     Styling lives in static/css/hero.css.
+     ================================================================== */}}
 
+{{/* ---------- Live counts ----------
+     Computed, never typed. Adding a machine changes these numbers on
+     the next build, so the hero can never claim progress the content
+     does not support. */}}
+
+{{ $photo     := "" }}
+{{ with site.Params.heroImage }}{{ $photo = strings.TrimPrefix "/" . | relURL }}{{ end }}
+{{ $statement := .Params.heroStatement | default "Build the Fab" }}
+
+<section id="hero" class="hero">
+  {{ with $photo }}
+  <img class="hero-photo"
+       src="{{ . }}"
+       width="1800" height="1201"
+       loading="eager" fetchpriority="high" decoding="async"
+       alt="The club's lab in Keller Hall 5-194: a wood workbench strung with cabling, a probe station and microscope at the centre, and test instruments and a fume hood along the far wall." />
+  {{ end }}
+
+  {{/* The statement sits ON the photograph, bottom left, the way
+       SpaceX sets a headline into a frame. The shade below is what
+       makes that possible: it is bottom-weighted and transparent
+       across the upper half, so the room reads as photographed while
+       white type still clears contrast over the bench. */}}
+  <div class="hero-shade" aria-hidden="true"></div>
+
+  <div class="hero-say">
+    <h1 class="hero-statement font-display">{{ $statement }}</h1>
   </div>
 </section>

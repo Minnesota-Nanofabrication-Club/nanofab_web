@@ -1,6 +1,7 @@
 ---
 title: "Spinner"
-category: "Gen 1 Patterning"
+band: "gen1"
+process: "patterning"
 step: "Resist Coat"
 weight: 20
 status: "building"

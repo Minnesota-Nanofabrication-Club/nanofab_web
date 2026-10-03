@@ -8,8 +8,8 @@
 # ------------------------------------------------------------------
 draft: true
 title: "Radiation Hardening"
-category: "Research"
-step: "Research Thrust"
+band: "cheme"
+step: "Radiation Effects"
 weight: 10
 status: "planned"
 summary: "Building chips that keep working in orbit. Radiation flips bits and degrades transistors, and we want to find out which layout and process choices survive it."
@@ -20,7 +20,7 @@ specs:
   - label: "Test approach"
     value: "Ring oscillators + SRAM cells"
   - label: "Depends on"
-    value: "Full Gen 1 line"
+    value: "Full Gen One line"
 
 # photos:
 #   - src: "/images/machines/radiation-hardening-1.jpg"

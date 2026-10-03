@@ -1,6 +1,7 @@
 ---
 title: "Computer Vision Metrology"
-category: "Gen 1 Wafer Inspection & Metrology"
+band: "gen1"
+process: "metrology"
 step: "Optical Inspection"
 weight: 10
 status: "building"

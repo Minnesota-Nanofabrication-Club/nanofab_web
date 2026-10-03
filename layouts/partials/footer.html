@@ -1,91 +1,146 @@
-<footer class="border-t border-line bg-surface/60">
-  <div class="mx-auto max-w-6xl px-6 py-14">
+{{/* ==================================================================
+     THE FOOTER — closes every page.
 
-    <div class="grid gap-10 sm:grid-cols-2 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
+     Cut from four columns + affiliation + copyright + RSO block down
+     to two blocks. The full-screen menu carries every navigation
+     link, so a footer repeating the four bands and five "Elsewhere"
+     links was pure duplication (design-language §2). Gone with them:
+     the per-band machine counts (they live on the homepage and
+     /machines/), the column eyebrows, the gold measure rule, the
+     "19 machines documented" line, and the "student organization at
+     the University of Minnesota" blurb — the RSO disclaimer below
+     already says exactly that, verbatim and by law.
+
+     What is left is what appears nowhere else:
+       1. who we are, how to reach us, where we are
+       2. the University's required legal block
+
+     GROUND: still `void`. §4 keeps the void tokens for the footer
+     alone and §6 names the footer as the one permitted ground change,
+     so the dark is a sanctioned terminus, not a leftover from the old
+     dark hero. The gold focus ring in system.css covers it.
+
+     ------------------------------------------------------------------
+     WHY THERE IS NO UMN WORDMARK HERE
+
+     `static/images/logo/UMN_horizontal-digital.svg` and
+     `…-reversed-digital.svg` are the full University wordmark (Block M
+     + "University of Minnesota", with the ®). That is a registered
+     University trademark and README section 9 is explicit: a
+     Registered Student Organization may not use it. The only
+     University mark an RSO may carry is the "Block M RSO" mark, and it
+     belongs in the legal block at the very bottom, on its own, beside
+     the disclaimer. Those files stay unused on purpose.
+
+     Plain text links to umn.edu and cse.umn.edu are fine — words are
+     not trademarks. If the club obtains the RSO mark, set
+     `rsoMark = "/images/logo/…"` in hugo.toml under [params.umn] and
+     it appears below automatically.
+     ------------------------------------------------------------------
+     CSS: static/css/footer.css. Nothing else writes to it.
+     ================================================================== */}}
+
+{{ $umn := site.Params.umn }}
+
+{{/* THE WORDMARK. One string, used twice below (the club mark beside
+     the logo, and the copyright line), so the footer can never print
+     two different names for the club. It is "Minnesota
+     Nanofabrication" — not "MN NanoFab", which this footer used to
+     show. hugo.toml's `title` is still the long legal name
+     ("Nanofabrication Club at the University of Minnesota"), which is
+     right for <title> and wrong at 24px here; once that file carries
+     the wordmark too, replace this literal with the param and delete
+     this note. */}}
+{{ $wordmark := "Minnesota Nanofabrication" }}
+
+<footer class="site-footer bg-void text-white" role="contentinfo">
+  <div class="mx-auto max-w-6xl px-6 py-20 sm:py-24">
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-12">
+
+      {{/* ---------------- Identity and contact ----------------
+           The email is the route in. Discord is not repeated as text
+           here — it is already one of the marks below. */}}
       <div>
         <div class="flex items-center gap-3">
-          {{ partial "logo.html" (dict "size" 36) }}
-          <p class="font-display font-bold text-lg">{{ .Site.Params.shortTitle }}</p>
+          {{ partial "logo.html" (dict "size" 40) }}
+          {{/* Longer than the old "MN NanoFab", so it steps down a
+               size on narrow screens (still well over the 15px floor,
+               §3) and uses leading-tight rather than leading-none in
+               case it takes two lines. */}}
+          <span class="font-display font-semibold text-[1.375rem] sm:text-[1.5rem] tracking-tight leading-tight">{{ $wordmark }}</span>
         </div>
-        <p class="text-muted mt-4 max-w-sm leading-relaxed">
-          <!-- A student organization at the
-          <a href="{{ .Site.Params.umn.universityURL }}" class="text-ink font-medium underline decoration-gold decoration-2 underline-offset-4 hover:text-maroon transition-colors">University of Minnesota, Twin Cities</a>,
-          building a nanofabrication lab from the bench up. -->
+
+        {{ with site.Params.contactEmail }}
+        {{/* A button, not the address itself: "Contact us" says what
+             it does, and the address is an implementation detail. */}}
+        <a href="mailto:{{ . }}?subject=Minnesota%20Nanofabrication"
+           class="ft-contact inline-flex items-center mt-7">Contact us</a>
+        {{ end }}
+
+        {{/* Social marks. Inline SVG — no icon font, no emoji. Square
+             hairline cells (§6). GitHub / LinkedIn / Discord path data
+             matches the full-screen menu's, so the marks agree. */}}
+        <ul class="mt-8 flex items-center gap-3">
+          {{ partial "socials.html" (dict "size" 28 "class" "ft-social") }}
+        </ul>
+      </div>
+
+      {{/* ---------------- Affiliation ----------------
+           Set in type, not in a trademark. The eyebrow is gone; two
+           University links need no label. */}}
+      <div class="lg:justify-self-end lg:text-right">
+        <p class="text-[1.1875rem] leading-relaxed">
+          <a href="{{ $umn.universityURL }}" rel="noopener" class="ft-link">{{ $umn.universityName }}</a>
+        </p>
+        <p class="text-[1.1875rem] leading-relaxed mt-3">
+          <a href="{{ $umn.collegeURL }}" rel="noopener" class="ft-link">{{ $umn.collegeName }}</a>
         </p>
       </div>
-
-      <div>
-        <h3 class="text-xs uppercase tracking-widest text-muted">Club</h3>
-        <ul class="mt-4 space-y-2.5">
-          <li><a href="{{ strings.TrimPrefix "/" ("/machines/") | relURL }}" class="text-muted hover:text-maroon transition-colors">Documentation</a></li>
-          <li><a href="{{ strings.TrimPrefix "/" ("/#mission") | relURL }}" class="text-muted hover:text-maroon transition-colors">Mission</a></li>
-          <li><a href="{{ strings.TrimPrefix "/" ("/#officers") | relURL }}" class="text-muted hover:text-maroon transition-colors">Team</a></li>
-          <li><a href="{{ strings.TrimPrefix "/" ("/#sponsors") | relURL }}" class="text-muted hover:text-maroon transition-colors">Sponsors</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h3 class="text-xs uppercase tracking-widest text-muted">Get in touch</h3>
-        <ul class="mt-4 space-y-2.5">
-          {{/* The contact email lives here, not in the hero. */}}
-          <li><a href="mailto:{{ .Site.Params.contactEmail }}" class="text-ink font-medium underline decoration-line underline-offset-4 hover:text-maroon hover:decoration-maroon transition-colors break-words">{{ .Site.Params.contactEmail }}</a></li>
-          <li><a href="{{ .Site.Params.discordURL }}" class="text-muted hover:text-maroon transition-colors">Discord</a></li>
-          {{ with .Site.Params.linkedinURL }}<li><a href="{{ . }}" class="text-muted hover:text-maroon transition-colors">LinkedIn</a></li>{{ end }}
-          {{ with .Site.Params.instagramURL }}<li><a href="{{ . }}" class="text-muted hover:text-maroon transition-colors">Instagram</a></li>{{ end }}
-        </ul>
-      </div>
-
-      {{/* These links used to live in a maroon bar above the site
-           header. That bar is gone, so they sit here now. Plain text
-           links to the University are fine; its trademarks are not.
-           See README section 9. */}}
-      <div>
-        <h3 class="text-xs uppercase tracking-widest text-muted">University of Minnesota</h3>
-        <ul class="mt-4 space-y-2.5">
-          <li><a href="{{ .Site.Params.umn.universityURL }}" class="text-muted hover:text-maroon transition-colors">umn.edu</a></li>
-          <li><a href="{{ .Site.Params.umn.collegeURL }}" class="text-muted hover:text-maroon transition-colors">{{ .Site.Params.umn.collegeName }}</a></li>
-        </ul>
-      </div>
     </div>
 
-    <div class="mt-12 pt-8 border-t border-line text-sm text-muted">
-      <p>© {{ now.Year }} {{ .Site.Params.shortTitle }}. {{ .Site.Params.tagline }}.</p>
-    </div>
-
-    {{/* ==========================================================
-         THE RSO BLOCK — LAST THING ON THE PAGE.
+    {{/* ==============================================================
+         THE LEGAL BLOCK — LAST THING ON THE PAGE.
 
          THE DISCLAIMER IS MANDATORY. The University requires this
-         exact sentence on a registered student organization’s public
-         platforms. Do not reword it, shrink it into the copyright
-         line, or delete it. It is stored once, in hugo.toml under
-         [params.umn] as rsoDisclaimer.
+         exact sentence on a registered student organization's public
+         platforms, and the footer is the only place it appears. Do
+         not reword it, fold it into the copyright line, or delete it.
+         It is stored once, in hugo.toml under [params.umn] as
+         rsoDisclaimer.
 
-         This block is also the correct home for the Block M RSO or
-         Goldy RSO mark, if the club gets one: the rule is that the
-         mark goes at the BOTTOM of the piece, on its own, separate
-         from the student group’s logo and name, and accompanied by
-         the disclaimer. That is exactly this layout — below a rule,
-         far from the club logo at the top, disclaimer alongside.
-
-         Don’t move the mark up into the site header, and don’t lock
-         it up next to the club logo. Both break the rule. The mark
+         This block is also the only correct home for the Block M RSO
+         or Goldy RSO mark: the rule is that the mark goes at the
+         BOTTOM of the piece, on its own, separate from the student
+         group's logo and name, with the disclaimer beside it. That is
+         exactly this layout — below a rule, away from the club mark
+         above, disclaimer alongside. Don't move it up and don't lock
+         it up with the club logo; both break the rule. The mark
          appears once params.umn.rsoMark is set; the disclaimer shows
-         either way. See README section 9.
-         ========================================================== */}}
-    <div class="mt-8 pt-6 border-t border-line">
+         either way. README section 9.
+
+         The rule above it is the one hairline left in the footer, and
+         it earns its place: it separates a required legal notice from
+         the club's own copy, which would otherwise read as one
+         paragraph. Everything here sits at the 15px floor (§3), not
+         below it — there is no fine print on this site.
+         ============================================================== */}}
+    <div class="mt-16 sm:mt-20 pt-8 border-t border-void-line">
       <div class="flex flex-col sm:flex-row sm:items-center gap-4">
-        {{ with .Site.Params.umn.rsoMark }}
+        {{ with $umn.rsoMark }}
         <img src="{{ strings.TrimPrefix "/" (.) | relURL }}"
              alt="University of Minnesota Registered Student Organization"
-             class="h-10 w-auto shrink-0" />
+             class="h-12 w-auto shrink-0" />
         {{ end }}
-        <p class="text-sm font-medium text-ink leading-relaxed max-w-3xl">
-          {{ .Site.Params.umn.rsoDisclaimer }}
+        <p class="text-[0.9375rem] leading-relaxed text-white/85 max-w-3xl">
+          {{ $umn.rsoDisclaimer }}
         </p>
       </div>
-      <p class="text-xs text-muted leading-relaxed max-w-3xl mt-3">
+      <p class="text-[0.9375rem] leading-relaxed text-void-muted max-w-3xl mt-3">
         The University of Minnesota is an equal opportunity educator and employer.
+      </p>
+      <p class="text-[0.9375rem] leading-relaxed text-void-muted mt-3">
+        &copy; {{ now.Year }} {{ $wordmark }}
       </p>
     </div>
   </div>

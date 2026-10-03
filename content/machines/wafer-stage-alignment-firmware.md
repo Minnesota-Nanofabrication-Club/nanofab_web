@@ -1,7 +1,8 @@
 ---
 title: "Wafer Stage Alignment Firmware"
-category: "Gen 1 Patterning"
-step: "Stage Control"
+band: "gen1"
+process: "patterning"
+step: "Alignment"
 weight: 30
 status: "building"
 summary: "Software that lines up each new layer with the last."

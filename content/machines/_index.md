@@ -1,6 +1,16 @@
 ---
 title: "The Fab"
-subhead: "Every machine we’re building, by generation."
-# What Google shows under this page's title (README 4.19).
-description: "Every machine the University of Minnesota Nanofabrication Club is building, from lithography and thin film deposition to doping and metrology."
+# This section's INDEX page is deliberately not rendered.
+#
+# It listed every machine grouped by band — exactly what the homepage
+# and the full-screen menu already do, so it was an intermediate page
+# you could only reach by accident. `render: never` removes it while
+# the individual machine pages under /machines/<name>/ keep building
+# normally.
+#
+# To bring it back: delete the _build block and restore
+# layouts/machines/list.html from git history.
+build:
+  render: never
+  list: never
 ---

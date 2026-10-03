@@ -1,6 +1,6 @@
 ---
 title: "Dopant Synthesis"
-category: "Gen 2 Doping"
+band: "cheme"
 step: "Dopant Chemistry"
 weight: 10
 status: "planned"
@@ -57,8 +57,8 @@ subsystems:
     description: "Four-point-probe sheet resistance after each furnace run, building the recipe table that connects mix, time, and temperature to a real result."
 ---
 
-Gen 1 dopes wafers with commercial spin-on dopant: reliable, and it
-comes at whatever concentration the vendor sells. Gen 2 makes its own.
+Gen One dopes wafers with commercial spin-on dopant: reliable, and it
+comes at whatever concentration the vendor sells. Gen Two makes its own.
 
 The point isn't cost. It's that **doping concentration is a design
 parameter**, and a device that needs a specific junction profile needs

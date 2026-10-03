@@ -39,47 +39,31 @@
 
 - name: Joseph Talghader
   role: Main Faculty Advisor — Electrical & Computer Engineering
-  bio: >-
-    Professor Talghader has been advising the club since its founding, 
-    helping us with our research and fabrication work. His research focuses on optical materials and devices, 
-    including micro- and nano-structured surfaces.
+  bio: "Optical materials and devices. Micro- and nano-structured surfaces."
   link: "https://cse.umn.edu/ece/joseph-talghader"
   photo: "/images/advisors/joseph-talghader.jpg"
 
-# ---- TODO: replace the two placeholders below with real people ----
-
 - name: Ognjen Ilic
   role: Faculty Advisor — Mechanical Engineering
-  bio: >-
-    Professor Ilic has been advising the club since its founding, his research focuses 
-    on heat transfer, nanoscale devices and materials and more information can be found on his website.
-    listed below
+  bio: "Heat transfer. Nanoscale devices and materials."
   link: "https://cse.umn.edu/me/ognjen-ilic"
   photo: "/images/advisors/Illic.jpg"
 
 - name: Jeong-Hyun Cho
   role: Faculty Advisor — Electrical & Computer Engineering
-  bio: >-
-    Professor Cho has been advising the club since its founding, his research focuses 
-    on semiconductor devices including 3D micro- and nano-structures, and more information
-     can be found on his website listed below.
+  bio: "Semiconductor devices. 3D nano-structures."
   link: "https://cse.umn.edu/ece/jeong-hyun-cho"
   photo: "/images/advisors/Cho.jpg"
 
 - name: Bethanie Stadler
   role: Faculty Advisor — Electrical & Computer Engineering
-  bio: >-
-    Professor Stadler has been advising the club since its founding, her research focuses 
-    on magnetic electronics and optical  materials, and more information
-     can be found on her website listed below.
+  bio: "Magnetic electronics. Optical materials."
   link: "https://cse.umn.edu/ece/bethanie-stadler"
   photo: "/images/advisors/stadler-web.jpg"
 
 - name: Scott Hareland
   role: Adjunct Professor — Electrical & Computer Engineering
-  bio: >-
-    Professor Hareland has been advising the club since its founding, he has developed skills on
-    semiconductor devices, applied physics, and medical systems. Extra information can be found on his LinkedIn profile listed below.
+  bio: "Semiconductor devices. Applied physics. Medical systems."
   link: "https://www.linkedin.com/in/scott-hareland-ph-d-410a903/"
   photo: "/images/advisors/Scott.jpeg"
   # His face sits left of centre in the original, so shift the framing

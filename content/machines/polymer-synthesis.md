@@ -1,6 +1,6 @@
 ---
 title: "Polymer Synthesis"
-category: "Gen 2 Patterning"
+band: "cheme"
 step: "Resist Chemistry"
 weight: 30
 status: "planned"
@@ -67,6 +67,6 @@ formulation, so tuning the recipe is a way to tune the process — and
 formulating resist is a genuinely interesting chemistry project in its
 own right.
 
-It's a Gen 2 item because Gen 1 needs to prove out the rest of the line
+It's a Gen Two item because Gen One needs to prove out the rest of the line
 on a known-good commercial resist first. You can't debug a new process
 and a new material at the same time.

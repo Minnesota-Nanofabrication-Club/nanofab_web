@@ -3,7 +3,9 @@
 <head>
   {{ partial "head.html" . }}
 </head>
-<body class="bg-paper text-ink font-body antialiased">
+{{/* The top bar is solid on every page now, so every page — the
+     homepage included — starts below it. */}}
+<body class="bg-paper text-ink font-body antialiased{{ if not .IsHome }} pt-20 sm:pt-24{{ end }}">
   <a href="#main" class="skip-link">Skip to content</a>
   {{ partial "header.html" . }}
   <main id="main">

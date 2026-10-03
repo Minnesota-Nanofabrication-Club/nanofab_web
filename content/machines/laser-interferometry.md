@@ -1,6 +1,7 @@
 ---
 title: "Laser Interferometry"
-category: "Gen 2 Wafer Inspection & Metrology"
+band: "gen2"
+process: "metrology"
 step: "Film & Surface Metrology"
 weight: 10
 status: "planned"

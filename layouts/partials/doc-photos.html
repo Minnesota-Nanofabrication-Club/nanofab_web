@@ -5,14 +5,13 @@
 
        documentationPhotos:
          - src: "/images/machines/microplotter.jpg"
-           caption: "Figure 1: What this shows."
-         - src: "/images/machines/microplotter2.jpg"
-           caption: "Figure 2: …"
+           caption: "What this shows."
 
      Images are never cropped: each one keeps its own shape and is
      scaled down to fit, so figures with labels or edges that matter
      show in full. One photo renders on its own; two or more sit in a
-     two-column grid. Each links to the full-size file.
+     two-column grid. Each image is itself the link to the full-size
+     file, so there is no "Full size" label beside it (§2).
 
      The section disappears when the list is absent. */}}
 {{/* Photos the Overview already shows are left out here. */}}
@@ -21,36 +20,26 @@
 {{ range .Params.documentationPhotos }}{{ if not (in $used (strings.TrimPrefix "/" .src)) }}{{ $photos = $photos | append . }}{{ end }}{{ end }}
 {{ with $photos }}
 {{ $single := eq (len .) 1 }}
-<section id="documentation-photos" class="border-b border-line scroll-mt-32">
-  <div class="mx-auto max-w-6xl px-6 py-14">
-    {{ partial "doc-section-head.html" (dict
-        "title" "Documentation photos"
-        "meta" (printf "%d %s" (len .) (cond $single "photo" "photos"))) }}
+<section>
+  <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
+    {{ partial "doc-section-head.html" (dict "id" "documentation-photos" "title" "Figures") }}
 
-    <div class="grid gap-8 items-start {{ if $single }}max-w-3xl{{ else }}sm:grid-cols-2{{ end }}">
+    <div class="grid gap-14 items-start {{ if $single }}max-w-3xl{{ else }}sm:grid-cols-2{{ end }}">
       {{ range $i, $p := . }}
       <figure>
         {{/* Fixed-height frame, image scaled to fit inside it
              (object-contain), so photos in the same row line up
              without any of them being cut off. */}}
         <a href="{{ strings.TrimPrefix "/" ($p.src) | relURL }}"
-           class="group flex items-center justify-center h-80 sm:h-96 rounded-xl border border-line bg-white p-3 group-hover:border-maroon hover:border-maroon transition-colors">
+           class="doc-frame h-80 sm:h-96 p-3">
           <img src="{{ strings.TrimPrefix "/" ($p.src) | relURL }}"
                alt="{{ $p.caption | default (printf "Documentation photo %d for the %s" (add $i 1) $.Title) }}"
                loading="lazy"
                class="max-w-full max-h-full object-contain" />
         </a>
-        <figcaption class="flex flex-wrap items-start justify-between gap-x-6 gap-y-2 mt-3">
-          {{ with $p.caption }}
-          <span class="flex items-start gap-3 text-sm text-muted max-w-xl">
-            <span class="h-px w-6 bg-gold shrink-0 mt-2.5"></span><span>{{ . }}</span>
-          </span>
-          {{ end }}
-          <a href="{{ strings.TrimPrefix "/" ($p.src) | relURL }}"
-             class="text-sm font-medium text-maroon hover:underline underline-offset-4 shrink-0">
-            Full size &#8599;
-          </a>
-        </figcaption>
+        {{ with $p.caption }}
+        <figcaption class="doc-cap mt-4">{{ partial "doc-caption-text" . }}</figcaption>
+        {{ end }}
       </figure>
       {{ end }}
     </div>

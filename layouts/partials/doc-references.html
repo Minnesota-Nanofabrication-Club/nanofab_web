@@ -1,4 +1,4 @@
-{{/* REFERENCE MATERIAL — datasheets, papers, drawings, build logs.
+{{/* REFERENCES — datasheets, papers, drawings, build logs.
 
      Rows come from the "references" tab of the documentation Sheet
      and are grouped by their "type" value. A row whose type isn't
@@ -6,10 +6,10 @@
 {{ $rows := . }}
 {{ $groups := slice
      (dict "key" "datasheet" "label" "Datasheets")
-     (dict "key" "paper"     "label" "Papers & background")
-     (dict "key" "cad"       "label" "CAD & drawings")
+     (dict "key" "paper"     "label" "Papers")
+     (dict "key" "cad"       "label" "Drawings")
      (dict "key" "buildlog"  "label" "Build logs")
-     (dict "key" "vendor"    "label" "Vendor pages") }}
+     (dict "key" "vendor"    "label" "Vendors") }}
 
 {{/* Anything with an unrecognised (or empty) type lands in "Other". */}}
 {{ $known := slice }}
@@ -17,20 +17,18 @@
 {{ $other := slice }}
 {{ range $rows }}{{ if not (in $known .type) }}{{ $other = $other | append . }}{{ end }}{{ end }}
 
-<section id="references" class="border-b border-line bg-surface/60 scroll-mt-32">
-  <div class="mx-auto max-w-6xl px-6 py-14">
-    {{ partial "doc-section-head.html" (dict
-        "title" "Reference material"
-        "meta" (printf "%d %s" (len $rows) (cond (eq (len $rows) 1) "link" "links"))) }}
+<section>
+  <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
+    {{ partial "doc-section-head.html" (dict "id" "references" "title" "References") }}
 
     {{ partial "doc-sample-note.html" $rows }}
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-8">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-16 gap-y-14">
       {{ range $groups }}
       {{ $items := where $rows "type" .key }}
       {{ if $items }}
       <div>
-        <h3 class="text-xs uppercase tracking-widest text-muted mb-3">{{ .label }}</h3>
+        <h3 class="font-display font-semibold text-[1.375rem] tracking-tight mb-4">{{ .label }}</h3>
         {{ partial "doc-reference-list.html" $items }}
       </div>
       {{ end }}
@@ -38,7 +36,7 @@
 
       {{ with $other }}
       <div>
-        <h3 class="text-xs uppercase tracking-widest text-muted mb-3">Other</h3>
+        <h3 class="font-display font-semibold text-[1.375rem] tracking-tight mb-4">Other</h3>
         {{ partial "doc-reference-list.html" . }}
       </div>
       {{ end }}

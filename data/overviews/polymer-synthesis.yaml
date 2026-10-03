@@ -40,9 +40,9 @@ sections:
       is filtered to sub-micron, because any speck left in the bottle
       prints as a defect.
 
-  - title: "Why it's Gen 2"
+  - title: "Why it's Gen Two"
     text: |
-      Gen 1 needs to prove out the rest of the line on a known-good
+      Gen One needs to prove out the rest of the line on a known-good
       commercial resist first. You can't debug a new process and a new
       material at the same time.
 

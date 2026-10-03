@@ -3,11 +3,12 @@
 # ------------------------------------------------------------------
 # PARKED. Hidden from the site rather than deleted. To bring it
 # back: change the line below to `draft: false`. It already has a
-# valid category, so it will slot straight into Gen 1 Patterning.
+# valid category, so it will slot straight into Gen One Patterning.
 # ------------------------------------------------------------------
 draft: true
 title: "Wet Etch"
-category: "Gen 1 Patterning"
+band: "gen1"
+process: "patterning"
 step: "Wet Etch"
 weight: 40
 status: "building"
@@ -71,7 +72,7 @@ material dissolves while the photoresist protects everything else.
 Its limitation is that the etch spreads **sideways as fast as it goes
 down**, so it undercuts the resist and rounds off small features. That
 puts a floor on how fine a pattern it can transfer — which is exactly
-why Gen 2 moves to the reactive ion etcher instead.
+why Gen Two moves to the reactive ion etcher instead.
 
-For Gen 1, though, it's the honest choice: no vacuum, no plasma, no RF
+For Gen One, though, it's the honest choice: no vacuum, no plasma, no RF
 supply, and it works today.

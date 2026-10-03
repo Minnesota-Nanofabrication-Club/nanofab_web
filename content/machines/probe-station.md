@@ -1,6 +1,7 @@
 ---
 title: "Probe Station"
-category: "Gen 1 Wafer Inspection & Metrology"
+band: "gen1"
+process: "metrology"
 step: "Electrical Test"
 weight: 20
 status: "building"

@@ -1,6 +1,7 @@
 ---
 title: "Cleanroom Microenvironment"
-category: "Facility"
+band: "gen2"
+process: "facility"
 step: "Contamination Control"
 weight: 20
 status: "building"

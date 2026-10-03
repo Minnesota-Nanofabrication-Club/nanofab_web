@@ -1,33 +1,32 @@
 # ===================================================================
-# SPONSORS — the "Partners & sponsors" section on the homepage.
+# PARTNERS & SPONSORS — the section of that name on the homepage.
 #
-# TO ADD a sponsor:     copy a whole "- name:" block and edit it.
-# TO REMOVE a sponsor:  delete their block, OR put a # in front of
-#                       each of its lines to hide them temporarily
-#                       (deleting the #s puts them straight back).
+# These are engineering partners, not just suppliers: their engineers
+# give design feedback and iterate with us, and they sponsor
+# components. Write each "description" to say what they actually do
+# with us, not just what they sell.
+#
+# TO ADD a partner:     copy a whole "- name:" block and edit it.
+# TO REMOVE one:        delete their block, or comment out its lines.
 #
 # "logo" is optional:
-#   logo: ""                              -> shows the sponsor’s name as text
-#   logo: "/images/sponsors/name.png"     -> shows their logo instead
+#   logo: ""                            -> shows the name as text
+#   logo: "/images/sponsors/name.png"   -> shows their logo
 #
-# "url" is optional — the company's website. It adds a "Visit website"
-# link at the bottom of their card and makes the logo clickable.
-#   linkLabel: "Get in touch"   -> different text for that link
+# "url" is optional — their website. The template renders it as the
+# bare domain (idealvac.com) and makes the logo clickable.
+#   linkLabel: "Get in touch"   -> overrides that link's text
 #
-# Logo files go in static/images/sponsors/, trimmed tight with no blank
-# border. The site shows them up to 80 px tall. See README section 4.11.
-#
-# The dashed "interested in supporting us?" card at the end is built
-# into the template, not listed here — its wording lives in
-# layouts/partials/sponsors.html.
+# Logo files go in static/images/sponsors/, trimmed tight with no
+# blank border. They render up to 56 px tall.
 # ===================================================================
 
 - name: Ideal Vac
-  description: Vacuum systems and components supporting our fabrication work.
+  description: Vacuum hardware for the sputterers and the etcher. Their engineers review our chamber designs.
   logo: "/images/sponsors/ideal-vac.png"
   url: "https://www.idealvac.com/"
 
 - name: Basler
-  description: Machine vision cameras used for imaging and inspection in the lab.
+  description: Machine vision cameras. Their engineers advise our metrology and alignment imaging.
   logo: "/images/sponsors/basler-logo.png"
   url: "https://www.baslerweb.com/"

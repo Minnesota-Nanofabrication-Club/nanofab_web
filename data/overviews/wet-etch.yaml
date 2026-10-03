@@ -28,7 +28,7 @@ sections:
       The limitation is that the etch spreads **sideways as fast as it
       goes down**, so it undercuts the resist and rounds off small
       features. That puts a floor on how fine a pattern it can transfer,
-      which is why Gen 2 moves to the reactive ion etcher.
+      which is why Gen Two moves to the reactive ion etcher.
 
   - title: "Temperature is the whole game"
     text: |

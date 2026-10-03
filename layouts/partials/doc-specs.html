@@ -1,34 +1,38 @@
-{{/* TARGET SPECS, in the page header.
+{{/* TARGET NUMBERS, in the page header.
 
      Prefers the "specs" tab of the documentation Sheet, which gives
      a target AND where we actually are. Falls back to the older
      label/value list in the machine's own file, so a machine that
-     isn't in the Sheet yet still shows something. */}}
+     isn't in the Sheet yet still shows something.
+
+     A row of readings divided by hairlines, not a card each: these
+     are instrument values, so they get mono and a grid (.doc-specs in
+     static/css/doc.css). The "Target / current" caption above the row
+     is gone — "now 4 µm" under a target says the same thing (§2). */}}
 {{ $sheet := where (default (slice) hugo.Data.sheets.specs) "machine" .File.ContentBaseName }}
 
 {{ if $sheet }}
-<dl class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl">
+<dl class="doc-specs mt-20">
   {{ range $sheet }}
-  <div class="bg-surface border border-line rounded-lg px-5 py-4">
-    <dt class="text-xs uppercase tracking-wider text-muted">{{ .label }}</dt>
-    <dd class="font-mono text-[0.9375rem] mt-2 text-ink leading-snug">{{ .target }}</dd>
+  <div>
+    <dt>{{ .label }}</dt>
+    <dd class="doc-specs-target">{{ .target }}</dd>
     {{ with .current }}
-    <dd class="font-mono text-xs mt-1.5 text-faint leading-snug">now: {{ . }}</dd>
+    <dd class="doc-specs-now">now {{ . }}</dd>
     {{ end }}
   </div>
   {{ end }}
 </dl>
-<p class="font-mono text-xs text-faint mt-3">target &middot; current</p>
 
 {{/* A machine whose Overview has a row of key numbers shows those
      instead, so the same values don't appear twice. */}}
 {{ else if not (index (default dict (index (default dict hugo.Data.overviews) .File.ContentBaseName)) "highlights") }}
 {{ with .Params.specs }}
-<dl class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-4xl">
+<dl class="doc-specs mt-20">
   {{ range . }}
-  <div class="bg-surface border border-line rounded-lg px-5 py-4">
-    <dt class="text-xs uppercase tracking-wider text-muted">{{ .label }}</dt>
-    <dd class="font-mono text-[0.875rem] leading-snug mt-1.5 text-ink">{{ .value }}</dd>
+  <div>
+    <dt>{{ .label }}</dt>
+    <dd class="doc-specs-target">{{ .value }}</dd>
   </div>
   {{ end }}
 </dl>

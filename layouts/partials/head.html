@@ -89,7 +89,6 @@
 <script type="application/ld+json">{{ $org | jsonify | safeJS }}</script>
 {{ else if and (eq .Section "machines") (ne .Kind "404") }}
   {{ $crumbs := slice (dict "@type" "ListItem" "position" 1 "name" "Home" "item" $site.Home.Permalink) }}
-  {{ with $site.GetPage "/machines" }}{{ $crumbs = $crumbs | append (dict "@type" "ListItem" "position" 2 "name" .Title "item" .Permalink) }}{{ end }}
   {{ if .IsPage }}{{ $crumbs = $crumbs | append (dict "@type" "ListItem" "position" 3 "name" .Title "item" .Permalink) }}{{ end }}
 <script type="application/ld+json">{{ dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $crumbs | jsonify | safeJS }}</script>
 {{ end }}
@@ -149,14 +148,30 @@
             green: '{{ .Site.Params.colors.signalGreen }}',
             amber: '{{ .Site.Params.colors.signalAmber }}',
           },
-          blueprint: '{{ .Site.Params.colors.blueprint }}',
-          violet: {
-            DEFAULT: '{{ .Site.Params.colors.violet }}',
-            soft: '{{ .Site.Params.colors.violetSoft }}',
+          {{/* violet and blueprint are retired (design-language §4) and
+               nothing references them. Dropped from the config so the
+               classes cannot come back by accident; the hex values are
+               still in hugo.toml if they are ever wanted again. */}}
+          void: {
+            DEFAULT: '{{ .Site.Params.colors.void }}',
+            soft: '{{ .Site.Params.colors.voidSoft }}',
+            muted: '{{ .Site.Params.colors.voidMuted }}',
+            line: '{{ .Site.Params.colors.voidLine }}',
+            edge: '{{ .Site.Params.colors.voidEdge }}',
           },
         },
+        letterSpacing: {
+          /* Wide-tracked micro-caps are the site's structural voice.
+             0.18em is the point where a 11px mono label stops reading
+             as text and starts reading as an instrument marking. */
+          marking: '0.18em',
+          wide: '0.08em',
+        },
         fontFamily: {
-          display: ['Fraunces', 'Georgia', 'serif'],
+          /* "Ampersand" is declared in system.css and covers U+0026
+             only — see the note there. It must come first so it wins
+             for that one glyph. */
+          display: ['Ampersand', 'Fraunces', 'Georgia', 'serif'],
           body: ['"Libre Franklin"', 'system-ui', 'sans-serif'],
           mono: ['"Courier Prime"', 'ui-monospace', 'monospace'],
         },
@@ -165,4 +180,23 @@
   };
 </script>
 
-<link rel="stylesheet" href="{{ strings.TrimPrefix "/" ("css/styles.css") | relURL }}" />
+<!-- ============================================================
+     STYLESHEETS
+
+     One file per area of the site, loaded in this order.
+
+     styles.css is the PRE-REDESIGN sheet and must come FIRST. At
+     equal specificity the last sheet wins, so loading the legacy
+     rules first is what lets the new per-area sheets override them.
+     (This was the other way round at first, which quietly handed
+     every tie to the old stylesheet.)
+
+     system.css then establishes the tokens and primitives, and the
+     area sheets build on top.
+
+     Which file owns what is set out in .claude/design-language.md §10.
+     Keep edits inside your area's file.
+============================================================ -->
+{{ range slice "styles" "system" "shell" "hero" "bands" "people" "doc" "footer" }}
+<link rel="stylesheet" href="{{ (printf "css/%s.css" .) | relURL }}" />
+{{ end }}

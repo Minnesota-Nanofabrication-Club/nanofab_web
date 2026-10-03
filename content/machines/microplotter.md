@@ -1,7 +1,8 @@
 ---
 title: "Inkjet Microplotter"
-category: "Application"
-step: "Direct Write"
+band: "gen2"
+process: "application"
+step: "Application"
 weight: 10
 status: "building"
 summary: "Prints material onto the wafer one droplet at a time."

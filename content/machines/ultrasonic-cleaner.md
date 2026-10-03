@@ -9,7 +9,8 @@
 #   status    one of: operational | building | planned
 # --------------------------------------------------------------------
 title: "Ultrasonic Cleaner"
-category: "Gen 2 Patterning"
+band: "gen2"
+process: "patterning"
 step: "Clean"
 weight: 20
 status: "building"

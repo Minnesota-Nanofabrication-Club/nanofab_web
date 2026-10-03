@@ -1,58 +1,99 @@
-<section id="sponsors" class="mx-auto max-w-6xl px-6 py-20 border-b border-line scroll-mt-24">
+{{/* ==================================================================
+     PARTNERS & SPONSORS — the last section on the paper ground.
+
+     THE RELATIONSHIP, STATED CORRECTLY. These companies are not a
+     supply catalogue. Their engineers review our designs and iterate
+     with us, and they sponsor components. The old framing ("Who
+     supplies the line", a "SUPPLIES" eyebrow on every row) described
+     a purchase order and was wrong; it has been replaced by the two
+     fragments in the lead below. Keep that framing if you rewrite
+     this section.
+
+     A ledger, not a logo wall: the hero already runs the rolling
+     ticker, and two cards in a three-column grid would read as an
+     empty grid. One full-width row per sponsor — mark, name, what we
+     work on with them, link out. Two rows read as deliberate because
+     each one is full width.
+
+     Cut (design-language §2): the lead paragraph ("Two companies
+     provide hardware we could not build…"), the "SUPPLIES" eyebrow on
+     every row, the 01/02 index numerals, and the three-sentence
+     "Open" invitation, which is now one line.
+
+     Same left margin and the same py-28 / py-40 rhythm as every other
+     section, on the same paper ground, so the scroll stays continuous
+     (§6). No panel, no tint, no box.
+
+     Content comes from data/sponsors.yaml. Adding a sponsor means
+     editing that file and nothing else.
+     CSS: static/css/footer.css (the SPONSORS block at the end).
+     ================================================================== */}}
+
+{{/* FULL-BLEED SECTION, measure on the inner div.
+
+     The hero is sticky and sits behind the page (see hero.css), so any
+     section after it must paint its own background edge to edge. This
+     section used to carry mx-auto/max-w-6xl itself, which left the
+     photograph showing down both margins. Keep bg-paper on the
+     <section> and the measure on the div inside it. */}}
+<section id="sponsors" class="bg-paper">
+  <div class="mx-auto max-w-6xl px-6 py-28 sm:py-40">
+
+  {{/* The lead is one of the rare cases §2 allows: the heading names
+       the people, and nothing else on the page says what we actually
+       do with them. Two fragments, no sentence. */}}
   {{ partial "section-head.html" (dict
-      "title" "Partners & sponsors"
-      "lead" "Companies that supply our hardware.") }}
+      "title" "Partners & Sponsors"
+      "lead"  "Experienced industry engineers give us design feedback and sponsor the parts.") }}
 
-  <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+  <ul class="mt-14 sm:mt-20 border-t border-line">
     {{ range hugo.Data.sponsors }}
-    {{ $sponsor := . }}
-    <div class="border border-line bg-surface rounded-lg p-6 flex flex-col">
-      {{/* The logo IS the name — no separate text heading under it.
-           The name is still used as the image's alt text for screen
-           readers, and shows as text only if there's no logo file. */}}
-      <div class="h-24 flex items-center mb-5">
-        {{ with .url }}<a href="{{ . }}" target="_blank" rel="noopener" class="block" aria-label="{{ $sponsor.name }} website">{{ end }}
-        {{ if .logo }}
-        {{/* Capped by height AND width, so a tall logo and a wide logo
-             come out looking the same size: tall ones stop at the
-             height limit, wide ones at the width limit. Logo files
-             should be trimmed to the logo with no blank border
-             (README 4.11). */}}
-        <img src="{{ strings.TrimPrefix "/" (.logo) | relURL }}" alt="{{ .name }}" loading="lazy" class="max-h-20 max-w-[11.5rem] w-auto h-auto object-contain object-left" />
-        {{ else }}
-        <span class="font-display font-semibold text-2xl">{{ .name }}</span>
-        {{ end }}
-        {{ if .url }}</a>{{ end }}
-      </div>
-      <p class="text-sm text-muted leading-relaxed flex-1">{{ .description }}</p>
-      {{/* Link to the company's site, styled like the "Get in touch"
-           link on the dashed card so the row lines up. Text can be
-           changed per sponsor with linkLabel in data/sponsors.yaml. */}}
-      {{ with .url }}
-      <a href="{{ . }}" target="_blank" rel="noopener"
-         class="inline-flex items-center gap-2 text-sm font-medium text-maroon hover:underline underline-offset-4 mt-5 self-start">
-        {{ $sponsor.linkLabel | default "Visit website" }} &rarr;
-      </a>
-      {{ end }}
-    </div>
-    {{ end }}
+    {{/* The bare domain reads as a reference rather than a call to
+         action — "idealvac.com" instead of "Visit website". A sponsor
+         can override it with linkLabel in data/sponsors.yaml. */}}
+    {{ $host := "" }}
+    {{ with .url }}{{ $host = strings.TrimPrefix "www." (urls.Parse .).Host }}{{ end }}
+    {{ $label := .linkLabel | default $host }}
 
-    {{/* HIDDEN: the dashed "Want to support the club? Get in touch →"
-         card that used to sit after the sponsors. It emailed the club
-         (contactEmail in hugo.toml). To bring it back, delete the two
-         marker lines around it: the line that is only an opening
-         comment marker, and the line that is only a closing one.
-         See README 4.11. */}}
-    {{/*
-    <div class="border border-dashed border-line rounded-lg p-6 flex flex-col justify-between bg-surface/40">
-      <p class="text-sm text-muted leading-relaxed">
-        Want to support the club?
-      </p>
-      <a href="mailto:{{ .Site.Params.contactEmail }}"
-         class="inline-flex items-center gap-2 text-sm font-medium text-maroon hover:underline underline-offset-4 mt-5">
-        Get in touch →
-      </a>
-    </div>
-    */}}
+    {{/* The row hairlines separate two sponsors' copy that would
+         otherwise run together — the one kind of rule §2 allows. */}}
+    <li class="sponsor-row border-b border-line">
+      <div class="py-10 sm:py-12 grid gap-6 sm:gap-8 sm:grid-cols-[19rem_minmax(0,1fr)] lg:grid-cols-[21rem_minmax(0,1fr)_auto] sm:items-start">
+
+        {{/* The plate: a common white field so a wide wordmark and a
+             tall mark come out the same optical size. Square corners,
+             one hairline, no shadow. */}}
+        {{/* No plate and no box. basler-logo.png is an opaque white
+             JPEG-style PNG while ideal-vac.png is transparent, so one
+             logo used to float and the other sat in a white rectangle.
+             multiply blends white into the paper ground, which lands
+             both of them on the page the same way. */}}
+        <div class="sponsor-mark">
+          {{ if .logo }}
+          <img src="{{ strings.TrimPrefix "/" (.logo) | relURL }}"
+               alt="{{ .name }}" loading="lazy" decoding="async" />
+          {{ else }}
+          <span class="font-display font-semibold text-[1.75rem] tracking-tight">{{ .name }}</span>
+          {{ end }}
+        </div>
+
+        <div>
+          <p class="text-[1.1875rem] leading-relaxed max-w-xl">{{ .description }}</p>
+        </div>
+
+        {{ with .url }}
+        <a href="{{ . }}" rel="noopener"
+           class="sponsor-out text-[1.0625rem] inline-flex items-baseline gap-2 self-start lg:pt-2 whitespace-nowrap">
+          <span>{{ $label }}</span>
+          <span class="sponsor-arrow" aria-hidden="true">&#8599;</span>
+        </a>
+        {{ end }}
+      </div>
+    </li>
+    {{ end }}
+  </ul>
+
+  {{/* The invitation, in one line. Phrased as partnering, not
+       supplying — see the note at the top of this file. */}}
   </div>
 </section>

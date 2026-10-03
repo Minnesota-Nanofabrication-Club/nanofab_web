@@ -10,6 +10,11 @@ title = "Nanofabrication Club at the University of Minnesota"
 # empty /tags/ and /categories/ pages off.
 disableKinds = ["taxonomy", "term"]
 
+# The homepage is also rendered as JSON, which produces /index.json —
+# the search index. The template is layouts/index.json.
+[outputs]
+  home = ["HTML", "JSON"]
+
 # ------------------------------------------------------------------
 # Site-wide identity: things that stay the same on every page.
 # EDIT HERE to change contact links across the entire site at once.
@@ -21,18 +26,25 @@ disableKinds = ["taxonomy", "term"]
   # ---------------- SEO (README section 4.19) ----------------
   # What Google shows under the homepage's title. Aim for 120–155
   # characters; anything longer gets cut off with "…".
-  description = "Student club at the University of Minnesota building a working nanofabrication lab, machine by machine: lithography, thin films, doping, and metrology."
+  description = "A student club at the University of Minnesota building a working nanofabrication lab."
   # Picture shown when a page is shared on LinkedIn, Discord, iMessage,
   # etc. Machine pages use their own Overview diagram instead.
   # Best at about 1200 x 630 or larger.
   ogImage = "/images/lab/nf-lab-web.jpg"
+
+  # The photograph that fills the homepage. This is meant to be
+  # replaced as the lab changes — drop a new file in
+  # static/images/lab/ and point this at it. Nothing else to edit.
+  # Shoot it wide and a little dark; light type sits on the left.
+  heroImage = "/images/lab/nf-lab-web.jpg"
   # Google Search Console verification code: just the code inside
   # content="…" from the tag Google gives you. Leave "" until then.
   googleSiteVerification = ""
   discordURL = "https://discord.gg/G9T6bk84w"
+  githubURL = "https://github.com/minnesota-nanofabrication-club"
   linkedinURL =  "https://www.linkedin.com/company/minnesota-nanofabrication-club/"
   instagramURL = "https://www.instagram.com/minnesota_nanofab_club/?hl=en"
-  contactEmail = "nanoclub@umn.edu"
+  contactEmail = "jin00404@umn.edu"
   docsURL = "https://minnesota-nanofabrication-club.github.io/club_website/"
 
   # ----------------------------------------------------------------
@@ -124,6 +136,20 @@ disableKinds = ["taxonomy", "term"]
     signalAmber = "#9C5F0A"
     blueprint = "#1F4E8C"
 
+    # ---------------- The dark ground ----------------
+    # Used by the hero and the full-screen menu only. The rest of the
+    # site stays on paper. The contrast between an instrument-dark
+    # hero and warm paper below is deliberate — it's what keeps the
+    # "futuristic" from turning into another dark-mode SaaS page.
+    #
+    # voidLine/voidEdge are 8-digit hex (last two digits = alpha), so
+    # hairlines sit *on* the photograph without punching through it.
+    void = "#0A0C0D"
+    voidSoft = "#15181A"
+    voidMuted = "#8E9794"
+    voidLine = "#FFFFFF1A"
+    voidEdge = "#FFFFFF33"
+
     # Sampled straight out of the club wafer logo. This is the
     # secondary accent: maroon and gold tie the site to the
     # University, violet ties it to our own mark. Used sparingly —
@@ -133,29 +159,6 @@ disableKinds = ["taxonomy", "term"]
     violet = "#42245F"
     violetSoft = "#F1ECF5"
 
-# ------------------------------------------------------------------
-# The top navigation. To add, remove, or reorder a nav link, edit a
-# block here — you don't need to touch any HTML.
-# ------------------------------------------------------------------
-[[menu.main]]
-  name = "Documentation"
-  url = "/machines/"
-  weight = 20
-
-[[menu.main]]
-  name = "Advisors"
-  url = "/#backing"
-  weight = 30
-
-[[menu.main]]
-  name = "Team"
-  url = "/#officers"
-  weight = 35
-
-[[menu.main]]
-  name = "Sponsors"
-  url = "/#sponsors"
-  weight = 40
 
 [markup.goldmark.renderer]
   unsafe = true

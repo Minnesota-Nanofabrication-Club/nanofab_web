@@ -175,3 +175,26 @@
     min-height: 44px;
   }
 }
+
+
+/* ---------------------------------------------------------------------
+   MACHINE ROLES ARE LINKS
+
+   A role that names a machine points at that machine's documentation.
+   Underlined rather than coloured, so the roles column stays quiet and
+   the link is still obvious.
+   --------------------------------------------------------------------- */
+.person-machine {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.2em;
+  transition: color 240ms cubic-bezier(0.22, 0.61, 0.36, 1),
+              text-decoration-color 240ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.person-machine:hover,
+.person-machine:focus-visible {
+  color: var(--maroon);
+  text-decoration-color: var(--maroon);
+}

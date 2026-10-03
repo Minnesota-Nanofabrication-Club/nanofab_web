@@ -67,11 +67,15 @@
      "Reactive-Ion Etcher" and "reactive ion  etcher" all collapse to
      the same key. */}}
 {{ $machineBand := dict }}
+{{ $machineURL  := dict }}
 {{ range where site.RegularPages "Section" "machines" }}
   {{ $m := . }}
-  {{ with $m.Params.band }}
-    {{ $key := $m.Title | lower | replaceRE "[^a-z0-9]+" " " | strings.TrimSpace }}
-    {{ if $key }}
+  {{ $key := $m.Title | lower | replaceRE "[^a-z0-9]+" " " | strings.TrimSpace }}
+  {{ if $key }}
+    {{/* Every machine is indexed by URL, so a role that names one can
+         link straight to its documentation. */}}
+    {{ $machineURL = merge $machineURL (dict $key $m.RelPermalink) }}
+    {{ with $m.Params.band }}
       {{ $machineBand = merge $machineBand (dict $key (lower . | strings.TrimSpace)) }}
     {{ end }}
   {{ end }}
@@ -261,7 +265,15 @@
             {{ with $p.roles }}
             <ul class="mt-2 list-none p-0">
               {{ range $i, $role := . }}
-              <li class="text-[1.0625rem] leading-snug {{ if eq $i 0 }}text-ink{{ else }}text-muted mt-1{{ end }}">{{ $role }}</li>
+              {{/* Resolve the role against the machine index, through the
+                   same normaliser and alias map used for grouping, so a
+                   machine role links to its documentation. */}}
+              {{ $rk := $role | lower | replaceRE "[^a-z0-9]+" " " | strings.TrimSpace }}
+              {{ with index $aliases $rk }}{{ $rk = . }}{{ end }}
+              {{ $href := index $machineURL $rk }}
+              <li class="text-[1.0625rem] leading-snug {{ if eq $i 0 }}text-ink{{ else }}text-muted mt-1{{ end }}">
+                {{ if $href }}<a href="{{ $href }}" class="person-machine">{{ $role }}</a>{{ else }}{{ $role }}{{ end }}
+              </li>
               {{ end }}
             </ul>
             {{ end }}

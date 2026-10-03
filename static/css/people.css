@@ -160,3 +160,18 @@
   text-decoration: underline;
   text-underline-offset: 0.25em;
 }
+
+
+/* ---------------------------------------------------------------------
+   TOUCH TARGETS
+
+   The advisor links sat at 26px on a phone. Padding brings the tap box
+   up without changing the type or the spacing of the entry.
+   --------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .advisor-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}

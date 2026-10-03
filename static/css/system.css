@@ -127,6 +127,21 @@ html:has(.nav-open-state:checked) {
 }
 
 /* ---------------------------------------------------------------------
+   NO SIDEWAYS SCROLL
+
+   A backstop, not a licence to overflow. Everything is laid out to fit
+   from 345px up; below that a few pixels still escape and this clips
+   them rather than letting the page rock sideways.
+
+   `clip`, NOT `hidden`. overflow:hidden turns the element into a
+   scroll container, which silently breaks position:sticky — and the
+   hero's scroll reveal depends on it. overflow:clip does not.
+   --------------------------------------------------------------------- */
+body {
+  overflow-x: clip;
+}
+
+/* ---------------------------------------------------------------------
    SECTION DIVIDERS
 
    A hairline between consecutive top-level sections, so the eye can

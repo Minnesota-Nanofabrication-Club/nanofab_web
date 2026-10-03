@@ -66,6 +66,12 @@
 }
 
 .topbar-mark {
+  /* Continuous, not stepped. At 390px the old fixed 1.4rem made the
+     wordmark ~300px wide; with the logo, the gutters and the menu mark
+     that exceeded the viewport, and because the text is nowrap it ran
+     underneath the menu instead of shrinking. The vw term keeps it
+     inside the space actually available at every width. */
+  font-size: clamp(0.95rem, 4.3vw, 2.15rem);
   letter-spacing: -0.025em;
   transition: opacity var(--t) var(--ease);
 }
@@ -293,4 +299,80 @@ html:has(.nav-open-state:checked) #topbar {
 
 @media (max-width: 640px) {
   .search-hit-crumb { display: none; }
+}
+
+
+/* ---------------------------------------------------------------------
+   VERY NARROW SCREENS (iPhone SE and similar, ~320px)
+
+   At 320px the brand, the gutters and the menu mark together came to
+   about 334px, so the bar pushed the document 5px wider than the
+   viewport and the overlay's close control hung off the right edge.
+
+   The wordmark cannot shrink further — it is already at the 15px floor
+   (§3) — so the space comes from the furniture around it instead:
+   tighter gutters, a smaller logo, a narrower mark. The name stays
+   readable, which is the point of having it there.
+   --------------------------------------------------------------------- */
+@media (max-width: 400px) {
+  #topbar > div,
+  .nav-overlay > div:first-child {
+    padding-left: 0.875rem;
+    padding-right: 0.875rem;
+    gap: 0.5rem;
+  }
+
+  .topbar-mark {
+    gap: 0.5rem;
+    min-width: 0;        /* never force the flex row wider */
+  }
+
+  .topbar-logo { height: 1.2em; }
+
+  .topbar-burger {
+    width: 2.25rem;
+    gap: 7px;            /* keep the stack even — see the note above */
+  }
+
+  .topbar-burger > span { height: 3px; }
+}
+
+/* Below ~340px even that is not enough: the wordmark is nowrap and
+   already at the 15px floor, so it cannot give up any more width. The
+   logo goes instead of the name — the name is what identifies the
+   club, and a 19px mark next to 15px type was doing little anyway. */
+@media (max-width: 345px) {
+  .topbar-logo { display: none; }
+}
+
+
+/* Same reasoning as bands.css: comfortable taps on a phone, unchanged
+   density on a pointer device. */
+@media (max-width: 640px) {
+  /* Scoped to .nav-overlay to out-specify Tailwind's py-1.5 on the
+     markup: the CDN injects its stylesheet after ours, so at equal
+     specificity the utility wins on order. */
+  .nav-overlay .nav-leaf {
+    padding-top: 0.6875rem;   /* 17px line + 22px padding = 44px */
+    padding-bottom: 0.6875rem;
+  }
+
+  /* The marks are 34px glyphs; the tappable box around them is what
+     needs to be 44, not the artwork. */
+  .nav-overlay .nav-social {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .nav-overlay .nav-band-head {
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+  }
+
+  /* The brand is a link too, and at 20px tall it was the smallest
+     target in the bar. */
+  .topbar-mark {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
 }

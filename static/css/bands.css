@@ -70,3 +70,19 @@
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
+
+
+/* ---------------------------------------------------------------------
+   TOUCH TARGETS
+
+   On a phone each machine link is a tap target, and at desktop density
+   they came out ~35px tall — over the 24px WCAG minimum but under the
+   44px both Apple and Google ask for. The extra height is padding, so
+   the text rhythm is unchanged; desktop keeps its tighter spacing.
+   --------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .band-leaf {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}

@@ -134,7 +134,10 @@
   max-width: 100%;
   text-align: left;
   font-weight: 700;
-  font-size: clamp(3rem, 10.5vw, 10rem);
+  /* The floor, not the vw term, is what governs on a phone: at 390px
+     10.5vw is only 41px, so 3.9rem takes over and the line fills the
+     frame instead of sitting small at the bottom of it. */
+  font-size: clamp(3.9rem, 10.5vw, 10rem);
   line-height: 0.9;
   letter-spacing: -0.035em;
   color: #fff;

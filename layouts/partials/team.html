@@ -164,7 +164,10 @@
 {{ range $order }}
   {{ $p    := index $roster . }}
   {{ $slug := "" }}
-  {{ range $p.roles }}
+  {{/* Band placement looks at roles first, then `machines:`. */}}
+  {{ $claims := $p.roles }}
+  {{ with $p.machines }}{{ $claims = append . $p.roles }}{{ end }}
+  {{ range $claims }}
     {{ if not $slug }}
       {{ $rk := . | lower | replaceRE "[^a-z0-9]+" " " | strings.TrimSpace }}
       {{ with index $aliases $rk }}{{ $rk = . }}{{ end }}
@@ -275,7 +278,35 @@
                 {{ if $href }}<a href="{{ $href }}" class="person-machine">{{ $role }}</a>{{ else }}{{ $role }}{{ end }}
               </li>
               {{ end }}
+
+              {{/* Machines this person works on but does not lead. The
+                   lower-case "on" is what separates the two: a role is
+                   a title, this is an attachment to someone else's
+                   machine. */}}
+              {{ range $p.machines }}
+              {{ $mk := . | lower | replaceRE "[^a-z0-9]+" " " | strings.TrimSpace }}
+              {{ with index $aliases $mk }}{{ $mk = . }}{{ end }}
+              {{ $mh := index $machineURL $mk }}
+              <li class="text-[1.0625rem] leading-snug text-muted mt-1">
+                <span class="person-on">on</span>
+                {{ if $mh }}<a href="{{ $mh }}" class="person-machine">{{ . }}</a>{{ else }}{{ . }}{{ end }}
+              </li>
+              {{ end }}
             </ul>
+            {{ else }}
+            {{/* Someone with no role but a machine attachment. */}}
+            {{ with $p.machines }}
+            <ul class="mt-2 list-none p-0">
+              {{ range . }}
+              {{ $mk := . | lower | replaceRE "[^a-z0-9]+" " " | strings.TrimSpace }}
+              {{ $mh := index $machineURL $mk }}
+              <li class="text-[1.0625rem] leading-snug text-muted">
+                <span class="person-on">on</span>
+                {{ if $mh }}<a href="{{ $mh }}" class="person-machine">{{ . }}</a>{{ else }}{{ . }}{{ end }}
+              </li>
+              {{ end }}
+            </ul>
+            {{ end }}
             {{ end }}
           </li>
         {{ end }}

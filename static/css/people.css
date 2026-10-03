@@ -198,3 +198,10 @@
   color: var(--maroon);
   text-decoration-color: var(--maroon);
 }
+
+/* "on <machine>" — the qualifier is held back so the machine name
+   stays the thing you read. */
+.person-on {
+  color: var(--line);
+  padding-right: 0.15rem;
+}

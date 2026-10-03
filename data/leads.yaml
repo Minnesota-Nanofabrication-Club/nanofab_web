@@ -74,16 +74,16 @@
   photo: "/images/officers/Avi Raghu.jpeg"
 
 - name: Henry Goldberg
-  role:
-    - Laser Interferometry
+  role: "Laser Interferometry"
+  machines:
     - Maskless Litho Stepper
   major: ""
   email: ""
   photo: "/images/officers/henry-goldberg-web.jpg"
 
 - name: Harshit Mehendiratta
-  role:
-    - Computer Vision Metrology
+  role: "Computer Vision Metrology"
+  machines:
     - Maskless Litho Stepper
   major: ""
   email: ""
@@ -102,8 +102,8 @@
   photo: "images/officers/issac-web.jpg"
 
 - name: Misha Mickevicius
-  role:
-    - Alignment Firmware
+  role: "Alignment Firmware"
+  machines:
     - Maskless Litho Stepper
   major: ""
   email: ""

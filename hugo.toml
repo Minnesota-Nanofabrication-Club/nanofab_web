@@ -2,8 +2,34 @@
 # keeping it right here means local builds, the sitemap, and link
 # previews all match the real site. Keep the trailing slash.
 baseURL = "https://minnesota-nanofabrication-club.github.io/nanofab_web/"
-locale = "en-us"
-title = "Nanofabrication Club at the University of Minnesota"
+locale = "en-US"
+
+# THE BRAND NAME. This is one string with three jobs: og:site_name
+# (what Discord/LinkedIn/iMessage print above a shared link), the
+# homepage's og:title, and the "name" of the Organization in the
+# structured data Google reads. All three want the name people
+# actually recognise, so it has to match the wordmark in the header —
+# "Minnesota Nanofabrication" — plus the one word that tells a
+# stranger what kind of thing this is. It is also the real name of the
+# org everywhere else: github.com/minnesota-nanofabrication-club,
+# @minnesota_nanofab_club, the LinkedIn page.
+#
+# Keep it SHORT. Google only accepts a site name it can print beside
+# the result, and it quietly drops long ones; "… at the University of
+# Minnesota" was long enough to lose that. The University association
+# is carried instead by the <title> tag (built from shortTitle below,
+# which appends "— University of Minnesota"), by params.tagline, by
+# params.description, and by the footer.
+#
+# It should NOT read "<club> at the University of Minnesota": we are a
+# Registered Student Organization and independent from the University
+# (see rsoDisclaimer), so the org's own name does not borrow theirs.
+title = "Minnesota Nanofabrication Club"
+
+# Writes public/robots.txt from layouts/robots.txt on every build. The
+# file says "crawl everything" and points at the sitemap — see the
+# comments in that template for the one GitHub Pages catch.
+enableRobotsTXT = true
 
 # This site doesn't use tags or categories as blog-style taxonomies
 # (machines are grouped via data/categories.yaml instead), so turn the
@@ -16,17 +42,96 @@ disableKinds = ["taxonomy", "term"]
   home = ["HTML", "JSON"]
 
 # ------------------------------------------------------------------
+# SITEMAP — public/sitemap.xml, the list of pages we hand to Google.
+# Hugo builds it for us; there is no template to maintain.
+#
+# These two values are Hugo's defaults, written out so nobody
+# "helpfully" fills them in later. Both are deliberately switched off:
+#
+#   changefreq — a hint like "weekly". Google announced in 2023 that
+#     it ignores it outright, and so does Bing. "" omits the tag.
+#
+#   priority — a 0.0–1.0 weight. ALSO ignored. It never meant
+#     "rank this higher"; at most it suggested a crawl order WITHIN
+#     one site, and it is dead either way. So no, the homepage does
+#     not need priority 1.0 to outrank the machine pages — it outranks
+#     them because it is the page everything links to. -1 omits the
+#     tag.
+#
+# Writing tags every crawler ignores is pure noise, so we emit neither
+# and the sitemap stays a clean list of <loc> entries.
+#
+# <lastmod> is also absent, because nothing in content/ carries a
+# date. The usual fix is enableGitInfo = true, which dates each page
+# from its last commit — but .github/workflows/deploy.yml checks out
+# with actions/checkout's default shallow clone (depth 1), so every
+# page would be stamped with the same date, which is worse than no
+# date at all. Turn it on only together with `fetch-depth: 0` there.
+#
+# Drafts never appear: Hugo excludes them from the build entirely,
+# and content/machines/_index.md is `render: never`, so /machines/
+# stays out too. 404.html is not a sitemap entry and carries
+# noindex (set in layouts/partials/head.html).
+# ------------------------------------------------------------------
+[sitemap]
+  changefreq = ""
+  priority = -1
+
+# canonifyURLs is deliberately OFF (its default). It is a legacy
+# option that rewrites every relative link in your *content* to an
+# absolute one. This site does not need it: the templates already run
+# paths through relURL/absURL, which is what keeps the /nanofab_web/
+# subpath correct, and canonifyURLs would only make local previews
+# point at the live domain. Taxonomies are off too — see disableKinds
+# above. Leave both alone.
+
+# ------------------------------------------------------------------
 # Site-wide identity: things that stay the same on every page.
 # EDIT HERE to change contact links across the entire site at once.
 # ------------------------------------------------------------------
 [params]
   tagline = "University of Minnesota, Twin Cities"
-  shortTitle = "Nanofabrication Club"
+
+  # The brand as it appears in the <title> tag — the blue link in
+  # Google's results. layouts/partials/head.html builds:
+  #   homepage:      "<shortTitle> — University of Minnesota"
+  #   machine pages: "Tube Furnace — <shortTitle>, UMN"
+  # so this string is what a searcher sees 20 times over, and it has
+  # to be the name they typed. "Nanofabrication Club" alone was not:
+  # it dropped "Minnesota", the first word of our own wordmark and of
+  # every query that finds us. It is also used as the Organization's
+  # alternateName in the structured data, and in the fallback alt text
+  # for the link-preview image.
+  #
+  # Keeping it identical to `title` above is intentional — one brand,
+  # spelled one way, everywhere. Mind the length if you change it: the
+  # longest machine title ("Wafer Stage Alignment Firmware") plus this
+  # suffix comes to 68 characters, and Google starts truncating near
+  # 60. The brand sits at the END of those titles, so what gets cut is
+  # the part the reader can already guess.
+  shortTitle = "Minnesota Nanofabrication Club"
 
   # ---------------- SEO (README section 4.19) ----------------
   # What Google shows under the homepage's title. Aim for 120–155
   # characters; anything longer gets cut off with "…".
-  description = "A student club at the University of Minnesota building a working nanofabrication lab."
+  #
+  # The old version was 85 characters — barely half the space Google
+  # gives you, and it spent none of it saying what we actually build.
+  # This one fills the line and front-loads the words people search:
+  # "nanofabrication", then "University of Minnesota", then
+  # "semiconductor fab", then the four process areas the machines are
+  # grouped into. Those four are the industry words a searcher would
+  # use, not our subsystem labels — the site calls them Patterning,
+  # Doping, Thin Film Deposition and Wafer Characterization
+  # (data/bands.yaml), which nobody types into Google.
+  # Every clause is a fact about the club,
+  # which is the only way a description earns the click — a list of
+  # keywords reads as spam and Google will replace it with its own
+  # sentence lifted from the page.
+  #
+  # head.html truncates at a word boundary once this passes 160
+  # characters, so stay under that. This is 156.
+  description = "Nanofabrication at the University of Minnesota — a student club building a semiconductor fab, machine by machine: lithography, thin films, doping, metrology."
   # Picture shown when a page is shared on LinkedIn, Discord, iMessage,
   # etc. Machine pages use their own Overview diagram instead.
   # Best at about 1200 x 630 or larger.

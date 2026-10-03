@@ -1,0 +1,37 @@
+{{/* ==============================================================
+     robots.txt — the first file a search engine asks for.
+
+     Turned on by `enableRobotsTXT = true` in hugo.toml. Hugo renders
+     this template to public/robots.txt on every build.
+
+     WHAT IT SAYS: crawl everything, and here is the sitemap. That is
+     the right answer for a public club site — there is nothing here
+     to hide, and a missing robots.txt is not "allow all", it is just
+     a 404 the crawler has to guess around.
+
+     WHY THE SITEMAP URL IS BUILT, NOT TYPED: the Sitemap: directive
+     is the one line in robots.txt that MUST be a full absolute URL
+     with the scheme and host — a relative "/sitemap.xml" is invalid
+     and silently ignored. absURL hangs it off baseURL in hugo.toml,
+     so it keeps the /nanofab_web/ subpath and follows the site if it
+     ever moves to its own domain. Never hand-type it: typing
+     "/sitemap.xml" is exactly how you end up pointing at the
+     organisation's root instead of this project's.
+
+     ONE CATCH, worth knowing before you trust this file:
+     crawlers only ever read robots.txt from the ROOT of a host, i.e.
+     minnesota-nanofabrication-club.github.io/robots.txt. This site
+     lives in a subdirectory, so what we publish lands at
+     .../nanofab_web/robots.txt and Google will not look for it there.
+     It is still correct to ship — it costs nothing, it is right the
+     moment the club gets its own domain, and tools that are pointed
+     at it directly will read it. Until then, submit the sitemap URL
+     below to Google Search Console by hand (README 4.19); that is
+     what actually gets the pages crawled. A root robots.txt would
+     have to be served from a separate repo publishing to the
+     organisation's github.io root, which is not ours to touch.
+     ============================================================== */ -}}
+User-agent: *
+Allow: /
+
+Sitemap: {{ "sitemap.xml" | absURL }}

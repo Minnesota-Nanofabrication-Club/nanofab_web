@@ -9,3 +9,6 @@ resources/
 
 # Agent worktrees (isolated checkouts, never part of the site)
 .claude/worktrees/
+
+# Local verification screenshots, never part of the site
+.shots/

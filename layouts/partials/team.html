@@ -66,17 +66,34 @@
      punctuation differences stop mattering: "Reactive Ion Etcher",
      "Reactive-Ion Etcher" and "reactive ion  etcher" all collapse to
      the same key. */}}
-{{ $machineBand := dict }}
-{{ $machineURL  := dict }}
-{{ range where site.RegularPages "Section" "machines" }}
+{{ $machineBand   := dict }}
+{{ $machineURL    := dict }}
+{{ $machineParent := dict }}
+{{ $machines      := where site.RegularPages "Section" "machines" }}
+
+{{/* Pass one: index every machine page by its filename slug. */}}
+{{ $bySlug := dict }}
+{{ range $machines }}
+  {{ $bySlug = merge $bySlug (dict .File.ContentBaseName .) }}
+{{ end }}
+
+{{/* Pass two: title -> url, band, and (for a subsystem) its parent. */}}
+{{ range $machines }}
   {{ $m := . }}
   {{ $key := $m.Title | lower | replaceRE "[^a-z0-9]+" " " | strings.TrimSpace }}
   {{ if $key }}
-    {{/* Every machine is indexed by URL, so a role that names one can
-         link straight to its documentation. */}}
     {{ $machineURL = merge $machineURL (dict $key $m.RelPermalink) }}
     {{ with $m.Params.band }}
       {{ $machineBand = merge $machineBand (dict $key (lower . | strings.TrimSpace)) }}
+    {{ end }}
+    {{/* A subsystem names the machine it is part of, so a person whose
+         role IS that subsystem gets an "on <machine>" line derived from
+         the content rather than typed into the YAML. */}}
+    {{ with $m.Params.partOf }}
+      {{ $parent := index $bySlug . }}
+      {{ with $parent }}
+        {{ $machineParent = merge $machineParent (dict $key (dict "title" .Title "url" .RelPermalink)) }}
+      {{ end }}
     {{ end }}
   {{ end }}
 {{ end }}
@@ -274,9 +291,24 @@
               {{ $rk := $role | lower | replaceRE "[^a-z0-9]+" " " | strings.TrimSpace }}
               {{ with index $aliases $rk }}{{ $rk = . }}{{ end }}
               {{ $href := index $machineURL $rk }}
-              <li class="text-[1.0625rem] leading-snug {{ if eq $i 0 }}text-ink{{ else }}text-muted mt-1{{ end }}">
+              {{/* Weight follows WHAT the role is, not where it sits in
+                   the list. A machine or research project is the work,
+                   so it is set in ink; a leadership title is context and
+                   is held back. Previously the first line was always
+                   dark, which made "President" louder than the stepper
+                   on the same card. */}}
+              <li class="text-[1.0625rem] leading-snug {{ if $href }}text-ink{{ else }}text-muted{{ end }}{{ if gt $i 0 }} mt-1{{ end }}">
                 {{ if $href }}<a href="{{ $href }}" class="person-machine">{{ $role }}</a>{{ else }}{{ $role }}{{ end }}
               </li>
+              {{/* Their role is a subsystem, so name the machine it is
+                   part of. Derived, so it is right for everyone who owns
+                   one — the stepper people and Brendan alike. */}}
+              {{ with index $machineParent $rk }}
+              <li class="text-[1.0625rem] leading-snug text-muted mt-1">
+                <span class="person-on">on</span>
+                <a href="{{ .url }}" class="person-machine">{{ .title }}</a>
+              </li>
+              {{ end }}
               {{ end }}
 
               {{/* Machines this person works on but does not lead. The

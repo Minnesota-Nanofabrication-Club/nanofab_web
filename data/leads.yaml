@@ -75,16 +75,12 @@
 
 - name: Henry Goldberg
   role: "Laser Interferometry"
-  machines:
-    - Maskless Litho Stepper
   major: ""
   email: ""
   photo: "/images/officers/henry-goldberg-web.jpg"
 
 - name: Harshit Mehendiratta
   role: "Computer Vision Metrology"
-  machines:
-    - Maskless Litho Stepper
   major: ""
   email: ""
   photo: "/images/officers/harshit.jpeg"
@@ -103,8 +99,6 @@
 
 - name: Misha Mickevicius
   role: "Alignment Firmware"
-  machines:
-    - Maskless Litho Stepper
   major: ""
   email: ""
   photo: "/images/officers/Misha.jpg"
@@ -116,7 +110,7 @@
   photo: "/images/officers/1731523359195-web.jpg"
 
 - name: Vikram Narra
-  role: "Web Development Lead"
+  role: "Web Development"
   major: ""
   email: ""
   photo: "/images/officers/Big V.jpeg"

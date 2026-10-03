@@ -72,7 +72,12 @@
           {{ $band.name }}
         </h3>
 
-        <p class="mt-4 text-[1.1875rem] leading-snug text-muted">{{ $band.tagline }}</p>
+        {{/* Optional. Leave `tagline` out of data/bands.yaml and the
+             band simply has no line under it — no empty paragraph and
+             no stray gap. */}}
+        {{ with $band.tagline }}
+        <p class="mt-4 text-[1.1875rem] leading-snug text-muted">{{ . }}</p>
+        {{ end }}
 
         {{/* ---------- Every machine, one click from here ---------- */}}
         {{ with $inBand }}

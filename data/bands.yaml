@@ -39,7 +39,7 @@
   slug: gen2
   fab: true
   index: 2
-  tagline: Smaller features. Built, not bought.
+  tagline: Smaller features. Built in-house.
   groups:
     - name: Patterning
       slug: patterning
@@ -56,7 +56,7 @@
   slug: cheme
   fab: true
   index: 3
-  tagline: Resists and dopants, made here.
+  tagline: We make our own chemicals.
 
 - name: Operations & Logistics
   slug: logistics

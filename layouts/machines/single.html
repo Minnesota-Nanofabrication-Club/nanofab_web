@@ -71,15 +71,15 @@
 {{ $nav := slice }}
 {{ if $hasOverview }}{{ $nav = $nav | append (dict "id" "overview" "label" "Overview") }}{{ end }}
 {{ if $showBackground }}{{ $nav = $nav | append (dict "id" "background" "label" "Background") }}{{ end }}
-{{/* Design architecture shows if there are subsystems, or diagrams
+{{/* Design shows if there are subsystems, or diagrams
      the Overview hasn't already used. */}}
 {{ $used := partial "overview-srcs.html" . }}
 {{ $diagrams := .Params.architectureDiagrams | default slice }}
 {{ with .Params.architectureDiagram }}{{ $diagrams = slice (dict "src" .) }}{{ end }}
 {{ $diagramsLeft := 0 }}
 {{ range $diagrams }}{{ if not (in $used (strings.TrimPrefix "/" .src)) }}{{ $diagramsLeft = add $diagramsLeft 1 }}{{ end }}{{ end }}
-{{ $showArchitecture := or .Params.subsystems (gt $diagramsLeft 0) }}
-{{ if $showArchitecture }}{{ $nav = $nav | append (dict "id" "architecture" "label" "Architecture") }}{{ end }}
+{{ $showDesign := or .Params.subsystems (gt $diagramsLeft 0) }}
+{{ if $showDesign }}{{ $nav = $nav | append (dict "id" "design" "label" "Design") }}{{ end }}
 {{/* "Documentation" said nothing on a page that is entirely
      documentation. This section carries the write-up and the build
      timeline, so it is Progress; Assembly follows it as the fourth
@@ -214,11 +214,16 @@
   </section>
   {{ end }}
 
-  {{/* ---------- Design architecture ---------- */}}
-  {{ if $showArchitecture }}
+  {{/* ---------- Design ----------
+       Was "Architecture". The section holds subsystems and diagrams —
+       optics, motion, vacuum — and "architecture" read as a software
+       word applied to hardware. The front-matter keys stay
+       architectureDiagram(s): renaming them would mean editing every
+       content file for a key no reader ever sees. */}}
+  {{ if $showDesign }}
   <section>
     <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
-      {{ partial "doc-section-head.html" (dict "id" "architecture" "title" "Architecture") }}
+      {{ partial "doc-section-head.html" (dict "id" "design" "title" "Design") }}
 
       {{/* Block diagrams, if there are any. Put the image file in
            static/images/machines/ and point architectureDiagrams at

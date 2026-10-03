@@ -58,6 +58,10 @@
 
 - name: Alexander Weimer
   role: Faculty Outreach Director
+  # Sits last in Operations & Logistics. Officers are read before
+  # leads, so without this he would land ahead of the Web Development
+  # Lead rather than at the end of the row.
+  order: 999
   major: 
   email: ""
   photo: "/images/officers/alexander-weimer.png"

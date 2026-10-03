@@ -110,6 +110,7 @@
      collection is append's last argument. */}}
 {{ $order  := slice }}
 {{ $roster := dict }}
+{{ $seq    := 0 }}
 
 {{ range (append $leads $officers) }}
   {{ $key := .name | lower | strings.TrimSpace }}
@@ -136,7 +137,15 @@
     {{ else }}
       {{ $roles := slice }}
       {{ range $newRoles }}{{ if not (in $roles .) }}{{ $roles = $roles | append . }}{{ end }}{{ end }}
-      {{ $roster = merge $roster (dict $key (merge . (dict "roles" $roles))) }}
+      {{/* "pos" fixes the order inside a group. It defaults to the
+           sequence the YAML is read in (officers first, then leads),
+           and `order: <number>` in a person's entry overrides it. A
+           large number sends them to the end of their group — which is
+           the only way to place an officer after a lead. */}}
+      {{ $seq = add $seq 1 }}
+      {{ $pos := $seq }}
+      {{ with .order }}{{ $pos = . }}{{ end }}
+      {{ $roster = merge $roster (dict $key (merge . (dict "roles" $roles "pos" $pos))) }}
       {{ $order = $order | append $key }}
     {{ end }}
   {{ end }}
@@ -165,6 +174,14 @@
     {{ $other = $other | append $p }}
   {{ end }}
 {{ end }}
+
+{{/* Apply the explicit ordering within every group. */}}
+{{ $other = sort $other "pos" }}
+{{ $sortedBuckets := dict }}
+{{ range $slug, $people := $buckets }}
+  {{ $sortedBuckets = merge $sortedBuckets (dict $slug (sort $people "pos")) }}
+{{ end }}
+{{ $buckets = $sortedBuckets }}
 
 {{/* ---- Logistics first, then the fab bands in order ------------------
      Logistics (finance, outreach, design, web) leads the section: these

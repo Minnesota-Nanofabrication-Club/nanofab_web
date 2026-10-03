@@ -56,6 +56,14 @@
   email: ""
   photo: "/images/officers/rhys-web.jpg"
 
+- name: Natalie Sinn
+  role: Marketing Design Lead
+  major: 
+  email: ""
+  # No portrait yet. With photo empty the template draws the initials
+  # panel instead — same 4:5 frame, so the grid stays in register.
+  photo: ""
+
 - name: Alexander Weimer
   role: Faculty Outreach Director
   # Sits last in Operations & Logistics. Officers are read before

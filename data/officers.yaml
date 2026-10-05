@@ -60,9 +60,7 @@
   role: Marketing Design
   major: 
   email: ""
-  # No portrait yet. With photo empty the template draws the initials
-  # panel instead — same 4:5 frame, so the grid stays in register.
-  photo: ""
+  photo: "/images/officers/natalie-sinn.jpg"
 
 - name: Alexander Weimer
   role: Faculty Outreach Director

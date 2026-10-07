@@ -7,14 +7,6 @@ weight: 10
 status: "building"
 summary: "Etches straight down with a reactive plasma."
 
-specs:
-  - label: "Process pressure"
-    value: "10 – 200 mTorr"
-  - label: "RF power"
-    value: "13.56 MHz, up to 300 W"
-  - label: "Process gases"
-    value: "CF₄, O₂, Ar"
-
 # DOCUMENTATION — the write-up section on this machine's page.
 #
 # Delete the leading "#" from the lines below and write in markdown.
@@ -109,16 +101,3 @@ documentation: |
 #   - name: "Safety interlocks"
 #     description: "RF cannot energize unless the chamber is under vacuum and closed. Striking a plasma at atmosphere, or with the lid open, is both a UV and an RF exposure hazard."
 ---
-
-Reactive-ion etching is what makes vertical sidewalls possible.
-
-A purely chemical wet etch attacks material in every direction at once, so it
-eats sideways under the resist mask by roughly as much as it cuts down. At
-micron scale that's tolerable. Below that it destroys the pattern.
-
-RIE combines two mechanisms: reactive neutrals do chemistry on the surface, and
-ions accelerated by the plasma sheath slam into it nearly straight down. The
-chemistry alone would be isotropic; the directional ion bombardment is what
-biases the etch downward and keeps the sidewalls steep. Tuning the balance
-between the two — through pressure, power, and gas mix — is most of what
-running this tool is about.

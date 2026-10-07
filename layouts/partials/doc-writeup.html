@@ -16,10 +16,14 @@
      blocks, tables, and > callouts all render — see the .doc-prose
      rules in static/css/doc.css.
 
-     This section renders on EVERY machine, written up or not. When
-     it's empty it says so and points at the file to edit — an
-     explicit "nobody has done this yet" is more useful to a student
-     than the section quietly not existing. */}}
+     IT ONLY RENDERS WHEN THERE IS A WRITE-UP. The caller in
+     layouts/machines/single.html guards the call on
+     .Params.documentation. It used to render on every machine and
+     print "Not written up yet. Add a documentation: block to
+     content/machines/<slug>.md" — an instruction to an editor, shown
+     to the public, on seventeen of twenty-three pages. Do not put
+     that placeholder back; a missing section is the honest signal
+     that nobody has written one. */}}
 <section>
   <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
     {{/* "Updated …" is the one piece of section meta worth keeping:
@@ -36,17 +40,8 @@
     <div class="doc-prose max-w-2xl">
       {{ .Params.documentation | markdownify }}
     </div>
-    {{ else if .Params.documentation }}
-    {{ partial "doc-writeup-rich.html" . }}
     {{ else }}
-    <div class="max-w-2xl border-l border-line pl-6">
-      <p class="doc-prose">
-        Not written up yet. Add a
-        <code>documentation:</code> block to
-        <code>content/machines/{{ .File.ContentBaseName }}.md</code> &mdash;
-        the template is in that file, commented out.
-      </p>
-    </div>
+    {{ partial "doc-writeup-rich.html" . }}
     {{ end }}
   </div>
 </section>

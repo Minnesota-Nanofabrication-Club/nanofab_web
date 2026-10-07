@@ -1465,19 +1465,25 @@ should look like one.
 
 #### Machines with nothing written yet
 
-**The section appears on every machine regardless.** Where nothing
-has been written, it shows a short "Not written up yet" card naming
-the exact file to edit. An explicit "nobody has done this" is more
-useful to a student looking for a job than the section quietly not
-existing.
+**The section simply doesn't appear.** No heading, no placeholder. The
+page shows its breadcrumb, summary, build state, whatever Overview it
+has, and the other machines in its band — which is an honest picture of
+a machine nobody has written up yet.
+
+It used to render on every machine and print a "Not written up yet"
+card naming the file to edit. That is an instruction to an editor and
+it was being shown to the public on seventeen of twenty-three pages,
+under a heading, with a section's worth of empty page beneath it.
+Assembly did the same thing with "Not started — the parts are not in
+hand yet", which was not even true of the machines already in build.
+**Don't put either back.** A half-filled page reads worse than a short
+one.
+
+Same rule for `assembly:`.
 
 **Every machine file already has the template in it, commented out.**
 Open the file, delete the leading `#` from the `documentation:` lines,
 and write. Nothing to copy from elsewhere.
-
-> `spinner` currently holds a **starter template** rather than a real
-> procedure — it's there to show the formatting. Replace it; don't
-> leave guessed steps on a page someone might follow.
 
 #### Documentation photos
 

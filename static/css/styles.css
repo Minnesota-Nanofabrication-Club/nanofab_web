@@ -19,13 +19,13 @@
    ============================================================== */
 
 :root {
-  --line: #D6D3CB;       /* hugo.toml colors.line   */
+  --line: #D7CEC1;       /* hugo.toml colors.line   */
   --muted: #474D49;      /* hugo.toml colors.muted  */
   --maroon: #7A0019;     /* hugo.toml colors.maroon */
   --gold: #FFCC33;       /* hugo.toml colors.gold   */
   --violet: #42245F;     /* hugo.toml colors.violet — from the logo */
   --violet-soft: #F1ECF5;/* hugo.toml colors.violetSoft */
-  --paper: #F4F3F0;      /* hugo.toml colors.paper  */
+  --paper: #EDE4D7;      /* hugo.toml colors.paper  */
 
   /* Fill for the clickable machine rows in the homepage "The fab"
      section — both are maroon washed over white.

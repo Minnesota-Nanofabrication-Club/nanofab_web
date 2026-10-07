@@ -227,10 +227,10 @@ disableKinds = ["taxonomy", "term"]
   # lighten it without checking contrast.
   # ----------------------------------------------------------------
   [params.colors]
-    paper = "#F4F3F0"
-    surface = "#FFFFFF"
+    paper = "#EDE4D7"
+    surface = "#F7F4EE"
     ink = "#14181C"
-    line = "#D6D3CB"
+    line = "#D7CEC1"
     muted = "#474D49"
     faint = "#6B716C"
     maroon = "#7A0019"

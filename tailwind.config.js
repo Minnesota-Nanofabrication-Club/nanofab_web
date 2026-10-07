@@ -1,20 +1,23 @@
-/* Mirrors the inline `tailwind.config` that layouts/partials/head.html used to
-   hand to the Tailwind Play CDN (v3.4.17), so the prebuilt static/css/tailwind.css
-   is byte-for-byte equivalent to what the CDN generated in the browser.
-
-   NOTE: these hex values used to be interpolated from hugo.toml [params.colors]
-   by Hugo. They are now literals here. If you re-theme, change both places.
-
-   Regenerate (needs network once, for npx):
-     hugo -d public                      # emit every class Hugo can produce
-     npx tailwindcss@3.4.17 -c tailwind.config.js \
-       -i tailwind-input.css -o static/css/tailwind.css
-
-   The `public/**/*.html` glob is the important one: Hugo conditionals such as
-   {{ if ... }}text-ink{{ else }}text-muted{{ end }} are only resolved in the
-   built output. static/js is also scanned because site.js injects a <p> with
-   Tailwind classes ("font-mono text-[0.6875rem] uppercase tracking-marking")
-   that appears in no template and no built page. */
+// NOTE: line comments, not a /* block */. The glob below contains the
+// sequence that ends a block comment, which silently truncated this
+// header and made the file unparseable by the Tailwind CLI.
+// Mirrors the inline `tailwind.config` that layouts/partials/head.html used to
+// hand to the Tailwind Play CDN (v3.4.17), so the prebuilt static/css/tailwind.css
+// is byte-for-byte equivalent to what the CDN generated in the browser.
+//
+// NOTE: these hex values used to be interpolated from hugo.toml [params.colors]
+// by Hugo. They are now literals here. If you re-theme, change both places.
+//
+// Regenerate (needs network once, for npx):
+// hugo -d public                      # emit every class Hugo can produce
+// npx tailwindcss@3.4.17 -c tailwind.config.js \
+// -i tailwind-input.css -o static/css/tailwind.css
+//
+// The `public/**/*.html` glob is the important one: Hugo conditionals such as
+// {{ if ... }}text-ink{{ else }}text-muted{{ end }} are only resolved in the
+// built output. static/js is also scanned because site.js injects a <p> with
+// Tailwind classes ("font-mono text-[0.6875rem] uppercase tracking-marking")
+// that appears in no template and no built page.
 
 module.exports = {
   content: [
@@ -25,10 +28,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        paper: '#F4F3F0',
-        surface: '#FFFFFF',
+        paper: '#EDE4D7',
+        surface: '#F7F4EE',
         ink: '#14181C',
-        line: '#D6D3CB',
+        line: '#D7CEC1',
         muted: '#474D49',
         faint: '#6B716C',
         maroon: {

@@ -10,9 +10,19 @@
 # The section lays itself out automatically: 1-2 advisors get wide
 # cards, 3 or more wrap into a grid. Add as many as you need.
 #
+# GROUPING. Advisors are grouped by `dept`, in the order the
+# departments first appear in this file. A new department needs no
+# template change: give someone a new `dept` string and a heading
+# with that exact text appears. The heading already names the
+# department, so `role` must NOT repeat it (design-language §2).
+#
 # FIELDS
 #   name   required — the person’s name
-#   role   required — title and department, one line
+#   dept   required — their department, spelled out. Used verbatim as
+#                     the group heading, so every member of a
+#                     department must spell it identically.
+#   role   required — their advisory title alone, one line. No
+#                     department: the heading above them says it.
 #   bio    optional — two or three sentences on what they work on and
 #                     how they help the club. Keep it short; it’s a
 #                     bio, not a CV. Leave "" and the card just shows
@@ -38,34 +48,48 @@
 # ===================================================================
 
 - name: Joseph Talghader
-  role: Main Faculty Advisor — Electrical & Computer Engineering
+  dept: Electrical & Computer Engineering
+  role: Main Faculty Advisor
   bio: "Optical materials and devices. Micro- and nano-structured surfaces."
   link: "https://cse.umn.edu/ece/joseph-talghader"
   photo: "/images/advisors/joseph-talghader.jpg"
 
-- name: Ognjen Ilic
-  role: Faculty Advisor — Mechanical Engineering
-  bio: "Heat transfer. Nanoscale devices and materials."
-  link: "https://cse.umn.edu/me/ognjen-ilic"
-  photo: "/images/advisors/Illic.jpg"
-
 - name: Jeong-Hyun Cho
-  role: Faculty Advisor — Electrical & Computer Engineering
+  dept: Electrical & Computer Engineering
+  role: Faculty Advisor
   bio: "Semiconductor devices. 3D nano-structures."
   link: "https://cse.umn.edu/ece/jeong-hyun-cho"
   photo: "/images/advisors/Cho.jpg"
 
 - name: Bethanie Stadler
-  role: Faculty Advisor — Electrical & Computer Engineering
+  dept: Electrical & Computer Engineering
+  role: Faculty Advisor
   bio: "Magnetic electronics. Optical materials."
   link: "https://cse.umn.edu/ece/bethanie-stadler"
   photo: "/images/advisors/stadler-web.jpg"
 
 - name: Scott Hareland
-  role: Adjunct Professor — Electrical & Computer Engineering
+  dept: Electrical & Computer Engineering
+  role: Adjunct Professor
   bio: "Semiconductor devices. Applied physics. Medical systems."
   link: "https://www.linkedin.com/in/scott-hareland-ph-d-410a903/"
   photo: "/images/advisors/Scott.jpeg"
   # His face sits left of centre in the original, so shift the framing
   # left (25% across) to centre it. See README 4.9.
   photoPosition: "25% 0%"
+
+- name: Ognjen Ilic
+  dept: Mechanical Engineering
+  role: Faculty Advisor
+  bio: "Heat transfer. Nanoscale devices and materials."
+  link: "https://cse.umn.edu/me/ognjen-ilic"
+  photo: "/images/advisors/Illic.jpg"
+
+- name: Chris Leighton
+  dept: Chemical Engineering & Materials Science
+  role: Faculty Advisor
+  bio: "Electronic and magnetic materials. Oxide films and heterostructures."
+  link: "https://cse.umn.edu/cems/chris-leighton"
+  # No portrait yet. Left blank on purpose: the card falls back to his
+  # initials, which reads as deliberate rather than broken.
+  photo: ""

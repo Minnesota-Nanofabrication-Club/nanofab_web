@@ -15,6 +15,22 @@
      measure (a plain link is enough), and the legacy sr-only #backing
      anchor — nothing links to it any more.
 
+     GROUPED BY DEPARTMENT. Advisors come from several departments and
+     an undifferentiated list of six hid that. Each person carries a
+     `dept` in data/advisors.yaml and the groups are built from those
+     strings in the order they first appear in the file, so adding a
+     department is a data edit and never a template edit. The group
+     heading is the same light heading the team section uses, at the
+     same size, so the two sections read as one hierarchy.
+
+     Because the heading names the department, `role` must not repeat
+     it — "Faculty Advisor — Electrical & Computer Engineering" under
+     an "Electrical & Computer Engineering" heading says it twice
+     (§2). The roles in the data file were trimmed to the title alone.
+
+     One group and no `dept` on anyone renders exactly as before: a
+     flat list, no heading.
+
      GRADUATE STUDENT MENTORS are not committed yet, so they are not
      shown. The subsection below renders itself as soon as a
      data/mentors.yaml exists and has at least one entry — see the
@@ -26,15 +42,45 @@
 {{ $advisors := default slice hugo.Data.advisors }}
 {{ $mentors  := default slice hugo.Data.mentors }}
 
+{{/* ---------- Group by department, in file order ----------------
+     Two passes rather than `where`, because `where` cannot match the
+     people who have no `dept` at all — they would silently vanish
+     from the page. Here they collect under the empty label, which
+     renders without a heading. Nobody is dropped. */}}
+{{ $depts := slice }}
+{{ range $advisors }}
+  {{ $d := .dept | default "" }}
+  {{ if not (in $depts $d) }}{{ $depts = $depts | append $d }}{{ end }}
+{{ end }}
+
+{{ $groups := slice }}
+{{ range $depts }}
+  {{ $d := . }}
+  {{ $people := slice }}
+  {{ range $advisors }}
+    {{ if eq (.dept | default "") $d }}{{ $people = $people | append . }}{{ end }}
+  {{ end }}
+  {{ $groups = $groups | append (dict "label" $d "people" $people) }}
+{{ end }}
+
 {{ if or $advisors $mentors }}
 <section id="advisors" class="bg-paper">
   <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
 
     {{ partial "section-head.html" (dict "title" "Faculty Advisors") }}
 
-    {{ with $advisors }}
-    <ul class="advisor-list mt-14 sm:mt-20 list-none p-0">
-      {{ range . }}
+    {{ range $gi, $g := $groups }}
+    <div class="{{ if eq $gi 0 }}mt-14 sm:mt-20{{ else }}mt-20 sm:mt-28{{ end }}">
+
+      {{/* Same light group heading as the team section: between the
+           advisor names (2rem) and the section heading, no rule and
+           no panel (§2, §3). Omitted for the unlabelled group. */}}
+      {{ with $g.label }}
+      <h3 class="font-display font-semibold text-[1.625rem] sm:text-[1.75rem] leading-[1.1] tracking-tight">{{ . }}</h3>
+      {{ end }}
+
+    <ul class="advisor-list {{ if $g.label }}mt-10 sm:mt-12{{ end }} list-none p-0">
+      {{ range $g.people }}
       {{ $a := . }}
 
       {{/* Normalise the photo path: drop any leading slash, run it
@@ -66,9 +112,12 @@
         </div>
 
         <div class="advisor-body min-w-0">
-          <h3 class="font-display font-semibold text-[1.75rem] sm:text-[2rem] leading-[1.1] tracking-tight">
+          {{/* h4, under the department's h3 — same nesting the team
+               section uses, so the outline of the page stays correct
+               for a screen reader. */}}
+          <h4 class="font-display font-semibold text-[1.75rem] sm:text-[2rem] leading-[1.1] tracking-tight">
             {{ $a.name }}
-          </h3>
+          </h4>
 
           {{ with $a.role }}
           <p class="text-[1.0625rem] leading-snug text-muted mt-3 max-w-md">{{ . }}</p>
@@ -92,6 +141,7 @@
       </li>
       {{ end }}
     </ul>
+    </div>
     {{ end }}
 
     {{/* ---------- GRADUATE STUDENT MENTORS ------------------------------

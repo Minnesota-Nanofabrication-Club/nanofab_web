@@ -50,7 +50,7 @@
    colours in both states. */
 .topbar-logo {
   flex: none;
-  height: 1.45em;
+  height: 1.62em;
   width: auto;
 }
 
@@ -71,7 +71,7 @@
      that exceeded the viewport, and because the text is nowrap it ran
      underneath the menu instead of shrinking. The vw term keeps it
      inside the space actually available at every width. */
-  font-size: clamp(0.95rem, 4.3vw, 2.15rem);
+  font-size: clamp(1.05rem, 5.6vw, 2.45rem);
   letter-spacing: -0.025em;
   transition: opacity var(--t) var(--ease);
 }

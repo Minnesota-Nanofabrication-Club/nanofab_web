@@ -19,10 +19,13 @@
      "01 / 02" indices in front of each label were decoration (§2),
      and §3 keeps mono for machine data only.
 
-     NOTE: the > 2 threshold below is mirrored by $showJump in
-     machines/single.html. Change both or neither. */}}
+     NO THRESHOLD. The skeleton is always four sections, so the bar
+     is always worth showing and single.html sets .has-jump
+     unconditionally. The old "only if more than two items" rule had
+     to be kept in step by hand across two files; there is nothing
+     left to disagree about. */}}
 {{ $items := . }}
-{{ if gt (len $items) 2 }}
+{{ if $items }}
 <nav class="doc-jump" aria-label="Sections on this page">
   <div class="mx-auto max-w-6xl px-6">
     <div class="doc-jump-scroll">

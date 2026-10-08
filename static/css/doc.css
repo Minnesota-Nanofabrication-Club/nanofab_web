@@ -29,8 +29,24 @@
      than :root so the doc area cannot leak tokens into other areas. */
   --doc-surface: #ffffff;
 
-  /* Height of the sticky section jump bar, used for anchor offsets. */
-  --doc-jump-h: 3.5rem;
+  /* THE STICKY STACK, in one place.
+
+     --doc-jump-row is the height of the jump bar's CONTENT box: the
+     links are exactly this tall. The bar also carries a hairline top
+     and bottom, and box-sizing is border-box, so what the bar
+     actually occupies on screen is two pixels more than the row.
+     --doc-jump-h is that true occupied height, and it is what the
+     anchor offsets below have to clear.
+
+     Getting this wrong by those two pixels is how every heading used
+     to land two pixels under the bar. */
+  --doc-jump-row: 3.5rem;
+  --doc-jump-h: calc(var(--doc-jump-row) + 2px);
+
+  /* The whole fixed/sticky stack a jump has to clear, and the gap we
+     want between it and the heading that lands under it. */
+  --doc-stack: calc(var(--bar-h) + var(--doc-jump-h));
+  --doc-gap: 1.25rem;
 }
 
 /* ---------------------------------------------------------------------
@@ -44,9 +60,9 @@
    anchors now sit ON the headings (see doc-section-head.html), so this
    lands the heading itself just under whatever is sticky above it —
    the same distance every time, at every breakpoint. */
-.doc-page [id] { scroll-margin-top: calc(var(--bar-h) + 1.25rem); }
+.doc-page [id] { scroll-margin-top: calc(var(--bar-h) + var(--doc-gap)); }
 .doc-page.has-jump [id] {
-  scroll-margin-top: calc(var(--bar-h) + var(--doc-jump-h) + 1.25rem);
+  scroll-margin-top: calc(var(--doc-stack) + var(--doc-gap));
 }
 
 /* ---------------------------------------------------------------------
@@ -63,7 +79,7 @@
   position: sticky;
   top: var(--bar-h);
   z-index: 30;
-  min-height: var(--doc-jump-h);
+  min-height: var(--doc-jump-h);   /* row + its two hairlines */
   background: var(--paper);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -81,7 +97,7 @@
   display: inline-flex;
   align-items: center;
   flex: none;
-  height: var(--doc-jump-h);
+  height: var(--doc-jump-row);
   padding: 0 1.25rem;
   border-left: 1px solid var(--line);
   color: var(--muted);
@@ -565,4 +581,90 @@
    --------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   .doc-meter > span { transition: none; }
+}
+
+
+/* ---------------------------------------------------------------------
+   EVERY ANCHOR MUST BE ABLE TO REACH THE TOP
+
+   scroll-margin-top only works if the page can actually scroll that
+   far. Click the last section on a short page and the document hits
+   its end first, so the heading stops halfway down the screen — which
+   is the "it doesn't align" everybody notices and nobody can
+   reproduce on a long page.
+
+   Now that every machine shows four sections and most of them are a
+   two-line note, this is the common case, not the edge case. The
+   guard: the last thing on the page is tall enough that the final
+   heading can always be pulled up under the sticky stack.
+
+   100svh, not 100vh — on iOS vh is the tallest the viewport ever
+   gets, which would reserve more room than exists and leave dead
+   space under the page.
+   --------------------------------------------------------------------- */
+.doc-page > nav[aria-label="More in this band"] {
+  min-height: calc(100svh - var(--doc-stack));
+}
+
+/* ---------------------------------------------------------------------
+   NOT WRITTEN YET (partials/doc-placeholder.html)
+
+   A mono status word over one sentence saying what the section will
+   hold. No box, no tint, no icon — a panel here would give an empty
+   section more presence than a written one (§2).
+
+   The left hairline is the one mark it gets. It separates the note
+   from the section heading above it, which is the kind of rule §2
+   allows: without it the note reads as the section's first
+   paragraph, i.e. as content.
+   --------------------------------------------------------------------- */
+.doc-wip {
+  max-width: 42rem;
+  border-left: 1px solid var(--line);
+  padding-left: 1.5rem;
+}
+
+.doc-wip-mark {
+  font-size: 0.9375rem;      /* the 15px floor, §3 */
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--maroon);
+  margin: 0;
+}
+
+.doc-wip-say {
+  font-size: 1.1875rem;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0.75rem 0 0;
+}
+
+/* ---------------------------------------------------------------------
+   A SECTION THAT HOLDS ONLY THE NOTE GETS LESS AIR
+
+   The written sections run on py-28 / lg:py-40 because they hold long
+   technical copy and need the room. Around a heading and two lines of
+   "work in progress" that same rhythm reads as a broken page: twenty
+   rems of padding above and below eight rems of content, four times
+   over.
+
+   This pulls those sections in. It deliberately leaves the written
+   ones alone, so a machine someone has documented still breathes, and
+   the difference in density is itself a signal about which pages have
+   work in them.
+
+   :has() on the padded wrapper, not a class from the template,
+   because three different partials emit that wrapper and they would
+   each need the same flag kept in step by hand.
+   --------------------------------------------------------------------- */
+.doc-page section > div:has(> .doc-wip) {
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
+}
+
+@media (min-width: 1024px) {
+  .doc-page section > div:has(> .doc-wip) {
+    padding-top: 5.5rem;
+    padding-bottom: 5.5rem;
+  }
 }

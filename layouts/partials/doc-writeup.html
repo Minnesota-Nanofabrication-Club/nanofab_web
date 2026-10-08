@@ -16,27 +16,34 @@
      blocks, tables, and > callouts all render — see the .doc-prose
      rules in static/css/doc.css.
 
-     IT ONLY RENDERS WHEN THERE IS A WRITE-UP. The caller in
-     layouts/machines/single.html guards the call on
-     .Params.documentation. It used to render on every machine and
-     print "Not written up yet. Add a documentation: block to
-     content/machines/<slug>.md" — an instruction to an editor, shown
-     to the public, on seventeen of twenty-three pages. Do not put
-     that placeholder back; a missing section is the honest signal
-     that nobody has written one. */}}
+     SECTION 3 OF THE SKELETON, titled "Status". It renders on every
+     machine; with no documentation: block it shows the work-in-
+     progress note instead (partials/doc-placeholder.html).
+
+     It was called "Progress" and before that "Documentation", which
+     said nothing on a page that is entirely documentation. "Status"
+     is what a reader is actually asking: where does this build stand.
+
+     DO NOT put the old empty state back. It printed "Add a
+     documentation: block to content/machines/<slug>.md — the
+     template is in that file, commented out", which is an
+     instruction to an editor published to the public. The note that
+     replaced it is written for a reader. */}}
 <section>
   <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
     {{/* "Updated …" is the one piece of section meta worth keeping:
          it appears nowhere else on the page. */}}
     {{ partial "doc-section-head.html" (dict
-        "id" "progress"
-        "title" "Progress"
+        "id" "status"
+        "title" "Status"
         "meta" (cond (isset .Params "documentationupdated") (printf "Updated %s" .Params.documentationUpdated) "")) }}
 
     {{/* documentationLayout: "plain" in a machine's file keeps the
          original single-column write-up. Everything else gets the
          sectioned layout in doc-writeup-rich.html. */}}
-    {{ if and .Params.documentation (eq .Params.documentationLayout "plain") }}
+    {{ if not .Params.documentation }}
+    {{ partial "doc-placeholder.html" "Where the build stands right now: what is done, what is being worked on, and what is blocked." }}
+    {{ else if eq .Params.documentationLayout "plain" }}
     <div class="doc-prose max-w-2xl">
       {{ .Params.documentation | markdownify }}
     </div>

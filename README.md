@@ -1463,27 +1463,47 @@ Things to watch:
 section. Worth filling in — a procedure nobody has touched in two years
 should look like one.
 
-#### Machines with nothing written yet
+#### The four sections, and machines with nothing written yet
 
-**The section simply doesn't appear.** No heading, no placeholder. The
-page shows its breadcrumb, summary, build state, whatever Overview it
-has, and the other machines in its band — which is an honest picture of
-a machine nobody has written up yet.
+**Every machine page shows the same four sections, always:**
 
-It used to render on every machine and print a "Not written up yet"
-card naming the file to edit. That is an instruction to an editor and
-it was being shown to the public on seventeen of twenty-three pages,
-under a heading, with a section's worth of empty page beneath it.
-Assembly did the same thing with "Not started — the parts are not in
-hand yet", which was not even true of the machines already in build.
-**Don't put either back.** A half-filled page reads worse than a short
-one.
+| Section | Where its content comes from |
+|---|---|
+| **Overview** | `data/overviews/<slug>.yaml` |
+| **Design** | `subsystems:` and `architectureDiagrams:` front matter |
+| **Status** | `documentation:` front matter, plus the build timeline |
+| **Assembly** | `assembly:` front matter |
 
-Same rule for `assembly:`.
+A section nobody has written yet shows a **work-in-progress note**
+saying what will eventually go in it. The sections do not disappear
+and they are not padded with filler — a reader gets the same four
+questions on every machine, answered or openly not answered.
 
-**Every machine file already has the template in it, commented out.**
-Open the file, delete the leading `#` from the `documentation:` lines,
-and write. Nothing to copy from elsewhere.
+This has been wrong twice, in opposite directions, so don't move it a
+third time without reading both:
+
+- It used to render the empty sections with **an editor's to-do in
+  them** — "Not written up yet. Add a `documentation:` block to
+  `content/machines/<slug>.md`" — published to the public on
+  seventeen of twenty-three pages. Assembly did the same with "Not
+  started — the parts are not in hand yet", which was not true of the
+  machines already in build.
+- Then the empty sections were **hidden entirely**, which made every
+  machine a different shape and hid the fact that a write-up is owed
+  at all.
+
+The note now in `layouts/partials/doc-placeholder.html` is written for
+a reader, not for us. Keep it that way: one mono marker, one sentence
+naming what the section will hold, nothing invented.
+
+> **The bar for writing one is real work, not coverage.** All of the
+> generated explainers were deleted in October 2026 because they
+> stated parameters as ours that nobody had chosen. An empty section
+> with an honest note beats a full one that a sponsor's engineer can
+> tell was never measured.
+
+**Every machine file carries a short pointer comment** naming the four
+keys. Add the key, write markdown, done.
 
 #### Documentation photos
 

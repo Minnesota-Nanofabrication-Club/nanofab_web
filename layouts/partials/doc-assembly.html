@@ -1,16 +1,18 @@
 {{/* ==============================================================
      ASSEMBLY — how the thing actually goes together.
 
-     Overview says what it is, Architecture says how it is designed,
-     Progress says where the build stands, and this says how the
-     thing actually goes together.
+     Overview says what it is, Design says how it is designed,
+     Status says where the build stands, and this says how the thing
+     actually goes together.
 
-     IT ONLY RENDERS WHEN THERE IS AN ASSEMBLY BLOCK. The caller in
-     layouts/machines/single.html guards the call on .Params.assembly.
-     It used to render on every machine and print "Not started — the
-     parts are not in hand yet", which was a blanket claim the page
-     could not back: most of these machines are already in build. Do
-     not put that placeholder back.
+     SECTION 4 OF THE SKELETON. It renders on every machine; with no
+     assembly: block it shows the work-in-progress note instead
+     (partials/doc-placeholder.html).
+
+     DO NOT put the old empty state back. It said "Not started — the
+     parts are not in hand yet" on every machine without an assembly
+     block, which was a blanket claim the page could not back: most
+     of these are already in build.
 
      TO FILL IT IN, add an "assembly:" block to the machine's file in
      content/machines/, written in markdown, exactly like the
@@ -28,8 +30,12 @@
   <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
     {{ partial "doc-section-head.html" (dict "id" "assembly" "title" "Assembly") }}
 
+    {{ if .Params.assembly }}
     <div class="doc-prose max-w-2xl">
       {{ .Params.assembly | markdownify }}
     </div>
+    {{ else }}
+    {{ partial "doc-placeholder.html" "How the thing actually goes together, step by step, in the order a builder needs it." }}
+    {{ end }}
   </div>
 </section>

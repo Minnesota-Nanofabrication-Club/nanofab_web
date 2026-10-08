@@ -61,43 +61,51 @@
 {{ $contributors := where (default (slice) hugo.Data.sheets.contributors) "machine" $slug }}
 {{ $references   := where (default (slice) hugo.Data.sheets.references)   "machine" $slug }}
 
-{{/* The jump bar lists only sections that exist, so an undocumented
-     machine reads as a short clean page rather than a broken one. */}}
-{{/* With an overview (data/overviews/<slug>.yaml) the Background
-     text lives inside it, so the separate Background section is
-     dropped. */}}
+{{/* ==================================================================
+     THE SKELETON — four sections, always, in this order:
+
+       Overview · Design · Status · Assembly
+
+     EVERY MACHINE SHOWS ALL FOUR whether or not they are written.
+     An empty one carries a "work in progress" note saying what will
+     go in it (partials/doc-placeholder.html). That is deliberate: the
+     club would rather publish an honest gap than filler, and a reader
+     landing on any machine gets the same four questions answered or
+     openly not answered.
+
+     This replaces TWO earlier behaviours, both wrong in opposite
+     directions. First the sections rendered empty with an editor's
+     to-do in them ("add a documentation: block to …"), published to
+     the public. Then they were hidden when empty, which made every
+     machine a different shape and hid the fact that a write-up is
+     owed at all. Four sections, always, with an honest note.
+
+     WHERE THE CONTENT COMES FROM when it exists:
+       Overview   data/overviews/<slug>.yaml
+       Design     subsystems: and architectureDiagrams: front matter
+       Status     documentation: front matter, plus the build timeline
+       Assembly   assembly: front matter
+
+     The optional data-driven sections below the four (Figures,
+     Timeline, Parts, Builders, References) still appear only when
+     they have rows — they are appendices, not part of the skeleton.
+     ================================================================== */}}
 {{ $hasOverview := index (default dict hugo.Data.overviews) $slug }}
-{{ $showBackground := and .Content (not $hasOverview) }}
-{{ $nav := slice }}
-{{ if $hasOverview }}{{ $nav = $nav | append (dict "id" "overview" "label" "Overview") }}{{ end }}
-{{ if $showBackground }}{{ $nav = $nav | append (dict "id" "background" "label" "Background") }}{{ end }}
-{{/* Design shows if there are subsystems, or diagrams
-     the Overview hasn't already used. */}}
+
+{{/* Diagrams the Overview has not already shown. */}}
 {{ $used := partial "overview-srcs.html" . }}
 {{ $diagrams := .Params.architectureDiagrams | default slice }}
 {{ with .Params.architectureDiagram }}{{ $diagrams = slice (dict "src" .) }}{{ end }}
 {{ $diagramsLeft := 0 }}
 {{ range $diagrams }}{{ if not (in $used (strings.TrimPrefix "/" .src)) }}{{ $diagramsLeft = add $diagramsLeft 1 }}{{ end }}{{ end }}
-{{ $showDesign := or .Params.subsystems (gt $diagramsLeft 0) }}
-{{ if $showDesign }}{{ $nav = $nav | append (dict "id" "design" "label" "Design") }}{{ end }}
-{{/* "Documentation" said nothing on a page that is entirely
-     documentation. This section carries the write-up and the build
-     timeline, so it is Progress; Assembly is the one after it.
+{{ $hasDesign := or .Params.subsystems (gt $diagramsLeft 0) }}
 
-     NEITHER RENDERS EMPTY ANY MORE. They used to appear on every
-     machine written up or not, and on the seventeen machines with no
-     write-up that meant two headings over two placeholders: one
-     telling the *public* to "add a documentation: block to
-     content/machines/<slug>.md", the other asserting "the parts are
-     not in hand yet" — false for anything already in build. Between
-     them they put ~28rem of empty page under every stub.
+{{ $nav := slice
+    (dict "id" "overview" "label" "Overview")
+    (dict "id" "design"   "label" "Design")
+    (dict "id" "status"   "label" "Status")
+    (dict "id" "assembly" "label" "Assembly") }}
 
-     An editor's to-do list is not documentation, and a half-filled
-     page reads worse than a short one. A machine now shows the
-     sections it actually has; the rest of the page — breadcrumb,
-     summary, build state, siblings — still says where it stands. */}}
-{{ if .Params.documentation }}{{ $nav = $nav | append (dict "id" "progress" "label" "Progress") }}{{ end }}
-{{ if .Params.assembly }}{{ $nav = $nav | append (dict "id" "assembly" "label" "Assembly") }}{{ end }}
 {{ $photosLeft := 0 }}
 {{ range .Params.documentationPhotos }}{{ if not (in $used (strings.TrimPrefix "/" .src)) }}{{ $photosLeft = add $photosLeft 1 }}{{ end }}{{ end }}
 {{ if gt $photosLeft 0 }}{{ $nav = $nav | append (dict "id" "documentation-photos" "label" "Figures") }}{{ end }}
@@ -106,10 +114,11 @@
 {{ if $contributors }}{{ $nav = $nav | append (dict "id" "contributors" "label" "Builders") }}{{ end }}
 {{ if $references }}{{ $nav = $nav | append (dict "id" "references" "label" "References") }}{{ end }}
 
-{{/* Must match the threshold inside doc-nav.html: the class adds the
-     bar's height to every anchor's scroll offset, so it can only be
-     set when the bar is actually on the page. */}}
-{{ $showJump := gt (len $nav) 2 }}
+{{/* The skeleton is four sections, so the jump bar is always on the
+     page and .has-jump is unconditional. doc-nav.html no longer
+     applies a threshold of its own — there is nothing left to
+     disagree about. */}}
+{{ $showJump := true }}
 
 {{ $subsystems := .Params.subsystems | default slice }}
 
@@ -189,10 +198,25 @@
 
   {{ partial "doc-nav.html" $nav }}
 
-  {{/* ---------- Overview (data/overviews/<slug>.yaml) ---------- */}}
+  {{/* ---------- 1. OVERVIEW ----------
+       data/overviews/<slug>.yaml when it exists, otherwise the note.
+       The markdown body of the machine's own file used to render here
+       as "Background" when there was no overview; it was the same
+       prose twice and it is gone. */}}
+  {{ if $hasOverview }}
   {{ partial "doc-overview.html" . }}
+  {{ else }}
+  <section>
+    <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
+      {{ partial "doc-section-head.html" (dict "id" "overview" "title" "Overview") }}
+      {{ partial "doc-placeholder.html" (printf "What the %s does, how it fits into the line, and why the fab needs one." .Title) }}
+    </div>
+  </section>
+  {{ end }}
 
-  {{/* ---------- Photos of the machine itself ---------- */}}
+  {{/* ---------- Photographs of the machine itself ----------
+       Outside the four sections: a photograph is evidence, not a
+       write-up, and it shows only when there is one. */}}
   {{ with .Params.photos }}
   <section>
     <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
@@ -203,7 +227,7 @@
           <div class="doc-frame p-3">
             <img src="{{ strings.TrimPrefix "/" (.src) | relURL }}"
                  alt="{{ .caption | default (printf "%s in the lab" $.Title) }}"
-                 loading="lazy"
+                 loading="lazy" decoding="async"
                  class="w-full {{ if $single }}max-h-[32.5rem]{{ else }}h-72{{ end }} object-contain" />
           </div>
           {{ with .caption }}
@@ -216,32 +240,19 @@
   </section>
   {{ end }}
 
-  {{/* ---------- Background (the markdown body of the machine's file) ---------- */}}
-  {{ if $showBackground }}
-  <section>
-    <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
-      {{ partial "doc-section-head.html" (dict "id" "background" "title" "Background") }}
-      <div class="doc-prose max-w-2xl">{{ .Content }}</div>
-    </div>
-  </section>
-  {{ end }}
-
-  {{/* ---------- Design ----------
-       Was "Architecture". The section holds subsystems and diagrams —
-       optics, motion, vacuum — and "architecture" read as a software
-       word applied to hardware. The front-matter keys stay
-       architectureDiagram(s): renaming them would mean editing every
-       content file for a key no reader ever sees. */}}
-  {{ if $showDesign }}
+  {{/* ---------- 2. DESIGN ----------
+       Was "Architecture". It holds the subsystem breakdown and the
+       block diagrams — optics, motion, vacuum, control — and
+       "architecture" read as a software word applied to hardware. The
+       front-matter keys stay architectureDiagram(s): renaming them
+       would mean editing every content file for a key no reader ever
+       sees. */}}
   <section>
     <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
       {{ partial "doc-section-head.html" (dict "id" "design" "title" "Design") }}
 
-      {{/* Block diagrams, if there are any. Put the image file in
-           static/images/machines/ and point architectureDiagrams at
-           it in the machine's front matter. */}}
+      {{ if $hasDesign }}
       {{ partial "doc-diagrams.html" . }}
-
       {{ with $subsystems }}
       {{/* The parts list: name and what it does, divided by
            hairlines. No index numerals — they were decoration (§2). */}}
@@ -256,12 +267,15 @@
         {{ end }}
       </ul>
       {{ end }}
+      {{ else }}
+      {{ partial "doc-placeholder.html" "How it is built: the subsystems it breaks into, the block diagram, and the decisions behind them." }}
+      {{ end }}
     </div>
   </section>
-  {{ end }}
 
-  {{ if .Params.documentation }}{{ partial "doc-writeup.html" . }}{{ end }}
-  {{ if .Params.assembly }}{{ partial "doc-assembly.html" . }}{{ end }}
+  {{/* ---------- 3. STATUS and 4. ASSEMBLY ---------- */}}
+  {{ partial "doc-writeup.html" . }}
+  {{ partial "doc-assembly.html" . }}
   {{ partial "doc-photos.html" . }}
 
   {{ with $timeline }}{{ partial "doc-timeline.html" . }}{{ end }}

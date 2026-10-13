@@ -1,5 +1,9 @@
 {{/* ==================================================================
-     ADVISORS — faculty who advise the club.
+     ADVISORS — the people outside the club who advise it.
+
+     NOT "Faculty Advisors" any more. They are not all faculty: the
+     Minnesota Robotics Institute group is staff, and the heading had
+     to stop claiming otherwise before they could be listed.
 
      Content comes from data/advisors.yaml. Add, remove or reorder
      people there; nothing in this file needs editing.
@@ -67,7 +71,7 @@
 <section id="advisors" class="bg-paper">
   <div class="mx-auto max-w-6xl px-6 py-28 lg:py-40">
 
-    {{ partial "section-head.html" (dict "title" "Faculty Advisors") }}
+    {{ partial "section-head.html" (dict "title" "Advisors") }}
 
     {{ range $gi, $g := $groups }}
     <div class="{{ if eq $gi 0 }}mt-14 sm:mt-20{{ else }}mt-20 sm:mt-28{{ end }}">
@@ -131,7 +135,13 @@
 
           {{ with $a.link }}
           {{/* "LinkedIn" for linkedin.com links, "Faculty page"
-               otherwise; linkLabel in data/advisors.yaml overrides. */}}
+               otherwise; linkLabel in data/advisors.yaml overrides.
+
+               SET linkLabel FOR ANYONE WHO IS NOT FACULTY. The
+               default calls every non-LinkedIn link a faculty page,
+               which is wrong for the Minnesota Robotics Institute
+               staff and would be wrong for a lab manager or a
+               graduate mentor too. */}}
           {{ $label := cond (in (lower .) "linkedin.com") "LinkedIn" "Faculty page" }}
           {{ with $a.linkLabel }}{{ $label = . }}{{ end }}
           <a href="{{ . }}" rel="noopener"

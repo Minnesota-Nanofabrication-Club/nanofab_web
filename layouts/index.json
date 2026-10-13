@@ -62,7 +62,7 @@
 {{- /* ---------- Fixed homepage sections ---------- */ -}}
 {{- $sections := slice
       (dict "title" "Team"      "url" (print (relURL "") "#team")      "summary" "Everyone building the fab.")
-      (dict "title" "Advisors"  "url" (print (relURL "") "#advisors")  "summary" "Faculty advisors and graduate mentors.")
+      (dict "title" "Advisors"  "url" (print (relURL "") "#advisors")  "summary" "The faculty and staff who advise the club.")
       (dict "title" "Sponsors"  "url" (print (relURL "") "#sponsors")  "summary" "The companies backing the build.")
 -}}
 {{- range $sections -}}

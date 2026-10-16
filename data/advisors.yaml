@@ -96,6 +96,13 @@
   link: "https://cse.umn.edu/cems/chris-leighton"
   photo: "/images/advisors/chris-leighton.jpg"
 
+- name: Christopher Ellison
+  dept: Chemical Engineering & Materials Science
+  role: "Professor · Faculty Director, IPRIME"
+  bio: "Polymer thin films and photopatterning. Sub-20 nm lithography by self-assembly."
+  link: "https://cse.umn.edu/cems/christopher-ellison"
+  photo: "/images/advisors/christopher-ellison.jpg"
+
 - name: Travis Henderson
   dept: Minnesota Robotics Institute
   role: "MnRI Operation & Research Support"

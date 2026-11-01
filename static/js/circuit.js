@@ -2,10 +2,10 @@
    The circuitry at the seams between sections.
 
    Wherever one section of a page meets the next (and where the last
-   one meets the footer), a small bus of traces runs in from the edge of
-   the page, steps across the seam at 45 degrees and ends in a row of
-   vias in the next section, as if the two were wired together. Nothing
-   is drawn anywhere else. Each bus draws itself as it scrolls into
+   one meets the footer), short buses of traces run in from the edge of
+   the page along the seam, then step away from it at 45 degrees into
+   their own section and end in vias. They never cross the seam, and
+   nothing is drawn anywhere else. Each bus draws itself as it scrolls into
    view (README, "The circuitry").
 
    Decoration only: aria-hidden, no pointer events, and the page is
@@ -81,34 +81,38 @@
     function inside(x) { return x > margin && x < W - margin; }
     function add(n, y) { drawn.push({ y: y, n: n }); }
 
-    // one bus across the seam at y, from the left (side -1) or right (1)
-    function bus(side, y) {
-      var n = 2 + Math.floor(R() * 3), pitch = 8;
-      var room = Math.max(70, Math.min(margin + 40, 260));
-      var run = room * (0.25 + R() * 0.25);       // along the upper section
-      var drop = 34 + R() * 26;                    // how far above / below the seam it starts and ends
+    // one bus beside the seam at y, from the left (side -1) or right
+    // (1), in the section above (dir -1) or below (1). The traces run
+    // along the seam, then step 45 degrees away from it, into their own
+    // section, and end in vias; they never cross the seam.
+    function bus(side, y, dir) {
+      var n = 2 + Math.floor(R() * 2), pitch = 6;
+      var room = Math.max(60, Math.min(margin * 0.8, 150));
+      var run = room * (0.35 + R() * 0.3);        // along the seam
+      var rise = 8 + R() * 8;                      // the shallow step into the section
       var sx = function (v) { return side < 0 ? v : W - v; };
       for (var i = 0; i < n; i++) {
-        var y0 = y - drop - (n - 1 - i) * pitch;   // innermost trace is the highest
-        var y1 = y + drop + i * pitch * 0.6;
-        var a = run + i * pitch * 0.42;            // where it turns down
-        var b = a + (y1 - y0);                     // 45 degrees across the seam
-        var tail = 10 + R() * 30 + i * 6;
-        var pts = [[sx(-2), y0], [sx(a), y0], [sx(b), y1], [sx(b + tail), y1]];
+        var y0 = y + dir * (10 + i * pitch);       // nearest the seam first
+        var y1 = y0 + dir * rise;
+        var a = run - i * pitch * 0.42;            // outer traces turn first, so they never touch
+        var tail = 14 + R() * 8 + i * 11;          // vias stagger, never overlap
+        var pts = [[sx(-2), y0], [sx(a), y0], [sx(a + rise), y1], [sx(a + rise + tail), y1]];
         var d = 'M' + pts.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join('L');
         var end = pts[3];
         var cls = inside(end[0]) ? ' c-in' : '';
-        add(el('path', { d: d, pathLength: 1, class: 'c-trace' + cls }, board), y0);
-        add(el('circle', { cx: end[0].toFixed(1), cy: end[1].toFixed(1), r: 3.2, class: 'c-via' + cls }, board), y0);
+        add(el('path', { d: d, pathLength: 1, class: 'c-trace' + cls }, board), y);
+        add(el('circle', { cx: end[0].toFixed(1), cy: end[1].toFixed(1), r: 2.8, class: 'c-via' + cls }, board), y);
       }
     }
 
-    // every seam gets a bus; sides alternate, and wide screens
-    // sometimes wire both sides
+    // every seam gets a pair of buses on one side, one turning up into
+    // the section above and one down into the section below; sides
+    // alternate, and wide screens sometimes add one on the other side
     list.forEach(function (y, k) {
       var side = (k + (R() < 0.5 ? 0 : 1)) % 2 ? 1 : -1;
-      bus(side, y);
-      if (margin > 120 && R() < 0.35) bus(-side, y);
+      bus(side, y, -1);
+      bus(side, y, 1);
+      if (margin > 120 && R() < 0.35) bus(-side, y, R() < 0.5 ? -1 : 1);
     });
 
     drawn.sort(function (a, b) { return a.y - b.y; });

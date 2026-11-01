@@ -79,6 +79,7 @@ disableKinds = ["taxonomy", "term"]
   githubURL = "https://github.com/minnesota-nanofabrication-club"
   linkedinURL = "https://www.linkedin.com/company/minnesota-nanofabrication-club/"
   instagramURL = "https://www.instagram.com/minnesota_nanofab_club/?hl=en"
+  youtubeURL = "https://www.youtube.com/@MinnesotaNanofabricationCl-q4d"
   contactEmail = "nanoclub@umn.edu"
 
   # ---------------- Incubator ----------------

@@ -220,10 +220,11 @@ a serif heading and one line on the left, the ways in on the right as
 whole-row links (serif label, one-line description, arrow) between
 hairlines. One per page at most, at the end (homepage, /events/, /join/).
 
-**The circuitry** (`static/js/circuit.js`). Only at the seams: a small
-bus of 2 to 4 UV traces runs in from the page edge, crosses the border
-between two sections at 45 degrees and ends in vias in the next one, so
-the sections look wired together. Nothing in the open margins.
+**The circuitry** (`static/js/circuit.js`). Only at the seams: short
+buses of 2 or 3 UV traces run in from the page edge along the border
+between two sections, step away from it at 45 degrees into their own
+section and end in vias; one bus above the seam, one below. Mostly
+horizontal, never crossing the seam, nothing in the open margins.
 
 **Footer.** Dark. Brand and blurb, Explore / Docs / Connect columns, then the University's required legal
 block **last**, on its own (README, "UMN branding rules").

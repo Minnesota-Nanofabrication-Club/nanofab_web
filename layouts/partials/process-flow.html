@@ -1,8 +1,11 @@
 {{/* ==============================================================
      THE PROCESS FLOW at the top of /machines/: how a chip is made,
      one card per step, left to right, from data/process.yaml.
-     Each card shows the step's first machine and links every machine
-     that does it to its card further down the page.
+     Each card shows the wafer after that step (a photo when the step
+     has `photo:`, otherwise the drawn cross-section from
+     static/images/process/), what happens, and links every machine
+     that does it to that machine's page on the docs site. Hovering
+     (or focusing) a card widens it and shows `details`.
 
      The track is an ordinary horizontal scroller (touch, trackpad,
      Shift+wheel and the arrow keys all work); site.js adds dragging
@@ -19,7 +22,7 @@
         <h2 class="h2 flow-title" id="process-h">From bare wafer to working chip, in {{ $n }} steps.</h2>
       </div>
       <div class="flow-aside">
-        <p>Drag or swipe along the line to follow a wafer through the fab. Each step names the machines that do it; select one to read about it below.</p>
+        <p>Drag or swipe along the line to follow a wafer through the fab. Hover over a step for more; each machine links to its documentation.</p>
         <div class="flow-ctrl" data-flow-ctrl hidden>
           <button class="flow-btn" type="button" data-flow-prev aria-label="Previous step"><span aria-hidden="true">←</span></button>
           <button class="flow-btn" type="button" data-flow-next aria-label="Next step"><span aria-hidden="true">→</span></button>
@@ -37,25 +40,25 @@
       {{ $last := and $s.loop (not $next.loop) }}
       {{/* machines still marked draft are left out until they are published */}}
       {{ $ms := slice }}{{ range $s.machines }}{{ with site.GetPage (printf "/machines/%s" .) }}{{ $ms = $ms | append . }}{{ end }}{{ end }}
-      {{ $main := index $ms 0 }}
+      {{ $img := $s.photo | default (printf "images/process/%s.svg" (urlize $s.name)) }}
       <li class="fstep{{ if $s.loop }} is-loop{{ end }}{{ if $first }} loop-first{{ end }}{{ if $last }} loop-last{{ end }}">
         {{ if $first }}<span class="loop-label">Repeated for every layer</span>{{ end }}
-        <div class="fstep-card">
-          {{ with $main }}
-          {{ $kind := cond (eq .Params.band "cheme") "chemistry" (.Params.process | default "machine") }}
-          {{ $img := .Params.image | default (printf "images/machines/placeholders/%s.svg" $kind) }}
-          <figure class="fstep-media{{ if not .Params.image }} is-placeholder{{ end }}">
-            <img src="{{ strings.TrimPrefix "/" $img | relURL }}" alt="" width="800" height="600" loading="lazy" decoding="async" draggable="false" />
+        <div class="fstep-card" tabindex="0">
+          <figure class="fstep-media{{ if not $s.photo }} is-diagram{{ end }}">
+            <img src="{{ strings.TrimPrefix "/" $img | relURL }}" alt="{{ if $s.photo }}The wafer after: {{ $s.name | lower }}{{ else }}Cross-section of the wafer after: {{ $s.name | lower }}{{ end }}" width="800" height="600" loading="lazy" decoding="async" draggable="false" />
           </figure>
-          {{ end }}
           <div class="fstep-text">
             <span class="fstep-n">Step {{ add $i 1 }}</span>
             <h3 class="fstep-name">{{ $s.name }}</h3>
             <p>{{ $s.text }}</p>
+            {{ with $s.details }}<div class="fstep-more"><p>{{ . }}</p></div>{{ end }}
           </div>
-          <ul class="fstep-machines" aria-label="Machines">
+          <ul class="fstep-machines" aria-label="Machines, on the docs site">
             {{ range $ms }}
-            <li><a href="#{{ .File.ContentBaseName }}" draggable="false"><span>{{ .Title }}</span>{{ partial "icon.html" "arrow" }}</a></li>
+            {{ $docs := .Params.docs | default (printf "%s%s%s.html" site.Params.docsURL site.Params.docsMachinePath .File.ContentBaseName) }}
+            <li><a href="{{ $docs }}" target="_blank" rel="noopener" draggable="false"><span>{{ .Title }}</span>{{ partial "icon.html" "ne" }}</a></li>
+            {{ else }}
+            <li class="fstep-none">Machine still being designed</li>
             {{ end }}
           </ul>
         </div>

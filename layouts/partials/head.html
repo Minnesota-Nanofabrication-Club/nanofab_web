@@ -63,7 +63,7 @@
   {{ $homeURL := $site.Home.Permalink }}
   {{ $orgID := printf "%s#organization" $homeURL }}
   {{ $sameAs := slice }}
-  {{ range slice $site.Params.linkedinURL $site.Params.instagramURL $site.Params.githubURL }}{{ with . }}{{ $sameAs = $sameAs | append . }}{{ end }}{{ end }}
+  {{ range slice $site.Params.linkedinURL $site.Params.instagramURL $site.Params.youtubeURL $site.Params.githubURL }}{{ with . }}{{ $sameAs = $sameAs | append . }}{{ end }}{{ end }}
   {{ $org := dict "@type" "Organization" "@id" $orgID "name" $site.Title "url" $homeURL "description" $site.Params.description "sameAs" $sameAs "disambiguatingDescription" $site.Params.umn.rsoDisclaimer }}
   {{ with $site.Params.logo }}{{ $org = merge $org (dict "logo" (strings.TrimPrefix "/" . | absURL)) }}{{ end }}
   {{ with $site.Params.contactEmail }}{{ $org = merge $org (dict "email" .) }}{{ end }}

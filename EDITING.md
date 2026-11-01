@@ -241,7 +241,7 @@ Open `hugo.toml`:
 
 - `heroTitle`: the big headline. `heroLead`: the paragraph under it.
 - `heroImage`: the photo behind it.
-- `discordURL`, `instagramURL`, `linkedinURL`, `githubURL`, `contactEmail`.
+- `discordURL`, `instagramURL`, `youtubeURL`, `linkedinURL`, `githubURL`, `contactEmail`.
 - `docsURL`: where the documentation site lives. `docsOnboardingPath`: the
   docs page the Join page's "Read the onboarding guide" step opens.
 - `incubatorFormURL`: the "Propose a project" form at the bottom of /machines/.

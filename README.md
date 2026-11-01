@@ -184,8 +184,9 @@ only used to group people on /team/.
 
 The top of /machines/ is a flowchart of how a chip is made: one card per
 step, left to right, joined by arrows. Visitors drag it with the mouse
-(or swipe / scroll it sideways). Hovering over a card opens more detail
-under its summary (only that card grows); on phones the detail is always shown. Each machine named on
+(or swipe / scroll it sideways). At rest a card shows only the step name, a
+picture and its machines; hovering over it opens what happens and more
+detail (only that card grows); on phones the detail is always shown. Each machine named on
 a step links to that machine's page on the docs site.
 
 The steps live in **`data/process.yaml`**: a `name`, one or two sentences

@@ -489,7 +489,9 @@
   .fstep-card { position: relative; display: flex; flex-direction: column; width: clamp(260px, 24vw, 310px); min-height: var(--fstep-h, 0); background: var(--white); border: 1px solid var(--line); border-top: 2px solid var(--fg); transition: border-color .25s, box-shadow .45s var(--ease); }
   .fstep-card:focus-visible { outline-offset: 2px; }
   .fstep-more { display: grid; grid-template-rows: 0fr; margin-top: 0; opacity: 0; transition: grid-template-rows .45s var(--ease), margin-top .45s var(--ease), opacity .3s; }
-  .fstep-text .fstep-more p { min-height: 0; margin: 0; overflow: hidden; color: var(--fg); }
+  .fstep-more > div { min-height: 0; overflow: hidden; }
+  .fstep-text .fstep-more p { margin: 0; }
+  .fstep-text .fstep-more p + p { margin-top: 10px; color: var(--fg); }
   @media (hover: hover) {
     .flow-track:not(.is-dragging) .fstep-card:hover, .fstep-card:focus-within { border-top-color: var(--uv); box-shadow: 0 24px 48px -32px rgba(28,19,48,.45); }
     .flow-track:not(.is-dragging) .fstep-card:hover .fstep-more, .fstep-card:focus-within .fstep-more { grid-template-rows: 1fr; margin-top: 12px; opacity: 1; }
@@ -503,7 +505,7 @@
   .fstep-n { font-size: 13.5px; color: var(--uv); font-weight: 500; }
   .fstep-name { margin-top: 6px; font-size: clamp(24px, 2vw, 30px); line-height: 1.1; }
   .fstep-text p { margin-top: 10px; font-size: 15.5px; line-height: 1.55; color: var(--muted); }
-  .fstep-machines { margin-top: auto; padding: 18px 22px 20px; }
+  .fstep-machines { margin-top: auto; padding: 16px 22px 18px; }
   .fstep-machines li { border-top: 1px solid var(--line); }
   .fstep-machines a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; font-size: 15px; font-weight: 450; transition: color .2s; }
   .fstep-machines a svg { width: 12px; height: 12px; flex: none; transition: transform .3s var(--ease); }

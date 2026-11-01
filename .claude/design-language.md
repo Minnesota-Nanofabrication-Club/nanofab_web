@@ -191,7 +191,7 @@ Without JavaScript all cards render open.
 **Status** (`partials/status.html`). A 7px dot plus a word, never colour
 alone: Planned (hollow), In build (filled `--fg`), Operational (filled UV).
 
-**People.** Circular greyscale portraits that turn to colour on hover; name
+**People.** Square portraits in full colour; name
 in Geist, roles in small mono caps. Machine roles link to the machine card.
 
 **News list** (`.news`). Date/kicker in mono, title large, arrow right; a

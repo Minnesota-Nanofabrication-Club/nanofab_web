@@ -24,8 +24,13 @@
 
 @layer base {
   :root {
-    /* UV: the logo's purple, lifted to read as light. */
+    /* THE CLUB PURPLE. Fixed: do not tweak these per component, use the
+       tokens. --uv is the brand colour (buttons, links, the current
+       page); --uv-press is the same hue pressed (hover / active on a
+       purple fill); --uv-bright is --uv lifted to read on black;
+       --plum is the darkest step, for dark panels. design-language §2. */
     --uv: #6d28d9;          /* on white / paper: 7.1:1 */
+    --uv-press: #5b21b6;
     --uv-bright: #a78bfa;   /* on black: 7.9:1 */
     --uv-deep: #42245f;     /* the logo itself */
     --uv-glow: 124, 58, 237;
@@ -59,7 +64,7 @@
   :focus-visible { outline: 2px solid var(--accent, var(--uv)); outline-offset: 3px; }
   h1, h2, h3, h4 { font-weight: 400; overflow-wrap: break-word; }
   /* headings are set in the serif; names of people stay in Plex */
-  .h1, .h2, .h3, .hero-title, .page-title, .statement, .path h3, .band-head h2, .mcard-title, .incubator-title, .news h3, .cta-block, .menu-main a, .partner h3, .prose h2, .prose h3, .pager b, .advisor h4, .cal-month, .fstep-name { font-family: var(--serif); letter-spacing: -.012em; }
+  .h1, .h2, .h3, .hero-title, .page-title, .statement, .path h3, .band-head h2, .mcard-title, .incubator-title, .news h3, .menu-main a, .partner h3, .prose h2, .prose h3, .pager b, .advisor h4, .cal-month, .fstep-name { font-family: var(--serif); letter-spacing: -.012em; }
 }
 
 @layer components {
@@ -95,7 +100,7 @@
   .btn svg { box-sizing: content-box; width: 12px; height: 12px; padding: 0 13px 0 0; flex: none; border-radius: var(--r-sm); transition: transform .3s var(--ease), background-color .25s; }
   .btn:hover svg { transform: translateX(3px); }
   .btn-solid { --b-bg: var(--uv); --b-fg: #fff; --b-bd: var(--uv); }
-  .btn-solid:hover { --b-bg: #5b21b6; --b-bd: #5b21b6; }
+  .btn-solid:hover { --b-bg: var(--uv-press); --b-bd: var(--uv-press); }
   .btn-line:hover { --b-bd: var(--fg); }
   .btn-sm { min-height: 42px; font-size: 14px; gap: 14px; padding: 0 5px 0 18px; }
   .btn-sm svg { padding: 0 10px 0 0; width: 11px; height: 11px; }
@@ -120,7 +125,7 @@
   .nav-link[aria-current="page"]::after, .nav-link.is-active::after { content: ""; position: absolute; left: 50%; bottom: 3px; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: var(--uv-bright); }
   .nav.on-light .nav-link[aria-current="page"]::after, .nav.on-light .nav-link.is-active::after { background: var(--uv); }
   .nav-cta { display: inline-flex; align-items: center; gap: 0; height: 42px; margin-left: 8px; padding: 0 20px; border-radius: var(--r-sm); background: var(--uv); color: #fff; border: 1px solid var(--uv); font-size: 15px; font-weight: 450; white-space: nowrap; transition: background-color .25s, color .25s, border-color .25s; }
-  .nav-cta:hover { background: #5b21b6; border-color: #5b21b6; }
+  .nav-cta:hover { background: var(--uv-press); border-color: var(--uv-press); }
   .nav-menu { display: grid; width: 42px; height: 42px; place-items: center; margin-left: 6px; border: 1px solid rgba(255,255,255,.3); border-radius: var(--r-sm); transition: border-color .25s; }
   .nav.on-light .nav-menu { border-color: rgba(13,13,14,.3); }
   .nav-menu:hover { border-color: currentColor; }
@@ -410,16 +415,21 @@
   .cal-status:empty{display:none;}
   .subscribe { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px var(--gut); align-items: end; }
 
-  /* ---------- big CTA blocks ---------- */
-  .ctas { display: grid; gap: 12px; margin-top: clamp(64px, 10vh, 120px); }
-  .ctas { grid-template-columns: 1fr 1fr; }
-  .cta-block { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: clamp(112px, 13vw, 196px); padding: 0 clamp(20px, 3vw, 44px); border-radius: var(--r-lg); font-size: clamp(24px, 2.6vw, 40px); font-weight: 400; line-height: 1; letter-spacing: -.02em; transition: background-color .35s var(--ease), color .35s var(--ease); }
-  .cta-block svg { box-sizing: content-box; width: clamp(20px, 2vw, 30px); height: clamp(20px, 2vw, 30px); padding: clamp(14px, 1.4vw, 20px); flex: none; border-radius: var(--r-sm); transition: transform .45s var(--ease); }
-  .cta-block:hover svg { transform: translateX(10px); }
-  .cta-dark { background: var(--plum); color: #f4f4f2; }
-  .cta-dark:hover { background: var(--uv); color: #fff; }
-  .cta-grey { background: var(--paper-2); color: #0d0d0e; }
-  .cta-grey:hover { background: var(--uv); color: #fff; }
+  /* ---------- the invitation (partials/invite.html) ----------
+     One plum panel: a heading on the left, the ways in on the right as
+     whole-row links. Replaces the two big CTA blocks. */
+  .invite { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 32px var(--gut); padding: clamp(28px, 4vw, 56px); background: var(--plum); color: #f4f4f2; border-top: 2px solid var(--uv-bright); }
+  .invite-gap { margin-top: clamp(64px, 10vh, 120px); }
+  .invite-title { font-family: var(--serif); letter-spacing: -.012em; font-size: clamp(30px, 3.2vw, 48px); line-height: 1.05; }
+  .invite-head p { margin-top: 16px; max-width: 40ch; color: rgba(244,244,242,.72); }
+  .invite-acts { align-self: end; border-top: 1px solid rgba(244,244,242,.16); }
+  .invite-acts li { border-bottom: 1px solid rgba(244,244,242,.16); }
+  .invite-act { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px 24px; padding: 20px 4px; transition: color .2s, padding-left .35s var(--ease); }
+  .invite-label { font-family: var(--serif); font-size: clamp(22px, 1.9vw, 28px); line-height: 1.15; letter-spacing: -.012em; }
+  .invite-text { grid-column: 1; font-size: 15px; color: rgba(244,244,242,.66); }
+  .invite-act svg { grid-column: 2; grid-row: 1 / span 2; width: 18px; height: 18px; transition: transform .35s var(--ease); }
+  .invite-act:hover { color: var(--uv-bright); padding-left: 10px; }
+  .invite-act:hover svg { transform: translateX(6px); }
 
   /* ---------- footer ---------- */
   .footer { padding: clamp(72px, 11vh, 128px) 0 28px; }
@@ -486,13 +496,13 @@
   .flow-rail i { position: absolute; inset: 0; background: var(--uv); transform-origin: 0 50%; transform: scaleX(.04); }
 
   /* ---------- the circuitry (static/js/circuit.js) ----------
-     One SVG down to the footer, above section backgrounds (z 1) and
-     below the content (every .wrap is z 2). Faint UV traces and vias,
-     on light and dark alike. */
+     One SVG down to just past the top of the footer, above section
+     backgrounds (z 1) and below the content (every .wrap is z 2). Small
+     UV buses cross each seam between sections; nothing else. */
   .circuit { position: absolute; top: 0; left: 0; width: 100%; z-index: 1; overflow: hidden; pointer-events: none; }
   .circuit svg { display: block; }
   main .wrap { position: relative; z-index: 2; }
-  .c-board { --c: #8b5cf6; opacity: .32; }
+  .c-board { --c: #8b5cf6; opacity: .5; }
   .c-trace { fill: none; stroke: var(--c); stroke-width: 1.2; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.4s var(--ease); }
   .c-trace.on { stroke-dashoffset: 0; }
   .c-via { opacity: 0; fill: none; stroke: var(--c); stroke-width: 1.2; transition: opacity .6s var(--ease) .5s; }
@@ -524,7 +534,7 @@
 }
 @media (max-width: 900px) {
   :root { --nav-h: 60px; }
-  .ctas { grid-template-columns: 1fr; }
+  .invite { grid-template-columns: 1fr; }
   .hero-row { flex-direction: column; align-items: flex-start; gap: 26px; }
   .specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sec-head { grid-template-columns: 1fr; }
@@ -564,7 +574,6 @@
   .news p { grid-column: 1 / -1; }
   .news svg { grid-row: 2; grid-column: 2; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
-  .cta-block { min-height: 104px; }
   .subnav-tools { display: none; }
   .cal-bar{padding:12px;}
   .cal-month{min-width:0;font-size:17px;}

@@ -6,7 +6,7 @@ static site generator: you edit small text files, Hugo turns them into
 plain HTML, and GitHub Pages serves it for free.
 
 The long-form engineering documentation is a **separate site**, built with
-mdBook from the `nanofab_docs` repository. Every machine card here links to
+mdBook from the `nano-book` repository. Every machine card here links to
 its page there.
 
 **Almost everything you will want to change is one small, labelled file.**
@@ -151,7 +151,7 @@ hugo new machines/my-machine.md
 This copies `archetypes/machines.md`, which explains every field. Or just
 copy an existing machine file and change it. Then:
 
-1. **Add its docs page.** In the `nanofab_docs` repository, create
+1. **Add its docs page.** In the `nano-book` repository, create
    `src/machines/my-machine.md` (the **same file name**) and list it in
    `src/SUMMARY.md`. The card's "Full documentation" button links to
    `docsURL` + `machines/my-machine.html` automatically.
@@ -392,13 +392,20 @@ that only JavaScript adds must be listed in `safelist` in
 
 ### The circuitry
 
-The faint traces and vias along the sides of every page are drawn by `static/js/circuit.js` (comments at
-the top explain it). Colours and strength are the `.c-*` rules in
+The traces and vias are drawn by `static/js/circuit.js` (comments at the
+top explain it). They appear only where one section of a page meets the
+next (and at the footer): a few traces run in from the edge, cross the
+border at 45 degrees and end in vias, wiring the two sections together. Colours and strength are the `.c-*` rules in
 `tailwind-input.css`. To turn it off, delete the `circuit.js` line in
 `layouts/_default/baseof.html`.
 
-Fonts are IBM Plex Sans and IBM Plex Mono, self-hosted in `static/fonts/`
-(SIL Open Font License, `static/fonts/IBM-Plex-OFL.txt`).
+Fonts are Newsreader (headings), IBM Plex Sans and IBM Plex Mono,
+self-hosted in `static/fonts/` (SIL Open Font License, see the `*OFL.txt`
+files there).
+
+The club purple is fixed at **`#6d28d9`** (`--uv`), with `--uv-press`,
+`--uv-bright` and `--plum` as its only variations. See
+`.claude/design-language.md`, "Colour".
 
 ---
 

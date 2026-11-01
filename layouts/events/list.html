@@ -80,9 +80,14 @@
     </div>
     {{ end }}
 
-    <div class="ctas">
-      <a class="cta-block cta-dark reveal" href="{{ "join/" | relURL }}">Join the club {{ partial "icon.html" "big-arrow" }}</a>
-      {{ with site.Params.contactEmail }}<a class="cta-block cta-grey reveal" href="mailto:{{ . }}?subject=Speaking%20at%20Minnesota%20Nanofabrication">Give a talk {{ partial "icon.html" "big-arrow" }}</a>{{ end }}
+    {{ $mail := "" }}{{ with site.Params.contactEmail }}{{ $mail = printf "mailto:%s?subject=Speaking%%20at%%20Minnesota%%20Nanofabrication" . }}{{ end }}
+    <div class="invite-gap">
+    {{ partial "invite.html" (dict
+         "title" "Come to the next one."
+         "lead" "Events are open to everyone. Members hear about them first on the Discord."
+         "actions" (slice
+           (dict "label" "Join the club" "text" "Get into the Discord and onto a project." "href" ("join/" | relURL))
+           (dict "label" "Give a talk" "text" "Work in semiconductors or nanofab? We would love to host you." "href" $mail))) }}
     </div>
   </div>
 </section>

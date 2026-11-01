@@ -1,11 +1,12 @@
 /* =====================================================================
-   The circuitry along the sides of every page.
+   The circuitry at the seams between sections.
 
-   Traces ending in vias, drawn faintly into one SVG that covers the
-   page down to the footer, between the section backgrounds and the
-   content (README, "The circuitry"). Near the top they only live in the
-   margins; further down there are a few more and they reach a little
-   further in. Each trace draws itself as it scrolls into view.
+   Wherever one section of a page meets the next (and where the last
+   one meets the footer), a small bus of traces runs in from the edge of
+   the page, steps across the seam at 45 degrees and ends in a row of
+   vias in the next section, as if the two were wired together. Nothing
+   is drawn anywhere else. Each bus draws itself as it scrolls into
+   view (README, "The circuitry").
 
    Decoration only: aria-hidden, no pointer events, and the page is
    unchanged without JavaScript. To turn it off, delete the <script> tag
@@ -23,7 +24,7 @@
   var footer = document.querySelector('.footer');
   var drawn = [], next = 0, lastKey = '';
 
-  // seeded random, so the same page always gets the same board
+  // seeded random, so the same page always gets the same wiring
   function rng(seed) {
     return function () {
       seed |= 0; seed = seed + 0x6D2B79F5 | 0;
@@ -40,17 +41,30 @@
   }
   function seedOf(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619); return h; }
 
+  // where one section meets the next: the top of every top-level
+  // section after the first, and the top of the footer
+  function seams() {
+    var ys = [];
+    var secs = document.querySelectorAll('main > section');
+    for (var i = 1; i < secs.length; i++) {
+      if (secs[i].offsetHeight < 40) continue;
+      ys.push(Math.round(secs[i].getBoundingClientRect().top + scrollY));
+    }
+    if (footer && secs.length) ys.push(footer.offsetTop);
+    return ys;
+  }
+
   function build() {
     // measure the page without the layer, or a page that got shorter
     // (a band folded) would stay as tall as the old layer
     layer.style.height = '0';
     var W = document.documentElement.clientWidth;
-    var H = footer ? footer.offsetTop + footer.offsetHeight : document.documentElement.scrollHeight;
-    var key = W + 'x' + H;
-    if (key === lastKey) { layer.style.height = (footer ? footer.offsetTop : H) + 'px'; return; }
+    var list = seams();
+    var H = (footer ? footer.offsetTop : document.documentElement.scrollHeight) + 140;
+    var key = W + 'x' + list.join(',');
+    if (key === lastKey) { layer.style.height = H + 'px'; return; }
     lastKey = key;
 
-    var fTop = footer ? footer.offsetTop : H;
     var css = getComputedStyle(document.documentElement);
     var maxw = parseFloat(css.getPropertyValue('--maxw')) || 1440;
     var gut = Math.min(56, Math.max(16, W * 0.04));
@@ -58,64 +72,44 @@
     var R = rng(seedOf(location.pathname) ^ W);
 
     layer.textContent = '';
-    layer.style.height = fTop + 'px';
-    var svg = el('svg', { width: W, height: fTop, viewBox: '0 0 ' + W + ' ' + fTop }, layer);
+    layer.style.height = H + 'px';
+    var svg = el('svg', { width: W, height: H, viewBox: '0 0 ' + W + ' ' + H }, layer);
     var board = el('g', { class: 'c-board' }, svg);
     drawn = []; next = 0;
 
-    // how deep we are (0 at the top, 1 at the footer) and how far in
-    // the circuitry may reach from each edge at that depth
-    function depth(y) { return Math.max(0, Math.min(1, y / Math.max(1, fTop))); }
-    function reach(y) {
-      return Math.max(10, margin - 6) + Math.pow(depth(y), 2.2) * 0.3 * (W / 2 - margin);
-    }
+    // anything reaching into the content column is drawn fainter
+    function inside(x) { return x > margin && x < W - margin; }
+    function add(n, y) { drawn.push({ y: y, n: n }); }
 
-    // anything reaching into the content column is drawn fainter, so
-    // text over it stays easy to read
-    function inside(pts) {
-      for (var i = 0; i < pts.length; i++) if (pts[i][0] > margin && pts[i][0] < W - margin && true) return true;
-      return false;
-    }
-    function trace(pts, y, cls) {
-      var d = 'M' + pts.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join('L');
-      var p = el('path', { d: d, pathLength: 1, class: 'c-trace' + (cls ? ' ' + cls : '') + (inside(pts) ? ' c-in' : '') }, board);
-      drawn.push({ y: y, n: p });
-      return p;
-    }
-    function via(x, y) {
-      var c = el('circle', { cx: x.toFixed(1), cy: y.toFixed(1), r: 3.2, class: 'c-via' + (inside([[x, y]]) ? ' c-in' : '') }, board);
-      drawn.push({ y: y, n: c });
-    }
-    // a bus: n parallel traces leaving one edge, stepping 45 degrees
-    // up or down partway, ending in a staggered row of vias
-    function bus(side, y, room) {
-      var n = 1 + Math.floor(R() * (room > 120 ? 4 : 2)), pitch = 7;
-      var len1 = room * (0.25 + R() * 0.35), len2 = room * (0.15 + R() * 0.3);
-      var dy = (R() < 0.5 ? -1 : 1) * (12 + R() * 40);
+    // one bus across the seam at y, from the left (side -1) or right (1)
+    function bus(side, y) {
+      var n = 2 + Math.floor(R() * 3), pitch = 8;
+      var room = Math.max(70, Math.min(margin + 40, 260));
+      var run = room * (0.25 + R() * 0.25);       // along the upper section
+      var drop = 34 + R() * 26;                    // how far above / below the seam it starts and ends
+      var sx = function (v) { return side < 0 ? v : W - v; };
       for (var i = 0; i < n; i++) {
-        var yy = y + i * pitch, a = len1 + (dy > 0 ? (n - i) : i) * pitch * 0.42;
-        var b = Math.min(room - 8, a + Math.abs(dy) + len2 + i * 9);
-        var sx = function (v) { return side < 0 ? v : W - v; };
-        var pts = [[sx(-2), yy], [sx(a), yy], [sx(a + Math.abs(dy)), yy + dy], [sx(b), yy + dy]];
-        if (b <= a + Math.abs(dy)) pts.pop();
-        trace(pts, yy);
-        var end = pts[pts.length - 1];
-        via(end[0], end[1]);
+        var y0 = y - drop - (n - 1 - i) * pitch;   // innermost trace is the highest
+        var y1 = y + drop + i * pitch * 0.6;
+        var a = run + i * pitch * 0.42;            // where it turns down
+        var b = a + (y1 - y0);                     // 45 degrees across the seam
+        var tail = 10 + R() * 30 + i * 6;
+        var pts = [[sx(-2), y0], [sx(a), y0], [sx(b), y1], [sx(b + tail), y1]];
+        var d = 'M' + pts.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join('L');
+        var end = pts[3];
+        var cls = inside(end[0]) ? ' c-in' : '';
+        add(el('path', { d: d, pathLength: 1, class: 'c-trace' + cls }, board), y0);
+        add(el('circle', { cx: end[0].toFixed(1), cy: end[1].toFixed(1), r: 3.2, class: 'c-via' + cls }, board), y0);
       }
     }
-    // walk down the page; each step may drop a bus on each side
-    var y = 120;
-    while (y < fTop - 80) {
-      var d = depth(y), step = 380 - 200 * d;
-      [-1, 1].forEach(function (side) {
-        if (R() > 0.4 + d * 0.5) return;
-        var yy = y + R() * step;
-        if (yy > fTop - 80) return;
-        var room = reach(yy);
-        bus(side, yy, room);
-      });
-      y += step;
-    }
+
+    // every seam gets a bus; sides alternate, and wide screens
+    // sometimes wire both sides
+    list.forEach(function (y, k) {
+      var side = (k + (R() < 0.5 ? 0 : 1)) % 2 ? 1 : -1;
+      bus(side, y);
+      if (margin > 120 && R() < 0.35) bus(-side, y);
+    });
 
     drawn.sort(function (a, b) { return a.y - b.y; });
     if (reduce) drawn.forEach(function (o) { o.n.classList.add('on'); });

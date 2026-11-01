@@ -1,0 +1,26 @@
+{{/* ==============================================================
+     THE INVITATION at the foot of the homepage, /events/ and /join/:
+     one plum panel with a heading on the left and a short list of
+     ways in on the right, each a whole-row link.
+       {{ partial "invite.html" (dict
+            "title" "Come build a fab with us."  "lead" "…"
+            "actions" (slice (dict "label" "Join the club" "text" "…" "href" "…" "ext" false)) ) }}
+     `ext` true opens the link in a new tab and swaps the arrow.
+     ============================================================== */}}
+<div class="invite reveal">
+  <div class="invite-head">
+    <h2 class="invite-title">{{ .title }}</h2>
+    {{ with .lead }}<p>{{ . }}</p>{{ end }}
+  </div>
+  <ul class="invite-acts">
+    {{ range .actions }}
+    {{ if .href }}
+    <li><a class="invite-act" href="{{ .href }}"{{ if .ext }} target="_blank" rel="noopener"{{ end }}>
+      <span class="invite-label">{{ .label }}</span>
+      {{ with .text }}<span class="invite-text">{{ . }}</span>{{ end }}
+      {{ partial "icon.html" (cond (.ext | default false) "ne" "arrow") }}
+    </a></li>
+    {{ end }}
+    {{ end }}
+  </ul>
+</div>

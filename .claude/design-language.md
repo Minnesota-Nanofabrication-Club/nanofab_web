@@ -1,7 +1,7 @@
 # Minnesota Nanofabrication — design language
 
 Binding reference for anyone (human or agent) touching this site's front
-end, and for the docs book (`nanofab_docs`), which follows the same rules.
+end, and for the docs book (`nano-book`), which follows the same rules.
 Read it before writing markup, CSS or copy. If a request conflicts with this
 file, follow this file and say so.
 
@@ -65,17 +65,23 @@ lives in the mdBook docs site and is always one click away.
 Mostly black and white. **UV purple comes from the club logo and is used
 only where something should pop.**
 
+**The club purple is fixed.** These values are final; use the tokens,
+never a nearby hex, and do not introduce new purples.
+
 | Token (CSS var) | Value | Use |
 |---|---|---|
-| `--black` | `#060607` | dark sections, hero, footer |
-| `--ink` | `#0d0d0e` | text on light; dark CTA block |
-| `--ink-2`, `--ink-3` | `#141416`, `#1d1e21` | raised tiles on dark |
-| `--white` | `#ffffff` | light sections |
-| `--paper`, `--paper-2` | `#f3f3f1`, `#e6e6e3` | alternate light section, grey CTA, tiles |
-| `--uv` | `#6d28d9` | accent on white/paper (7.1:1) |
-| `--uv-bright` | `#a78bfa` | accent on black (7.9:1) |
+| `--uv` | **`#6d28d9`** | THE club purple: primary buttons, header "Join the club", links, the current page, step numbers. 7.1:1 on white |
+| `--uv-press` | `#5b21b6` | hover / pressed state of a purple fill |
+| `--uv-bright` | `#a78bfa` | the same purple lifted to read on black (7.9:1) |
+| `--plum` | `#1c1330` | the darkest purple: the invitation panel, tile hover |
 | `--uv-deep` | `#42245f` | the logo's own purple; reference only |
-| `--uv-glow` | `124, 58, 237` | rgb triplet for the hero/page-hero glow |
+| `--black` | `#0a0910` | dark sections, hero, footer (black with a trace of purple) |
+| `--ink`, `--ink-2`, `--ink-3` | `#110f18`, `#17141f`, `#211d2b` | text on light; raised tiles on dark |
+| `--white` | `#ffffff` | light sections |
+| `--paper`, `--paper-2` | `#f3f1f7`, `#e7e3ef` | lavender-tinted alternate sections and tiles |
+
+The docs theme (`nanoTheme_staging/nanofab.css`) uses the same `#6d28d9`
+as `--nf-uv`.
 
 Every section declares a theme: `.theme-dark`, `.theme-light` or
 `.theme-paper`. The theme sets `--bg --fg --muted --faint --line --line-2
@@ -208,9 +214,16 @@ in Geist, roles in small mono caps. Machine roles link to the machine card.
 **News list** (`.news`). Date/kicker in mono, title large, arrow right; a
 hairline draws across under the row on hover. Used for the blog.
 
-**CTA blocks** (`.cta-block`). Two rounded panels side by side (stacked
-on phones), large light type and a round arrow badge; dark and grey
-variants, both turn UV on hover. One pair per page at most, at the end.
+**The invitation** (`partials/invite.html`, `.invite`). Replaces the two
+big CTA blocks, which read as SASI's. One plum panel with a UV top rule:
+a serif heading and one line on the left, the ways in on the right as
+whole-row links (serif label, one-line description, arrow) between
+hairlines. One per page at most, at the end (homepage, /events/, /join/).
+
+**The circuitry** (`static/js/circuit.js`). Only at the seams: a small
+bus of 2 to 4 UV traces runs in from the page edge, crosses the border
+between two sections at 45 degrees and ends in vias in the next one, so
+the sections look wired together. Nothing in the open margins.
 
 **Footer.** Dark. Brand and blurb, Explore / Docs / Connect columns, then the University's required legal
 block **last**, on its own (README, "UMN branding rules").

@@ -196,7 +196,7 @@ The line drawing that was there is replaced.
 2. Change the fields: `title`, `band` (`gen1`, `gen2`, `cheme`),
    `process`, `step`, `status`, `summary`, `weight`.
 3. Write a few paragraphs below the front matter.
-4. Add its docs page in the `nanofab_docs` repository with the **same file
+4. Add its docs page in the `nano-book` repository with the **same file
    name** (README section 3).
 
 ### Add, change or remove a person

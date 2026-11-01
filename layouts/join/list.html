@@ -36,10 +36,13 @@
 
 <section class="sec-tight theme-light" data-nav="light">
   <div class="wrap">
-    <div class="ctas" style="margin-top:0">
-      {{ with $discord }}<a class="cta-block cta-dark reveal" href="{{ . }}" target="_blank" rel="noopener">Join the Discord {{ partial "icon.html" "big-arrow" }}</a>{{ end }}
-      {{ with site.Params.contactEmail }}<a class="cta-block cta-grey reveal" href="mailto:{{ . }}?subject=Joining%20Minnesota%20Nanofabrication">Ask a question {{ partial "icon.html" "big-arrow" }}</a>{{ end }}
-    </div>
+    {{ $mail := "" }}{{ with site.Params.contactEmail }}{{ $mail = printf "mailto:%s?subject=Joining%%20Minnesota%%20Nanofabrication" . }}{{ end }}
+    {{ partial "invite.html" (dict
+         "title" "Start with hello."
+         "lead" "The Discord is where everything happens: meetings, build nights and every project team."
+         "actions" (slice
+           (dict "label" "Join the Discord" "text" "Introduce yourself and say what you are curious about." "href" $discord "ext" true)
+           (dict "label" "Ask a question" "text" "Not sure yet? Email the officers." "href" $mail))) }}
   </div>
 </section>
 {{ end }}

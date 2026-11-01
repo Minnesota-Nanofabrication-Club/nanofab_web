@@ -17,11 +17,11 @@ on:
     branches: [main]
   # Also lets you trigger it by hand from the Actions tab.
   workflow_dispatch:
-  # Scheduled rebuilds are OFF. They only exist to pick up edits to
-  # the machine documentation Google Sheet, which isn't connected.
-  # Uncomment this together with the two sync steps below.
-  # schedule:
-  #   - cron: "0 */6 * * *"
+  # Rebuild every 6 hours so the /events/ calendar, which is downloaded
+  # from Google Calendar during the build, picks up new events.
+  # (The two Google Sheet sync steps below stay off; they are separate.)
+  schedule:
+    - cron: "0 */6 * * *"
 
 # Permissions the job needs in order to publish to Pages.
 permissions:

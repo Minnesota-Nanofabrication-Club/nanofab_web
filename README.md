@@ -306,14 +306,24 @@ it appears on the site and in every subscriber's calendar.
 Set it up once, in `hugo.toml`:
 
 1. **`calendarID`**: the calendar's ID (Google Calendar → the calendar's
-   settings → *Integrate calendar* → *Calendar ID*; for a calendar that
-   belongs to a umn.edu account it is just the email address). The calendar
-   must be **public** (*Access permissions* → *Make available to public*,
-   *See all event details*). This alone turns on the **Add to Google
-   Calendar** and **iCal** subscribe buttons.
+   settings → *Integrate calendar* → *Calendar ID*). A share link such as
+   `calendar.google.com/calendar/u/0?cid=…` carries the same ID,
+   base64-encoded. The calendar must be **public** (*Access permissions* →
+   *Make available to public*, *See all event details*). This alone turns
+   on everything: the month grid, the "Upcoming" list and the subscribe
+   buttons (**Add to Google Calendar**, **Apple / Outlook**, **Copy
+   calendar link**).
+
+   How it works: every build downloads the calendar's public iCal feed
+   and puts it in the page; `static/js/calendar.js` draws it, recurring
+   events included. The deploy workflow rebuilds every 6 hours, so a new
+   event shows up within 6 hours (or straight away if you run the
+   workflow by hand: Actions → Deploy site → Run workflow). GitHub pauses
+   scheduled workflows in a repository with no activity for 60 days;
+   any push turns it back on.
 2. **`calendarAPIKey`** (optional): with a Google Calendar API key, the
-   page also draws a month grid and an "Upcoming" list, like the Stone Arch
-   Silicon site. How to make and restrict the key is at the top of
+   page reads the calendar live instead, so events appear immediately.
+   How to make and restrict the key is at the top of
    `static/js/calendar.js`. The key is visible in the page source; that is
    normal for this setup.
 3. **`eventsLocation`** (optional): where meetings happen, e.g.

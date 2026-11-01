@@ -7,11 +7,25 @@
        + calendarAPIKey       also the month grid and the upcoming list
                               (static/js/calendar.js)
        neither                a short "coming soon" note
+
+     The grid and the list need events. Without an API key they come
+     from the calendar's public iCal feed, downloaded at build time and
+     embedded in the page (#calData); calendar.js reads either.
      ============================================================== */}}
 {{ $id := site.Params.calendarID }}
 {{ $key := site.Params.calendarAPIKey }}
-{{ $google := printf "https://calendar.google.com/calendar/u/0/r?cid=%s" ($id | urlquery) }}
+{{/* Google's own share links carry the ID base64-encoded, without padding */}}
+{{ $google := printf "https://calendar.google.com/calendar/u/0?cid=%s" (strings.TrimRight "=" ($id | base64Encode)) }}
 {{ $ical := printf "https://calendar.google.com/calendar/ical/%s/public/basic.ics" ($id | urlquery) }}
+{{/* webcal:// opens the subscribe dialog in Apple Calendar and Outlook; safeURL because Hugo blocks unknown schemes */}}
+{{ $webcal := replace $ical "https://" "webcal://" | safeURL }}
+{{ $ics := "" }}
+{{ if and $id (not $key) }}
+  {{ with try (resources.GetRemote $ical) }}
+    {{ with .Err }}{{ warnf "events: could not download the calendar: %s" . }}
+    {{ else with .Value }}{{ $ics = .Content }}{{ end }}
+  {{ end }}
+{{ end }}
 
 {{ $specs := slice }}
 {{ with site.Params.eventsLocation }}{{ $specs = $specs | append (dict "b" . "span" "Where we meet") }}{{ end }}
@@ -22,7 +36,7 @@
 
 <section class="sec theme-light" id="calendar" data-nav="light">
   <div class="wrap">
-    {{ if and $id $key }}
+    {{ if and $id (or $key $ics) }}
     <div class="cal-wrap reveal">
       <div class="cal-bar">
         <div class="cal-nav">
@@ -33,13 +47,15 @@
         </div>
         <div class="cal-actions">
           <a class="btn btn-solid btn-sm" href="{{ $google }}" target="_blank" rel="noopener">Add to Google Calendar {{ partial "icon.html" "ne" }}</a>
-          <a class="btn btn-line btn-sm" href="{{ $ical }}">iCal</a>
+          <a class="btn btn-line btn-sm" href="{{ $webcal }}">Apple / Outlook</a>
+          <button class="btn btn-line btn-sm" type="button" data-copy="{{ $ical }}">Copy calendar link</button>
         </div>
       </div>
       <div class="cal-body">
         <div class="cal-grid-wrap">
           <div class="cal-dow" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
           <div class="cal-grid" id="calGrid" data-cal-id="{{ $id }}" data-cal-key="{{ $key }}"></div>
+          {{ with $ics }}<script type="application/json" id="calData">{{ . | jsonify | safeJS }}</script>{{ end }}
         </div>
         <aside class="cal-side">
           <div class="cal-side-top">
@@ -61,7 +77,7 @@
         <p class="lead">Subscribe once. Every speaker event, workshop and meeting lands in your calendar, and updates when plans change.</p>
         <div class="hero-cta mt-8">
           <a class="btn btn-solid" href="{{ $google }}" target="_blank" rel="noopener">Add to Google Calendar {{ partial "icon.html" "ne" }}</a>
-          <a class="btn btn-line" href="{{ $ical }}">Apple, Outlook (iCal) {{ partial "icon.html" "arrow" }}</a>
+          <a class="btn btn-line" href="{{ $webcal }}">Apple / Outlook {{ partial "icon.html" "arrow" }}</a>
         </div>
       </div>
     </div>
@@ -91,5 +107,5 @@
     </div>
   </div>
 </section>
-{{ if and $id $key }}<script src="{{ "js/calendar.js" | relURL }}?v={{ substr (readFile "static/js/calendar.js" | md5) 0 10 }}" defer></script>{{ end }}
+{{ if and $id (or $key $ics) }}<script src="{{ "js/calendar.js" | relURL }}?v={{ substr (readFile "static/js/calendar.js" | md5) 0 10 }}" defer></script>{{ end }}
 {{ end }}

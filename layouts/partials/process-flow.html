@@ -1,0 +1,67 @@
+{{/* ==============================================================
+     THE PROCESS FLOW at the top of /machines/: how a chip is made,
+     one card per step, left to right, from data/process.yaml.
+     Each card shows the step's first machine and links every machine
+     that does it to its card further down the page.
+
+     The track is an ordinary horizontal scroller (touch, trackpad,
+     Shift+wheel and the arrow keys all work); site.js adds dragging
+     with the mouse and the previous / next buttons. Steps marked
+     `loop: true` share a bracket: they repeat for every layer.
+     ============================================================== */}}
+{{ $steps := hugo.Data.process }}
+{{ $n := len $steps }}
+<section class="sec flow-sec theme-paper" id="process" data-nav="light" aria-labelledby="process-h">
+  <div class="wrap">
+    <div class="flow-head">
+      <div>
+        <p class="eyebrow">How a chip is made</p>
+        <h2 class="h2 flow-title" id="process-h">From bare wafer to working chip, in {{ $n }} steps.</h2>
+      </div>
+      <div class="flow-aside">
+        <p>Drag or swipe along the line to follow a wafer through the fab. Each step names the machines that do it; select one to read about it below.</p>
+        <div class="flow-ctrl" data-flow-ctrl hidden>
+          <button class="flow-btn" type="button" data-flow-prev aria-label="Previous step"><span aria-hidden="true">←</span></button>
+          <button class="flow-btn" type="button" data-flow-next aria-label="Next step"><span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow" data-flow>
+    <ol class="flow-track" tabindex="0" aria-label="Fabrication steps, in order">
+      {{ range $i, $s := $steps }}
+      {{ $prev := cond (gt $i 0) (index $steps (sub $i 1)) dict }}
+      {{ $next := cond (lt (add $i 1) $n) (index $steps (add $i 1)) dict }}
+      {{ $first := and $s.loop (not $prev.loop) }}
+      {{ $last := and $s.loop (not $next.loop) }}
+      {{/* machines still marked draft are left out until they are published */}}
+      {{ $ms := slice }}{{ range $s.machines }}{{ with site.GetPage (printf "/machines/%s" .) }}{{ $ms = $ms | append . }}{{ end }}{{ end }}
+      {{ $main := index $ms 0 }}
+      <li class="fstep{{ if $s.loop }} is-loop{{ end }}{{ if $first }} loop-first{{ end }}{{ if $last }} loop-last{{ end }}">
+        {{ if $first }}<span class="loop-label">Repeated for every layer</span>{{ end }}
+        <div class="fstep-card">
+          {{ with $main }}
+          {{ $kind := cond (eq .Params.band "cheme") "chemistry" (.Params.process | default "machine") }}
+          {{ $img := .Params.image | default (printf "images/machines/placeholders/%s.svg" $kind) }}
+          <figure class="fstep-media{{ if not .Params.image }} is-placeholder{{ end }}">
+            <img src="{{ strings.TrimPrefix "/" $img | relURL }}" alt="" width="800" height="600" loading="lazy" decoding="async" draggable="false" />
+          </figure>
+          {{ end }}
+          <div class="fstep-text">
+            <span class="fstep-n">Step {{ add $i 1 }}</span>
+            <h3 class="fstep-name">{{ $s.name }}</h3>
+            <p>{{ $s.text }}</p>
+          </div>
+          <ul class="fstep-machines" aria-label="Machines">
+            {{ range $ms }}
+            <li><a href="#{{ .File.ContentBaseName }}" draggable="false"><span>{{ .Title }}</span>{{ partial "icon.html" "arrow" }}</a></li>
+            {{ end }}
+          </ul>
+        </div>
+      </li>
+      {{ end }}
+    </ol>
+  </div>
+  <div class="wrap"><div class="flow-rail" aria-hidden="true"><i data-flow-bar></i></div></div>
+</section>

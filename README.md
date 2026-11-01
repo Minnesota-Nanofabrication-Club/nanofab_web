@@ -180,6 +180,18 @@ from the bar under the hero, or following a link to a card, opens it.
 A band marked `fab: false` (Operations & Logistics) has no machines; it is
 only used to group people on /team/.
 
+### The process flow
+
+The top of /machines/ is a flowchart of how a chip is made: one card per
+step, left to right, joined by arrows. Visitors drag it with the mouse
+(or swipe / scroll it sideways), and each machine named on a step jumps
+to that machine's card below. The steps live in **`data/process.yaml`**:
+a `name`, one or two sentences of `text`, the `machines` that do it (file
+names from `content/machines/`, without `.md`) and `loop: true` on the
+steps that repeat for every layer, which share a "Repeated for every
+layer" bracket. A machine still marked `draft: true` is left off until it
+is published. The card's picture is the first listed machine's.
+
 ### Deep links
 
 Every card has an address: **/machines/#tube-furnace** opens the gallery

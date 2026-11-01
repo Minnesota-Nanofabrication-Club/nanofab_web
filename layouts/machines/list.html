@@ -8,6 +8,8 @@
      shows or hides its cards (site.js). Gen One starts open, the others
      closed; jumping to a band or a card opens it. Without JavaScript
      every band is open.
+     Above the gallery: the process flow (partials/process-flow.html),
+     how a chip is made, step by step, from data/process.yaml.
      At the bottom: the Incubator, for projects not yet on the line.
      ============================================================== */}}
 {{ $machines := .RegularPages }}
@@ -26,6 +28,7 @@
 
 <nav class="subnav" aria-label="Bands">
   <div class="wrap"><div class="subnav-inner">
+    <a href="#process" data-spy="process">Process</a>
     {{ range $b := $bands }}
     <a href="#{{ $b.slug }}" data-spy="{{ $b.slug }}">{{ $b.name }}</a>
     {{ end }}
@@ -34,6 +37,8 @@
     </div>
   </div></div>
 </nav>
+
+{{ partial "process-flow.html" . }}
 
 <section class="sec theme-light" data-nav="light" style="padding-top:0">
   <div class="wrap">

@@ -5,6 +5,17 @@ end, and for the docs book (`nanofab_docs`), which follows the same rules.
 Read it before writing markup, CSS or copy. If a request conflicts with this
 file, follow this file and say so.
 
+**Revision 6 (November 2026): our own direction.** To move further from
+SASI's black-and-white grotesk look while keeping the layout and the
+black and purple palette: headings are set in **Newsreader** (a serif),
+blacks are tinted toward the logo's purple (`--black #0a0910`, `--plum
+#1c1330` for dark panels), light tiles are a faint lavender `--paper`,
+primary buttons and the header "Join" are **solid UV at rest**, eyebrows
+are UV with a short rule, and tiles/cards are filled with a heavy top
+rule instead of outlined boxes. Where this file still describes Plex
+headings, white primary buttons or neutral greys, revision 6 wins. The
+/machines/ page also opens with the process flow (data/process.yaml).
+
 **Revision 5 (November 2026): quieter.** Club officers felt the site looked
 AI-generated and too close to SASI, so the decoration was turned down and
 the layout left exactly as it was: no mono uppercase labels (labels are

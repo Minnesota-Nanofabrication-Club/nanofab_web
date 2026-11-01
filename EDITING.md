@@ -155,6 +155,14 @@ block at the top explaining its fields.
 
 3. Put pictures in `static/images/blog/`.
 4. Delete the `draft: true` line when it's ready to go live.
+5. Notes to yourself or the next editor go in a note block. It never
+   shows on the site, not even in the page source:
+
+   ```markdown
+   {{</* note */>}}
+   Add a photo of the room here.
+   {{</* /note */>}}
+   ```
 
 Full details: README, "Post to the blog".
 

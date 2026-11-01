@@ -180,6 +180,24 @@
       var max = track.scrollWidth - track.clientWidth;
       if (bar) bar.style.transform = 'scaleX(' + (max > 0 ? Math.max(0.04, track.scrollLeft / max) : 1) + ')';
     }
+    // every card rests at the height of the tallest one, details closed,
+    // so a hovered card grows on its own (tailwind-input.css, --fstep-h)
+    var canHover = matchMedia('(hover: hover)').matches;
+    function sizeCards() {
+      var h = 0;
+      steps.forEach(function (li) {
+        var card = $('.fstep-card', li), more = $('.fstep-more', li);
+        card.style.minHeight = '0';
+        // on touch screens the details are always open, so they count
+        h = Math.max(h, card.offsetHeight - (more && canHover ? more.offsetHeight : 0));
+        card.style.minHeight = '';
+      });
+      if (h) track.style.setProperty('--fstep-h', h + 'px');
+    }
+    sizeCards();
+    addEventListener('resize', sizeCards);
+    addEventListener('load', sizeCards);
+    if (document.fonts) document.fonts.ready.then(sizeCards);
     track.addEventListener('scroll', function () { requestAnimationFrame(progress); }, { passive: true });
     addEventListener('resize', progress);
     progress();

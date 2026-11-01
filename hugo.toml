@@ -19,6 +19,11 @@ enableRobotsTXT = true
 # No tag or category pages.
 disableKinds = ["taxonomy", "term"]
 
+# The events page downloads the club calendar (iCal) at build time.
+# Keep the local copy fresh while previewing with `hugo server`.
+[caches.getresource]
+  maxAge = "30m"
+
 [sitemap]
   changefreq = ""
   priority = -1
@@ -92,10 +97,14 @@ disableKinds = ["taxonomy", "term"]
   # The /events/ page. calendarID is the club's PUBLIC Google Calendar ID
   # (Google Calendar -> Settings for the calendar -> Integrate calendar ->
   # Calendar ID; for a umn.edu account calendar it is just the address).
-  # It powers the "Add to Google Calendar" and "iCal" subscribe buttons.
-  # calendarAPIKey is optional: with it, the page also draws the month
-  # grid and the upcoming list. README, "Events and the calendar".
-  calendarID = ""
+  # A share link (calendar.google.com/calendar/u/0?cid=...) carries the
+  # same ID, base64-encoded in `cid`.
+  # It powers the subscribe buttons, and the month grid and upcoming list:
+  # every build downloads the calendar's public iCal feed, so no API key
+  # is needed (the deploy workflow rebuilds every 6 hours to pick up new
+  # events). calendarAPIKey is optional: with it, the page reads the
+  # Google Calendar API live instead. README, "Events and the calendar".
+  calendarID = "c_37d108fdc2e9de7079b415273dad66930257928f1700dd2bdefa4a82997f56f5@group.calendar.google.com"
   calendarAPIKey = ""
   # Shown in the events page header. Leave "" to hide.
   eventsLocation = ""

@@ -1,15 +1,21 @@
 /* ================================================================
    EVENTS CALENDAR (/events/)
-   Reads the club's public Google Calendar through the Google Calendar
-   API and draws it in the site's own month grid and upcoming list.
-   Times are shown in Central time whatever the visitor's timezone.
-   Adapted from the Stone Arch Silicon site.
+   Draws the club's public Google Calendar in the site's own month grid
+   and upcoming list. Times are shown in Central time whatever the
+   visitor's timezone.
 
-   The calendar ID and API key come from hugo.toml (calendarID,
-   calendarAPIKey) through data attributes on #calGrid. The template
-   only loads this script when both are set.
+   Two sources, picked automatically:
+   - DEFAULT, no setup: the calendar's public iCal feed, downloaded by
+     Hugo at build time and embedded in the page as #calData. Parsed
+     here, recurring events included. New events appear at the next
+     build (the deploy workflow rebuilds every 6 hours).
+   - LIVE, optional: the Google Calendar API, when hugo.toml has
+     calendarAPIKey. Events appear the moment they are added.
 
-   SETUP (one time):
+   The calendar ID (and key) come from hugo.toml through data attributes
+   on #calGrid.
+
+   API KEY SETUP (only for the live source):
    1. Make the calendar public: Google Calendar -> Settings for the
       calendar -> Access permissions -> "Make available to public" and
       "See all event details".
@@ -29,7 +35,8 @@
 
   const CAL_ID   = gridEl.dataset.calId;
   const API_KEY  = gridEl.dataset.calKey;
-  if (!CAL_ID || !API_KEY) return;
+  const dataEl   = document.getElementById('calData');
+  if (!CAL_ID || !(API_KEY || dataEl)) return;
   const TZ       = 'America/Chicago';
   const UPCOMING = 8;                  // events in the default list
 
@@ -122,7 +129,134 @@
     return (j.items || []).filter(e => e.status !== 'cancelled' && e.start).map(norm);
   }
 
-  const source = api;
+  /* ---- data source: the iCal feed embedded at build time ----
+     Handles what Google writes: folded lines, UTC / TZID / all-day
+     dates, RRULE (DAILY, WEEKLY with BYDAY, MONTHLY, YEARLY; INTERVAL,
+     COUNT, UNTIL), EXDATE, edited single occurrences (RECURRENCE-ID)
+     and cancelled events. Recurrences are expanded two years out. */
+  function zoned(y, mo, d, h, mi, s, tz){
+    // the instant when the wall clock in tz reads y-mo-d h:mi:s
+    const guess = Date.UTC(y, mo, d, h, mi, s);
+    const off = t => {
+      const p = {};
+      new Intl.DateTimeFormat('en-US', {timeZone:tz, hourCycle:'h23', year:'numeric', month:'numeric', day:'numeric', hour:'numeric', minute:'numeric', second:'numeric'})
+        .formatToParts(new Date(t)).forEach(x => p[x.type] = +x.value);
+      return Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second) - t;
+    };
+    let t = guess - off(guess);
+    return new Date(guess - off(t));
+  }
+  // a DTSTART-like property -> {date:'YYYY-MM-DD'} or {at:Date, wall:[...], tz}
+  function icsTime(prop){
+    if (!prop) return null;
+    const v = prop.value, m = v.match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})(Z)?)?/);
+    if (!m) return null;
+    if (!m[4]) return {date: m[1] + '-' + m[2] + '-' + m[3]};
+    const wall = [+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]];
+    const tz = m[7] ? 'UTC' : (prop.params.TZID || TZ);
+    return {at: tz === 'UTC' ? new Date(Date.UTC.apply(null, wall)) : zoned.apply(null, wall.concat(tz)), wall, tz};
+  }
+  const unesc = t => t.replace(/\\n/gi, '\n').replace(/\\([,;\\])/g, '$1');
+
+  function parseICS(text){
+    const lines = text.replace(/\r?\n[ \t]/g, '').split(/\r?\n/);
+    const out = []; let cur = null;
+    lines.forEach(line => {
+      if (line === 'BEGIN:VEVENT'){ cur = {}; return; }
+      if (line === 'END:VEVENT'){ if (cur) out.push(cur); cur = null; return; }
+      if (!cur) return;
+      const i = line.indexOf(':'); if (i < 0) return;
+      const head = line.slice(0, i).split(';'), name = head[0].toUpperCase(), params = {};
+      head.slice(1).forEach(p => { const j = p.indexOf('='); params[p.slice(0, j).toUpperCase()] = p.slice(j + 1).replace(/^"|"$/g, ''); });
+      const prop = {value: line.slice(i + 1), params};
+      if (name === 'EXDATE') (cur.EXDATE = cur.EXDATE || []).push(prop);
+      else cur[name] = prop;
+    });
+    return out;
+  }
+
+  function expand(raw){
+    const horizon = Date.now() + 730 * 864e5, events = [], overrides = new Set();
+    raw.forEach(v => { if (v['RECURRENCE-ID']){ const t = icsTime(v['RECURRENCE-ID']); overrides.add(v.UID.value + '|' + (t.at ? +t.at : t.date)); } });
+    raw.forEach(v => {
+      if (!v.DTSTART || (v.STATUS && v.STATUS.value === 'CANCELLED')) return;
+      const st = icsTime(v.DTSTART), en = icsTime(v.DTEND) || st;
+      const dur = st.date ? (toUTC(en.date) - toUTC(st.date)) || 864e5 : (en.at - st.at);
+      const base = {
+        uid: v.UID ? v.UID.value : String(Math.random()),
+        summary: v.SUMMARY ? unesc(v.SUMMARY.value) : '',
+        description: v.DESCRIPTION ? unesc(v.DESCRIPTION.value) : '',
+        location: v.LOCATION ? unesc(v.LOCATION.value) : ''
+      };
+      const make = (startAt, startDate) => {
+        const e = Object.assign({}, base);
+        if (startDate){
+          e.id = base.uid + '|' + startDate;
+          e.start = {date: startDate}; e.end = {date: addDays(startDate, Math.round(dur / 864e5))};
+        } else {
+          e.id = base.uid + '|' + (+startAt);
+          e.start = {dateTime: startAt.toISOString()}; e.end = {dateTime: new Date(+startAt + dur).toISOString()};
+        }
+        return e;
+      };
+      if (!v.RRULE || v['RECURRENCE-ID']){ events.push(make(st.at, st.date)); return; }
+
+      const rule = {}; v.RRULE.value.split(';').forEach(p => { const [k, x] = p.split('='); rule[k] = x; });
+      const freq = rule.FREQ, every = +(rule.INTERVAL || 1), count = rule.COUNT ? +rule.COUNT : Infinity;
+      const until = rule.UNTIL ? icsTime({value: rule.UNTIL, params: {}}) : null;
+      const untilT = until ? (until.at ? +until.at : +toUTC(until.date) + 864e5 - 1) : horizon;
+      const ex = new Set();
+      (v.EXDATE || []).forEach(p => p.value.split(',').forEach(x => { const t = icsTime({value: x, params: p.params}); ex.add(t.at ? +t.at : t.date); }));
+      const days = ['SU','MO','TU','WE','TH','FR','SA'];
+      const byday = freq === 'WEEKLY' && rule.BYDAY ? rule.BYDAY.split(',').map(d => days.indexOf(d.slice(-2))) : null;
+      // walk wall-clock dates so the time of day survives daylight saving
+      const w = st.date ? [+st.date.slice(0,4), +st.date.slice(5,7) - 1, +st.date.slice(8,10), 0, 0, 0] : st.wall;
+      let n = 0;
+      for (let k = 0; k < 2000 && n < count; k++){
+        let dates = [];
+        const p = new Date(Date.UTC(w[0], w[1], w[2]));
+        if (freq === 'DAILY') p.setUTCDate(p.getUTCDate() + k * every), dates = [p];
+        else if (freq === 'WEEKLY'){
+          p.setUTCDate(p.getUTCDate() + k * 7 * every);
+          if (byday){
+            const sun = new Date(p); sun.setUTCDate(sun.getUTCDate() - sun.getUTCDay());
+            dates = byday.map(d => { const x = new Date(sun); x.setUTCDate(x.getUTCDate() + d); return x; }).sort((a, b) => a - b);
+          } else dates = [p];
+        }
+        else if (freq === 'MONTHLY') dates = [new Date(Date.UTC(w[0], w[1] + k * every, w[2]))];
+        else if (freq === 'YEARLY') dates = [new Date(Date.UTC(w[0] + k * every, w[1], w[2]))];
+        else break;
+        let past = false;
+        for (const d of dates){
+          if (n >= count) break;
+          const key = d.toISOString().slice(0, 10);
+          if (st.date && key < st.date) continue;   // BYDAY days before an all-day start
+          const at = st.date ? null : (st.tz === 'UTC'
+            ? new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), w[3], w[4], w[5]))
+            : zoned(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), w[3], w[4], w[5], st.tz));
+          const t = at ? +at : +toUTC(key);
+          if (at && t < +st.at) continue;          // BYDAY days before the first occurrence
+          if (t > untilT || t > horizon){ past = true; break; }
+          n++;
+          const id = at ? t : key;
+          if (ex.has(id) || overrides.has(base.uid + '|' + id)) continue;
+          events.push(make(at, at ? null : key));
+        }
+        if (past) break;
+      }
+    });
+    return events.map(norm);
+  }
+
+  let icsAll = null;
+  async function ics(params){
+    if (!icsAll) icsAll = expand(parseICS(JSON.parse(dataEl.textContent)));
+    const from = params.timeMin ? new Date(params.timeMin) : null, to = params.timeMax ? new Date(params.timeMax) : null;
+    const out = icsAll.filter(ev => (!from || ev.end >= from) && (!to || ev.start < to)).sort(cmp);
+    return params.maxResults ? out.slice(0, +params.maxResults) : out;
+  }
+
+  const source = API_KEY ? api : ics;
 
   async function loadMonth(y, m){
     const tag = y + '-' + m;
@@ -262,6 +396,15 @@
         a.href = ev.link; a.target = '_blank'; a.rel = 'noopener';
         a.textContent = 'Open in Google Calendar ↗';
         more.appendChild(a);
+      } else {
+        // feed events have no Google link: offer to add just this one
+        const fmt = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+        const dates = ev.allDay ? ev.startKey.replace(/-/g, '') + '/' + addDays(ev.endKey, 1).replace(/-/g, '') : fmt(ev.start) + '/' + fmt(ev.end);
+        const q = new URLSearchParams({action:'TEMPLATE', text:ev.title, dates, location:ev.loc, details:plain(ev.desc)});
+        const a = document.createElement('a');
+        a.href = 'https://calendar.google.com/calendar/render?' + q; a.target = '_blank'; a.rel = 'noopener';
+        a.textContent = 'Add this event to Google Calendar ↗';
+        more.appendChild(a);
       }
       if (!more.childNodes.length){
         const p = document.createElement('p'); p.textContent = 'No details yet.'; more.appendChild(p);
@@ -304,6 +447,12 @@
     selected = null; openId = null;
     showMonth();
   });
+  document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', async () => {
+    const label = b.textContent;
+    try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'Link copied'; }
+    catch (_){ window.prompt('Copy this link into your calendar app:', b.dataset.copy); }
+    setTimeout(() => { b.textContent = label; }, 2000);
+  }));
   el.reset.addEventListener('click', () => { selected = null; openId = null; renderGrid(); renderList(); });
 
   gridEl.addEventListener('click', e => {

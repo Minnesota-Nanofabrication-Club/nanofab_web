@@ -8,5 +8,5 @@
 <path d="M120 40h40M240 40h40"/>
 </g>
 <g stroke="#6d28d9" stroke-width="1.5"><path d="M368 22v16M360 30h16"/></g>
-<text x="24" y="280" font-family="ui-monospace, Menlo, monospace" font-size="11" letter-spacing="1.2" fill="#8a8c90">PHOTO COMING SOON</text>
+<text x="24" y="280" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13" fill="#8a8c90">Photo coming soon</text>
 </svg>

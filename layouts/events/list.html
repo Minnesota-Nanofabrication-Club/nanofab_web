@@ -81,7 +81,7 @@
     {{ end }}
 
     <div class="ctas">
-      {{ with site.Params.discordURL }}<a class="cta-block cta-dark reveal" href="{{ . }}" target="_blank" rel="noopener">Join the club {{ partial "icon.html" "big-arrow" }}</a>{{ end }}
+      <a class="cta-block cta-dark reveal" href="{{ "join/" | relURL }}">Join the club {{ partial "icon.html" "big-arrow" }}</a>
       {{ with site.Params.contactEmail }}<a class="cta-block cta-grey reveal" href="mailto:{{ . }}?subject=Speaking%20at%20Minnesota%20Nanofabrication">Give a talk {{ partial "icon.html" "big-arrow" }}</a>{{ end }}
     </div>
   </div>

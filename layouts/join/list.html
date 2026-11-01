@@ -1,0 +1,45 @@
+{{ define "main" }}
+{{/* ==============================================================
+     /join/: THE ENTRY POINT FOR NEW MEMBERS. Every "Join the club"
+     button leads here. The words and the steps are in
+     content/join/_index.md; this file only lays them out, with the
+     same tiles as the homepage's About section.
+     ============================================================== */}}
+{{ $discord := site.Params.discordURL }}
+{{ $onboarding := "" }}
+{{ with site.Params.docsURL }}{{ $onboarding = printf "%s%s" . (site.Params.docsOnboardingPath | default "") }}{{ end }}
+
+{{ partial "page-hero.html" (dict "page" . "title" (.Params.heading | default .Title) "lead" .Params.lead) }}
+
+<section class="sec theme-light" id="steps" data-nav="light">
+  <div class="wrap">
+    <div class="paths" style="margin-top:0">
+      {{ range .Params.steps }}
+      {{ $href := .link }}
+      {{ $external := true }}
+      {{ if eq .link "discord" }}{{ $href = $discord }}
+      {{ else if eq .link "onboarding" }}{{ $href = $onboarding }}
+      {{ else if hasPrefix .link "/" }}{{ $href = strings.TrimPrefix "/" .link | relURL }}{{ $external = false }}{{ end }}
+      {{ if $href }}
+      <a class="path reveal" href="{{ $href }}"{{ if $external }} target="_blank" rel="noopener"{{ end }}>
+        <span class="idx"><span>{{ .where }}</span></span>
+        <h3>{{ .title }}</h3>
+        {{ with .text }}<p>{{ . }}</p>{{ end }}
+        <span class="go">{{ .linkLabel }} {{ partial "icon.html" (cond $external "ne" "arrow") }}</span>
+      </a>
+      {{ end }}
+      {{ end }}
+    </div>
+    {{ with .Content }}<div class="prose reveal" style="margin-top:clamp(48px,8vh,88px)">{{ . }}</div>{{ end }}
+  </div>
+</section>
+
+<section class="sec-tight theme-light" data-nav="light">
+  <div class="wrap">
+    <div class="ctas" style="margin-top:0">
+      {{ with $discord }}<a class="cta-block cta-dark reveal" href="{{ . }}" target="_blank" rel="noopener">Join the Discord {{ partial "icon.html" "big-arrow" }}</a>{{ end }}
+      {{ with site.Params.contactEmail }}<a class="cta-block cta-grey reveal" href="mailto:{{ . }}?subject=Joining%20Minnesota%20Nanofabrication">Ask a question {{ partial "icon.html" "big-arrow" }}</a>{{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

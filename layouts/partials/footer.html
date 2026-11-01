@@ -24,6 +24,7 @@
         {{ $href := .URL }}{{ if hasPrefix $href "/#" }}{{ $href = printf "%s%s" ("" | relURL) (strings.TrimPrefix "/" $href) }}{{ end }}
         <a href="{{ $href }}">{{ .Name }}</a>
         {{ end }}
+        <a href="{{ "join/" | relURL }}">Join the club</a>
       </div>
       <div class="f-links">
         <p class="f-h">Docs</p>

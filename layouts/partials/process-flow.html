@@ -4,8 +4,9 @@
      Each card shows the wafer after that step (a photo when the step
      has `photo:`, otherwise the drawn cross-section from
      static/images/process/), what happens, and links every machine
-     that does it to that machine's page on the docs site. Hovering
-     (or focusing) a card widens it and shows `details`.
+     that does it to that machine's page on the docs site. At rest a card
+     is just the step, its picture and its machines; hovering (or
+     focusing) it opens `text` and `details`.
 
      The track is an ordinary horizontal scroller (touch, trackpad,
      Shift+wheel and the arrow keys all work); site.js adds dragging
@@ -50,8 +51,11 @@
           <div class="fstep-text">
             <span class="fstep-n">Step {{ add $i 1 }}</span>
             <h3 class="fstep-name">{{ $s.name }}</h3>
-            <p>{{ $s.text }}</p>
-            {{ with $s.details }}<div class="fstep-more"><p>{{ . }}</p></div>{{ end }}
+            {{/* hidden until the card is hovered or focused (always shown on touch screens) */}}
+            <div class="fstep-more"><div>
+              <p>{{ $s.text }}</p>
+              {{ with $s.details }}<p>{{ . }}</p>{{ end }}
+            </div></div>
           </div>
           <ul class="fstep-machines" aria-label="Machines, on the docs site">
             {{ range $ms }}

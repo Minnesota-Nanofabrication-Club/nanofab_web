@@ -323,8 +323,7 @@
   .team-group { margin-top: clamp(48px, 8vh, 88px); font-size: 13.5px; letter-spacing: 0; text-transform: none; color: var(--muted); scroll-margin-top: calc(var(--nav-h) + 72px); }
   .team { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 var(--gut); margin-top: 18px; }
   .person { min-width: 0; padding: 26px 0 40px; border-top: 1px solid var(--line-2); }
-  .person-img { width: 112px; height: 112px; border-radius: var(--r-sm); object-fit: cover; background: var(--paper-2); filter: grayscale(1); transition: filter .4s var(--ease); }
-  .person:hover .person-img { filter: none; }
+  .person-img { width: 112px; height: 112px; border-radius: var(--r-sm); object-fit: cover; background: var(--paper-2); }
   .theme-dark .person-img { background: var(--ink-3); }
   .person-initials { width: 112px; height: 112px; border-radius: var(--r-sm); display: grid; place-items: center; background: var(--tile); border: 1px solid var(--line); font-size: 32px; letter-spacing: -.02em; color: var(--muted); }
   .person h3, .person h4 { margin-top: 20px; font-size: clamp(19px, 1.5vw, 23px); font-weight: 450; line-height: 1.2; letter-spacing: -.025em; }
@@ -337,7 +336,6 @@
   .advisors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gut); margin-top: 18px; }
   .advisor { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 24px; padding: 28px 0 36px; border-top: 1px solid var(--line-2); }
   .advisor .person-img, .advisor .person-initials { width: 96px; height: 96px; }
-  .advisor:hover .person-img { filter: none; }
   .advisor h4 { font-size: clamp(21px, 1.7vw, 26px); font-weight: 450; letter-spacing: -.02em; line-height: 1.15; }
   .advisor .role { margin-top: 8px; font-size: 13.5px; line-height: 1.55; letter-spacing: 0; text-transform: none; color: var(--muted); }
   .advisor .bio { margin-top: 12px; font-size: 16px; color: var(--muted); max-width: 48ch; }

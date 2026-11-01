@@ -3,10 +3,12 @@
        {{ partial "page-hero.html" (dict
             "page" .  "title" "…"  "lead" "…"  "eyebrow" "…"
             "specs" (slice (dict "b" "12" "span" "In build" "href" "#gen1")) ) }}
+     "compact" true makes it short, for pages whose content should be
+     visible without scrolling (/events/).
      The breadcrumb is built from the page's parents automatically.
      ============================================================== */}}
 {{ $p := .page }}
-<section class="page-hero theme-dark{{ if .specs }} has-specs{{ end }}" data-nav="dark" id="top">
+<section class="page-hero theme-dark{{ if .specs }} has-specs{{ end }}{{ if .compact }} is-compact{{ end }}" data-nav="dark" id="top">
   <div class="page-hero-bg" aria-hidden="true"><div class="grain"></div></div>
   <div class="wrap">
     <nav class="crumbs" aria-label="Breadcrumb">

@@ -106,8 +106,6 @@ disableKinds = ["taxonomy", "term"]
   # Google Calendar API live instead. README, "Events and the calendar".
   calendarID = "c_37d108fdc2e9de7079b415273dad66930257928f1700dd2bdefa4a82997f56f5@group.calendar.google.com"
   calendarAPIKey = ""
-  # Shown in the events page header. Leave "" to hide.
-  eventsLocation = ""
 
   # ---------------- The documentation site ----------------
   # The club's mdBook site (repository: nano-book). The "Docs" link in

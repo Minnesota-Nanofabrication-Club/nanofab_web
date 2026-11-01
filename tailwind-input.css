@@ -485,7 +485,8 @@
   .loop-label { position: absolute; top: -20px; left: 0; padding-right: 10px; transform: translateY(-100%); font-size: 13px; font-weight: 500; color: var(--uv); white-space: nowrap; }
   /* every card rests at the height of the tallest (--fstep-h); hovering
      (or focusing) one opens its details below the summary, so only that
-     card grows, downwards */
+     card grows, downwards. Keyboard focus opens it too (:focus-visible
+     only, so pressing the mouse to drag never leaves a card open) */
   .fstep-card { position: relative; display: flex; flex-direction: column; width: clamp(260px, 24vw, 310px); min-height: var(--fstep-h, 0); background: var(--white); border: 1px solid var(--line); border-top: 2px solid var(--fg); transition: border-color .25s, box-shadow .45s var(--ease); }
   .fstep-card:focus-visible { outline-offset: 2px; }
   .fstep-more { display: grid; grid-template-rows: 0fr; margin-top: 0; opacity: 0; transition: grid-template-rows .45s var(--ease), margin-top .45s var(--ease), opacity .3s; }
@@ -493,8 +494,8 @@
   .fstep-text .fstep-more p { margin: 0; }
   .fstep-text .fstep-more p + p { margin-top: 10px; color: var(--fg); }
   @media (hover: hover) {
-    .flow-track:not(.is-dragging) .fstep-card:hover, .fstep-card:focus-within { border-top-color: var(--uv); box-shadow: 0 24px 48px -32px rgba(28,19,48,.45); }
-    .flow-track:not(.is-dragging) .fstep-card:hover .fstep-more, .fstep-card:focus-within .fstep-more { grid-template-rows: 1fr; margin-top: 12px; opacity: 1; }
+    .flow-track:not(.is-dragging) .fstep-card:hover, .fstep-card:focus-visible, .fstep-card:has(:focus-visible) { border-top-color: var(--uv); box-shadow: 0 24px 48px -32px rgba(28,19,48,.45); }
+    .flow-track:not(.is-dragging) .fstep-card:hover .fstep-more, .fstep-card:focus-visible .fstep-more, .fstep-card:has(:focus-visible) .fstep-more { grid-template-rows: 1fr; margin-top: 12px; opacity: 1; }
   }
   /* no hover on touch screens: the details are simply shown */
   @media (hover: none) { .fstep-more { grid-template-rows: 1fr; margin-top: 12px; opacity: 1; } }

@@ -477,11 +477,20 @@
   .fstep.loop-first .fstep-card::after { left: 0; }
   .fstep.loop-last .fstep-card::after { right: 0; }
   .loop-label { position: absolute; top: -20px; left: 0; padding-right: 10px; transform: translateY(-100%); font-size: 13px; font-weight: 500; color: var(--uv); white-space: nowrap; }
-  .fstep-card { position: relative; display: flex; flex-direction: column; width: clamp(260px, 24vw, 320px); background: var(--white); border: 1px solid var(--line); border-top: 2px solid var(--fg); transition: border-color .25s; }
-  .fstep-card:hover { border-top-color: var(--uv); }
+  /* hover (or focus) widens the card and shows the details */
+  .fstep-card { position: relative; display: flex; flex-direction: column; width: clamp(260px, 24vw, 310px); background: var(--white); border: 1px solid var(--line); border-top: 2px solid var(--fg); transition: width .45s var(--ease), border-color .25s, box-shadow .45s var(--ease); }
+  .fstep-card:focus-visible { outline-offset: 2px; }
+  .fstep-more { display: grid; grid-template-rows: 0fr; margin-top: 0; opacity: 0; transition: grid-template-rows .45s var(--ease), margin-top .45s var(--ease), opacity .3s; }
+  .fstep-text .fstep-more p { min-height: 0; margin: 0; overflow: hidden; color: var(--fg); }
+  @media (hover: hover) {
+    .flow-track:not(.is-dragging) .fstep-card:hover, .fstep-card:focus-within { width: clamp(340px, 34vw, 460px); border-top-color: var(--uv); box-shadow: 0 24px 48px -32px rgba(28,19,48,.45); }
+    .flow-track:not(.is-dragging) .fstep-card:hover .fstep-more, .fstep-card:focus-within .fstep-more { grid-template-rows: 1fr; margin-top: 12px; opacity: 1; }
+  }
+  /* no hover on touch screens: the details are simply shown */
+  @media (hover: none) { .fstep-more { grid-template-rows: 1fr; margin-top: 12px; opacity: 1; } }
   .fstep-media { margin: 0; aspect-ratio: 4 / 3; overflow: hidden; border-bottom: 1px solid var(--line); background: var(--paper-2); }
   .fstep-media img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-  .fstep-media.is-placeholder img { object-fit: contain; }
+  .fstep-media.is-diagram { background: #f3f1f7; }
   .fstep-text { padding: 20px 22px 0; }
   .fstep-n { font-size: 13.5px; color: var(--uv); font-weight: 500; }
   .fstep-name { margin-top: 6px; font-size: clamp(24px, 2vw, 30px); line-height: 1.1; }
@@ -491,7 +500,8 @@
   .fstep-machines a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; font-size: 15px; font-weight: 450; transition: color .2s; }
   .fstep-machines a svg { width: 12px; height: 12px; flex: none; transition: transform .3s var(--ease); }
   .fstep-machines a:hover { color: var(--uv); }
-  .fstep-machines a:hover svg { transform: translateX(3px); }
+  .fstep-machines a:hover svg { transform: translate(2px, -2px); }
+  .fstep-none { padding: 10px 0; font-size: 15px; color: var(--faint); }
   .flow-rail { position: relative; height: 2px; margin-top: 28px; background: var(--line); }
   .flow-rail i { position: absolute; inset: 0; background: var(--uv); transform-origin: 0 50%; transform: scaleX(.04); }
 

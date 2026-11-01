@@ -184,13 +184,24 @@ only used to group people on /team/.
 
 The top of /machines/ is a flowchart of how a chip is made: one card per
 step, left to right, joined by arrows. Visitors drag it with the mouse
-(or swipe / scroll it sideways), and each machine named on a step jumps
-to that machine's card below. The steps live in **`data/process.yaml`**:
-a `name`, one or two sentences of `text`, the `machines` that do it (file
+(or swipe / scroll it sideways). Hovering over a card widens it and shows
+more detail; on phones the detail is always shown. Each machine named on
+a step links to that machine's page on the docs site.
+
+The steps live in **`data/process.yaml`**: a `name`, one or two sentences
+of `text`, a little more in `details`, the `machines` that do it (file
 names from `content/machines/`, without `.md`) and `loop: true` on the
 steps that repeat for every layer, which share a "Repeated for every
 layer" bracket. A machine still marked `draft: true` is left off until it
-is published. The card's picture is the first listed machine's.
+is published.
+
+**Pictures.** Each card shows the wafer after that step. Until there is
+a real photo, that is a drawn cross-section,
+`static/images/process/<step name>.svg`, made by
+`python3 tools/process-diagrams.py` (edit the script to change a
+drawing, then run it again). To use a photo instead, put it in
+`static/images/process/` and add `photo: "images/process/<file>"` to the
+step.
 
 ### Deep links
 
@@ -352,7 +363,7 @@ Everything is in `hugo.toml`, with comments:
 - **`heroTitle`, `heroLead`**: the homepage headline and paragraph.
 - **`heroImage`**: the lab photograph behind the homepage hero (shown in
   greyscale, darkened).
-- **`discordURL`, `githubURL`, `linkedinURL`, `instagramURL`,
+- **`discordURL`, `githubURL`, `linkedinURL`, `instagramURL`, `youtubeURL`,
   `contactEmail`**: used in the menu, footer and buttons. The header's
   "Join the club" button goes to the /join/ page (`content/join/_index.md`),
   which links to Discord.
@@ -394,8 +405,9 @@ that only JavaScript adds must be listed in `safelist` in
 
 The traces and vias are drawn by `static/js/circuit.js` (comments at the
 top explain it). They appear only where one section of a page meets the
-next (and at the footer): a few traces run in from the edge, cross the
-border at 45 degrees and end in vias, wiring the two sections together. Colours and strength are the `.c-*` rules in
+next (and at the footer): short traces run in from the edge along the
+border, step away from it at 45 degrees into their own section and end
+in vias. They never cross the border. Colours and strength are the `.c-*` rules in
 `tailwind-input.css`. To turn it off, delete the `circuit.js` line in
 `layouts/_default/baseof.html`.
 

@@ -77,9 +77,9 @@
 {{ with $site.Params.logo }}<link rel="icon" type="image/png" href="{{ strings.TrimPrefix "/" . | relURL }}" />{{ end }}
 {{ with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" href="{{ .RelPermalink }}" title="{{ $site.Title }}" />{{ end }}
 
-{{/* ---------- Fonts: IBM Plex Sans + IBM Plex Mono, self-hosted (SIL OFL, static/fonts/) ---------- */}}
+{{/* ---------- Fonts: Newsreader (headings), IBM Plex Sans + Mono, self-hosted (SIL OFL, static/fonts/) ---------- */}}
 <link rel="preload" href="{{ "fonts/IBMPlexSans-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="{{ "fonts/IBMPlexMono-Regular.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="{{ "fonts/Newsreader-Variable.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
 {{ if .IsHome }}{{ with $site.Params.heroImage }}<link rel="preload" as="image" href="{{ strings.TrimPrefix "/" . | relURL }}" />{{ end }}{{ end }}
 
 {{/* ---------- The stylesheet. Built from tailwind-input.css (npm run build:css). ---------- */}}

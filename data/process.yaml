@@ -1,0 +1,65 @@
+# ==================================================================
+# THE PROCESS FLOW — the draggable flowchart at the top of /machines/.
+#
+# One entry per step, in the order a wafer goes through the line.
+#
+#   name      short step name shown on the card
+#   text      one or two plain sentences: what happens to the wafer
+#   machines  slugs of the machines that do it (the Markdown file name
+#             in content/machines/, without .md). Each becomes a link
+#             that jumps to that machine's card further down the page.
+#   loop      true on the steps that repeat for every layer of the
+#             chip. They are bracketed together on the flowchart.
+#
+# Add, remove or reorder steps here; nothing else needs to change.
+# ==================================================================
+
+- name: Clean
+  text: Every chip starts as a bare silicon wafer. Solvent baths and ultrasound strip off dust and oils so nothing gets trapped under the first layer.
+  machines: [ultrasonic-cleaner]
+
+- name: Grow oxide
+  text: The wafer is heated to about 1000 °C with oxygen, growing a thin glassy layer of silicon dioxide that insulates and masks the silicon below.
+  machines: [tube-furnace]
+
+- name: Coat
+  text: A few drops of light-sensitive photoresist are spun into a film a micron or two thick, then baked to drive off the solvent.
+  machines: [spinner, hot-plate]
+  loop: true
+
+- name: Expose
+  text: The layer's pattern is projected straight from the design file onto the resist. The stage lines each new layer up with the one before it.
+  machines: [maskless-stepper, wafer-stage-alignment-firmware]
+  loop: true
+
+- name: Develop
+  text: A developer bath dissolves the exposed resist, leaving a stencil of the pattern on the wafer.
+  machines: [developer, hot-plate]
+  loop: true
+
+- name: Inspect
+  text: A camera on a microscope measures the features and flags defects before the pattern is made permanent.
+  machines: [computer-vision-metrology]
+  loop: true
+
+- name: Etch
+  text: Wherever the resist is open, a chemical bath dissolves the layer underneath, carving the pattern into the wafer.
+  machines: [wet-etch, reactive-ion-etcher]
+  loop: true
+
+- name: Strip
+  text: The resist has done its job and is removed, leaving a clean, patterned surface ready for the next step.
+  machines: [photoresist-stripper]
+  loop: true
+
+- name: Dope
+  text: A liquid dopant is spun on and driven into the exposed silicon in the furnace, creating the regions that make transistors work.
+  machines: [spin-on-doping, tube-furnace]
+
+- name: Metallize
+  text: An argon plasma knocks metal atoms off a target and onto the wafer under vacuum. The metal is then patterned into wires the same way as every other layer.
+  machines: [sputterer, pvd-vacuum]
+
+- name: Test
+  text: Fine needles touch down on the finished devices, right on the wafer, to measure whether each transistor and circuit works.
+  machines: [probe-station, electron-microscope]

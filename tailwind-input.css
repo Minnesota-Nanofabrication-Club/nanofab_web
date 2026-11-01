@@ -178,6 +178,9 @@
   /* ---------- inner page hero ---------- */
   .page-hero { position: relative; isolation: isolate; display: flex; flex-direction: column; justify-content: flex-end; min-height: clamp(460px, 62vh, 720px); overflow: hidden; padding: calc(var(--nav-h) + var(--nav-gap) + 96px) 0 clamp(48px, 8vh, 96px); }
   .page-hero.has-specs { padding-bottom: 0; }
+  .page-hero.is-compact { min-height: 0; padding-top: calc(var(--nav-h) + var(--nav-gap) + 64px); padding-bottom: 44px; }
+  .cal-sec { padding-top: clamp(28px, 4vh, 48px); }
+  .cal-sec .cal-wrap { margin-top: 0; }
   .page-hero-bg { position: absolute; inset: 0; z-index: -1; background: var(--black); }
   .crumbs { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13.5px; letter-spacing: 0; text-transform: none; color: var(--faint); }
   .crumbs a:hover { color: var(--fg); }

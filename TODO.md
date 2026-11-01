@@ -20,10 +20,10 @@ empty. How to make each change: [EDITING.md](EDITING.md).
       "Getting the official RSO mark"), add the file, and set the path.
 - [ ] **`googleSiteVerification`**: empty. Optional; only needed for Google
       Search Console.
-- [ ] **`calendarID`**: empty, so /events/ only says the speaker series is
-      coming. Make the club's Google Calendar public and paste its ID
-      (README, "Events and the calendar"). Optional: **`calendarAPIKey`**
-      for the month grid, and **`eventsLocation`** for where you meet.
+- [x] **`calendarID`**: set to the club's public Google Calendar; /events/
+      shows the month grid from its iCal feed (README, "Events and the
+      calendar"). Optional: **`calendarAPIKey`** for live updates instead
+      of every 6 hours.
 - [x] **`incubatorFormURL`**: set to the Incubator interest form, behind
       "Propose a project" at the bottom of /machines/.
 
@@ -68,6 +68,30 @@ empty. How to make each change: [EDITING.md](EDITING.md).
       the homepage hides its blog section until a post is published.
 - [ ] **Delete `a-new-website.md`**, the example post (kept as a draft), once
       you've used it as a model.
+
+## Prose review (written with AI help; check before going public)
+
+Much of the site's wording was drafted with an AI assistant. Read it as
+an officer would and fix anything that sounds generic, overclaims or
+just isn't true.
+
+- [ ] **Blog post dates are wrong.** `first-meeting.md` (2026-09-10) and
+      `cleaning-out-the-fab.md` (2026-10-17) use placeholder dates. The
+      first general meeting was in **October** (the calendar has the
+      kickoff on Oct 23, 2026). Set both `date:` lines to the real days.
+- [ ] **Fill in the blog posts' editor notes** (`{{</* note */>}}` blocks):
+      turnout, room, photos, names. Until then the posts are generic.
+- [ ] **Homepage statement**: "Most people learn nanofabrication from a
+      textbook. We learn it by building the fab ourselves." Keep or
+      rewrite.
+- [ ] **Process flow text** (`data/process.yaml`): have a process lead
+      check each step's `text` and `details` for accuracy (temperatures,
+      chemicals, which machine does what).
+- [ ] **Join page and invitation panels**: check the promises ("No fab
+      experience needed", "any major or year") are what the club wants
+      to say.
+- [ ] **General sweep**: look for filler, repeated sentence shapes, and
+      anything that reads like marketing rather than a student club.
 
 ## People and sponsors (`data/`)
 

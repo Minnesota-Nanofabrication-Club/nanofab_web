@@ -27,14 +27,10 @@
   {{ end }}
 {{ end }}
 
-{{ $specs := slice }}
-{{ with site.Params.eventsLocation }}{{ $specs = $specs | append (dict "b" . "span" "Where we meet") }}{{ end }}
-{{ $specs = $specs | append (dict "b" "Speaker series" "span" "Industry and research talks") }}
-{{ if $id }}{{ $specs = $specs | append (dict "b" "Subscribe ↗" "span" "Add it to Google Calendar" "href" $google) }}{{ end }}
+{{/* compact: no stat tiles and a short hero, so the calendar is on screen straight away */}}
+{{ partial "page-hero.html" (dict "page" . "title" "What's coming up." "lead" .Params.lead "compact" true) }}
 
-{{ partial "page-hero.html" (dict "page" . "title" "What's coming up." "lead" .Params.lead "specs" $specs) }}
-
-<section class="sec theme-light" id="calendar" data-nav="light">
+<section class="sec theme-light cal-sec" id="calendar" data-nav="light">
   <div class="wrap">
     {{ if and $id (or $key $ics) }}
     <div class="cal-wrap reveal">
@@ -85,10 +81,10 @@
     <div class="subscribe reveal">
       <div>
         <p class="eyebrow">Calendar</p>
-        <h2 class="h2 mt-4">The speaker series starts soon.</h2>
+        <h2 class="h2 mt-4">The first events are being planned.</h2>
       </div>
       <div>
-        <p class="lead">The first talks are being scheduled now. Join the Discord to hear about them first.</p>
+        <p class="lead">Join the Discord to hear about them first.</p>
         <div class="hero-cta mt-8">
           {{ with site.Params.discordURL }}<a class="btn btn-solid" href="{{ . }}" target="_blank" rel="noopener">Join on Discord {{ partial "icon.html" "ne" }}</a>{{ end }}
         </div>

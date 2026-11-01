@@ -326,10 +326,7 @@ Set it up once, in `hugo.toml`:
    How to make and restrict the key is at the top of
    `static/js/calendar.js`. The key is visible in the page source; that is
    normal for this setup.
-3. **`eventsLocation`** (optional): where meetings happen, e.g.
-   "Keller Hall 3-111". Shown in the page header.
-
-With neither set, the page says the speaker series is starting soon and
+With no `calendarID`, the page says the first events are being planned and
 points to the Discord.
 
 ---

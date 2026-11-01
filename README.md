@@ -337,16 +337,19 @@ Name files in lowercase with hyphens and no spaces. Keep them under ~300 KB.
 
 Everything is in `hugo.toml`, with comments:
 
-- **`heroTitle`, `heroLead`**: the homepage headline and paragraph. A
-  full stop at the end of the headline is drawn in purple.
+- **`heroTitle`, `heroLead`**: the homepage headline and paragraph.
 - **`heroImage`**: the lab photograph behind the homepage hero (shown in
   greyscale, darkened).
 - **`discordURL`, `githubURL`, `linkedinURL`, `instagramURL`,
-  `contactEmail`**: used in the header, menu, footer and buttons.
+  `contactEmail`**: used in the menu, footer and buttons. The header's
+  "Join the club" button goes to the /join/ page (`content/join/_index.md`),
+  which links to Discord.
 - **`docsURL`**: the address of the docs site. The **Docs** link in the
   navigation, the footer, and every machine card's "Full documentation"
   button are built from it. `docsMachinePath` (default `machines/`) is the
-  folder inside the docs site that holds the machine pages.
+  folder inside the docs site that holds the machine pages, and
+  `docsOnboardingPath` is the new member onboarding page the /join/ page
+  links to.
 - **`[menus.main]`**: the links in the top navigation, mobile menu and
   footer, in `weight` order. Docs and "Join the club" are added
   automatically after them.
@@ -531,6 +534,6 @@ That is why you must rebuild and commit it after design changes.
 `netlify.toml` is kept for Netlify as an alternative host; GitHub Pages
 ignores it.
 
-The docs site (`nanofab_docs`) has its own workflow and publishes to
-`https://minnesota-nanofabrication-club.github.io/nanofab_docs/`. If it ends
+The docs site (the club's `nano-book` repository) has its own workflow and
+publishes to `https://minnesota-nanofabrication-club.github.io/nano-book/`. If it ends
 up somewhere else, change `docsURL` in `hugo.toml`.

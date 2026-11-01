@@ -6,11 +6,12 @@
      every width; under 1024px the text links fold into the menu.
 
      The links come from [menus.main] in hugo.toml, plus Docs (the
-     mdBook site, params.docsURL) and the Join button (Discord).
+     mdBook site, params.docsURL) and the Join button (/join/).
      ============================================================== */}}
 {{ $page := . }}
 {{ $docs := site.Params.docsURL }}
-{{ $join := site.Params.discordURL }}
+{{ $join := "join/" | relURL }}
+{{ $discord := site.Params.discordURL }}
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header" id="siteHeader">
   <nav class="nav" id="nav" aria-label="Main navigation">
@@ -25,7 +26,7 @@
         <a class="nav-link" href="{{ $href }}"{{ if $current }} aria-current="page"{{ end }}{{ if hasPrefix .URL "/#" }} data-spy="{{ strings.TrimPrefix "/#" .URL }}"{{ end }}>{{ .Name }}</a>
       {{ end }}
       {{ with $docs }}<a class="nav-link" href="{{ . }}" target="_blank" rel="noopener">Docs {{ partial "icon.html" "ne" }}</a>{{ end }}
-      {{ with $join }}<a class="nav-cta" href="{{ . }}" target="_blank" rel="noopener">Join<span class="nav-cta-long">&nbsp;the club</span></a>{{ end }}
+      <a class="nav-cta" href="{{ $join }}"{{ if eq $page.Section "join" }} aria-current="page"{{ end }}>Join<span class="nav-cta-long">&nbsp;the club</span></a>
       <button class="nav-menu" id="menuToggle" type="button" aria-label="Open menu" aria-controls="menu" aria-expanded="false"><span></span></button>
     </div>
   </nav>
@@ -56,7 +57,8 @@
       </div>
       <div>
         <h3>Connect</h3>
-        {{ with $join }}<a href="{{ . }}" target="_blank" rel="noopener">Discord <span aria-hidden="true">↗</span></a>{{ end }}
+        <a href="{{ $join }}" data-close>Join the club</a>
+        {{ with $discord }}<a href="{{ . }}" target="_blank" rel="noopener">Discord <span aria-hidden="true">↗</span></a>{{ end }}
         {{ with site.Params.githubURL }}<a href="{{ . }}" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>{{ end }}
         {{ with site.Params.linkedinURL }}<a href="{{ . }}" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>{{ end }}
         {{ with site.Params.instagramURL }}<a href="{{ . }}" target="_blank" rel="noopener">Instagram <span aria-hidden="true">↗</span></a>{{ end }}

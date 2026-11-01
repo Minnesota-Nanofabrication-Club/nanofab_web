@@ -6,9 +6,8 @@ empty. How to make each change: [EDITING.md](EDITING.md).
 
 ## Settings (`hugo.toml`)
 
-- [ ] **`docsURL`**: points at the staging docs,
-      `https://beastr45.github.io/nano-book_staging/`. Change it to the
-      club's docs site when the staging repos move over.
+- [x] **`docsURL`**: the club's docs,
+      `https://minnesota-nanofabrication-club.github.io/nano-book/`.
 - [x] **`contactEmail`**: now `nanoclub@umn.edu`. Confirm the address exists
       and someone reads it. It is behind "Get in touch" and "Become a
       sponsor".
@@ -78,13 +77,21 @@ empty. How to make each change: [EDITING.md](EDITING.md).
 - [ ] **`sponsors.yaml`**: confirm each description says what that sponsor
       actually does with the club.
 
-## Documentation site (`../nano-book_staging`, theme in `../nanoTheme_staging`)
+## Documentation site (the club's `nano-book`)
 
-- [ ] **Write the machine pages.** Every machine on the website has a page
-      there, but all except the sputterer are stubs.
-- [ ] **Move off staging.** The docs' `book.toml`, `.gitmodules` and
-      `theme/header.hbs` point at the staging forks (docs README, "Moving
-      from staging").
+- [ ] **Publish the New member onboarding page.** The stub is in the staging
+      docs (`beastr45/nano-book_staging`, `src/new-member-onboarding.md`).
+      Until the club's `nano-book` has it, "Read the onboarding guide" on
+      /join/ is a dead link.
+- [ ] **Write the onboarding page and the machine pages.** All are stubs
+      except the sputterer and the trebuchet.
+
+## Join page (`content/join/_index.md`)
+
+- [ ] **Check the four steps** say how joining actually works (Discord,
+      picking a project, asking its lead, the onboarding guide), and the
+      lead line ("Open to every University of Minnesota student, any major
+      or year. No fab experience needed.").
 
 ## Before going public
 

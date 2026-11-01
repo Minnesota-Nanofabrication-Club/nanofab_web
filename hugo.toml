@@ -100,12 +100,14 @@ disableKinds = ["taxonomy", "term"]
   eventsLocation = ""
 
   # ---------------- The documentation site ----------------
-  # The separate mdBook site (repository: nanofab_docs). The "Docs"
-  # link in the navigation points here, and every machine card links
-  # to  docsURL + docsMachinePath + <machine file name> + ".html".
+  # The club's mdBook site (repository: nano-book). The "Docs" link in
+  # the navigation points here, and every machine card links to
+  # docsURL + docsMachinePath + <machine file name> + ".html".
   # A machine can override its link with `docs:` in its front matter.
-  docsURL = "https://beastr45.github.io/nano-book_staging/"
+  # The /join/ page links to docsURL + docsOnboardingPath.
+  docsURL = "https://minnesota-nanofabrication-club.github.io/nano-book/"
   docsMachinePath = "machines/"
+  docsOnboardingPath = "new-member-onboarding.html"
 
   # ---------------- Logo ----------------
   logo = "/images/logo/mnfc-wafer-logo.png"

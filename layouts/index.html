@@ -34,7 +34,7 @@
       <p class="hero-lead">{{ site.Params.heroLead }}</p>
       <div class="hero-cta">
         <a class="btn btn-solid" href="{{ $machinesURL }}">See the machines {{ partial "icon.html" "arrow" }}</a>
-        {{ with site.Params.discordURL }}<a class="btn btn-line" href="{{ . }}" target="_blank" rel="noopener">Join on Discord {{ partial "icon.html" "ne" }}</a>{{ end }}
+        <a class="btn btn-line" href="{{ "join/" | relURL }}">Join the club {{ partial "icon.html" "arrow" }}</a>
       </div>
     </div>
     <div class="specs">
@@ -132,7 +132,7 @@
 <section class="sec-tight theme-light" data-nav="light">
   <div class="wrap">
     <div class="ctas" style="margin-top:0">
-      {{ with site.Params.discordURL }}<a class="cta-block cta-dark reveal" href="{{ . }}" target="_blank" rel="noopener">Join the club {{ partial "icon.html" "big-arrow" }}</a>{{ end }}
+      <a class="cta-block cta-dark reveal" href="{{ "join/" | relURL }}">Join the club {{ partial "icon.html" "big-arrow" }}</a>
       {{ with site.Params.contactEmail }}<a class="cta-block cta-grey reveal" href="mailto:{{ . }}?subject=Minnesota%20Nanofabrication">Get in touch {{ partial "icon.html" "big-arrow" }}</a>{{ end }}
     </div>
   </div>

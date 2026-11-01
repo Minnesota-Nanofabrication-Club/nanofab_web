@@ -5,6 +5,15 @@ end, and for the docs book (`nanofab_docs`), which follows the same rules.
 Read it before writing markup, CSS or copy. If a request conflicts with this
 file, follow this file and say so.
 
+**Revision 5 (November 2026): quieter.** Club officers felt the site looked
+AI-generated and too close to SASI, so the decoration was turned down and
+the layout left exactly as it was: no mono uppercase labels (labels are
+small sans, sentence case), no boxed eyebrows or alignment crosses, no
+purple glows, film grain or corner brackets, regular-weight headings at
+smaller sizes, plain arrows on buttons, a short fade instead of a slide on
+scroll, and full stops that are just full stops. The sections below are
+updated to match; keep it this plain.
+
 **Revision 3 (October 2026).** Replaces revision 2 entirely: the warm paper
 ground, Fraunces / Libre Franklin / Courier Prime, maroon accent and the
 "no navigation, huge presentation blocks" layout are all retired.
@@ -26,10 +35,9 @@ What is ours: IBM Plex set light, the UV accent from the logo, and the
 alignment-mark motif. Things that read as SASI and are deliberately gone:
 hairline grids of square cards, square markers, the full-width wordmark.
 
-**One motif: the alignment mark.** A lithography alignment cross, the thing
-every mask layer is lined up against. It appears as the eyebrow marker, the
-corner brackets in the home hero, and a small UV cross on the placeholder
-machine drawings. That's all; don't add more. The site should read
+**No ornaments.** The only decoration is the faint circuitry in the margins
+(`static/js/circuit.js`) and the line drawings on placeholder machine
+cards. Don't add more. The site should read
 like a serious engineering organization that happens to be students.
 
 **A visitor always knows where they are.** Every page has the persistent top
@@ -70,40 +78,34 @@ Purple is a signal, so it has to stay rare. Allowed:
 - **Hover / focus** on primary buttons, CTA blocks, links, pills.
 - **The current location**: active nav link underline, active sub-nav tab,
   active mobile menu item, the active docs sidebar item.
-- **The eyebrow cross** (11×11 px, 1px strokes) in front of a section label.
-- **The full stop** at the end of the hero headline, and the full stop
-  square after the About statement.
-- **The glow**: a soft radial gradient in the top-right of the home hero and
-  inner page heroes. Never more than one glow per screen.
 - **Operational** build status (when a machine is running).
 - Bullet dots in long-form prose, the left rule on blockquotes and draft
   warnings in the docs.
 
 Not allowed: purple backgrounds on resting elements, purple body text,
-purple headings, gradients other than the glow, more than one purple
+purple headings, purple gradients or glows, more than one purple
 element competing in a single viewport at rest.
 
 ## 3. Type
 
 Two families, self-hosted from `static/fonts/` (SIL OFL): **IBM Plex Sans**
-for everything and **IBM Plex Mono** for labels and data. Display type is
-**300 (light)**; card titles and body 400; emphasis 450–500. Plex needs less
-negative tracking than a grotesk: −0.02 to −0.035em on large type.
+for everything and **IBM Plex Mono** only for code. Everything is **400**;
+emphasis 450–500. Large type is tracked −0.02em.
 
 | Role | Class | Size | Tracking |
 |---|---|---|---|
-| Home hero | `.hero-title` | `clamp(48px, 8.4vw, 148px)`, 300, max 13ch | −0.035em |
-| Inner page title | `.page-title` | `clamp(42px, 6vw, 104px)`, 300 | −0.035em |
-| Statement | `.statement` | `clamp(32px, 4.6vw, 78px)`, 300 | −0.03em |
-| Section heading | `.h2` | `clamp(36px, 4.6vw, 76px)`, 300 | −0.03em |
-| Band heading | `.band-head h2` | `clamp(32px, 3.8vw, 60px)`, 300 | −0.03em |
+| Home hero | `.hero-title` | `clamp(44px, 6.6vw, 104px)`, max 13ch | −0.02em |
+| Inner page title | `.page-title` | `clamp(38px, 5vw, 76px)` | −0.02em |
+| Statement | `.statement` | `clamp(28px, 3.6vw, 56px)` | −0.02em |
+| Section heading | `.h2` | `clamp(32px, 3.8vw, 56px)` | −0.02em |
+| Band heading | `.band-head h2` | `clamp(28px, 3vw, 44px)` | −0.02em |
 | Card / tile title | `.mcard-title`, `.path h3` | 23–36px, 400 | −0.02em |
 | Lead | `.lead`, `.hero-lead` | 17–21px, `--muted` | — |
 | Body | `body` | 17px (16px on phones) | −0.006em |
 | Long-form prose | `.prose` | 18px, line-height 1.7, max 68ch | — |
-| Label (mono) | `.eyebrow`, `.mcard-step`, `.f-h` | 11–12px uppercase | +0.10–0.14em |
+| Label | `.eyebrow`, `.mcard-step`, `.f-h` | 13.5–14px sans, sentence case | 0 |
 
-Mono labels are small on purpose: they are wayfinding, not reading. Anything
+Labels are small on purpose: they are wayfinding, not reading. Anything
 a visitor must read (summaries, bios, body) is never below 15px.
 
 Headings don't end in full stops, **except** the big display statements

@@ -9,5 +9,5 @@
 <path d="M90 230h220M120 230v-16M280 230v-16"/>
 </g>
 <g stroke="#6d28d9" stroke-width="1.5"><path d="M368 22v16M360 30h16"/></g>
-<text x="24" y="280" font-family="ui-monospace, Menlo, monospace" font-size="11" letter-spacing="1.2" fill="#8a8c90">PHOTO COMING SOON</text>
+<text x="24" y="280" font-family="IBM Plex Sans, system-ui, sans-serif" font-size="13" fill="#8a8c90">Photo coming soon</text>
 </svg>

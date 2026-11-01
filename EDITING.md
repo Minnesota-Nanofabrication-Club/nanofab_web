@@ -219,6 +219,14 @@ Add it to the club's Google Calendar. That's it: /events/ and everyone who
 subscribed pick it up. (The website only needs `calendarID` set once; see
 README, "Events and the calendar".)
 
+### Change the Join page
+
+Every "Join the club" button leads to /join/. Its words, and its four
+steps, are in `content/join/_index.md`; the comment at the top of that file
+explains each field. A step's `link` can be a page on this site
+(`/machines/`), a full web address, `discord`, or `onboarding` (the docs'
+New member onboarding page).
+
 ### Change the homepage headline, links or email
 
 Open `hugo.toml`:
@@ -226,7 +234,8 @@ Open `hugo.toml`:
 - `heroTitle`: the big headline. `heroLead`: the paragraph under it.
 - `heroImage`: the photo behind it.
 - `discordURL`, `instagramURL`, `linkedinURL`, `githubURL`, `contactEmail`.
-- `docsURL`: where the documentation site lives.
+- `docsURL`: where the documentation site lives. `docsOnboardingPath`: the
+  docs page the Join page's "Read the onboarding guide" step opens.
 - `incubatorFormURL`: the "Propose a project" form at the bottom of /machines/.
 - `calendarID`, `calendarAPIKey`, `eventsLocation`: the /events/ page.
 - `[[menus.main]]` blocks: the links in the top bar.
